@@ -1,6 +1,6 @@
-# Japanese Study List — local Node edition
+# Lingo Study List — local Node edition
 
-A local Japanese study app with:
+A local multi-language (Japanese, German) study app with:
 
 - Words and sentences with stable numeric IDs
 - Searchable, coverable tables

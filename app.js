@@ -2,19 +2,66 @@
   'use strict';
 
   const LEGACY_STORAGE_KEY = 'japanese-study-list-v1';
-  const WORDS_STORAGE_KEY = 'japanese-study-words-v2';
-  const SENTENCES_STORAGE_KEY = 'japanese-study-sentences-v2';
   const THEME_KEY = 'japanese-study-theme';
+  const LANGUAGE_KEY = 'study-language';
   const OCR_ASSET_ROOT = './vendor';
-  const columns = ['english', 'romaji', 'kanji', 'kana'];
+
+  // Populated lazily by ensureGermanGenderDictionary(); declared up front
+  // since init() below may call it before its definition further down runs.
+  let germanGenderDictionaryPromise = null;
+  let germanGenderDictionaryCache = null;
+
+  const LANGUAGES = {
+    ja: {
+      id: 'ja',
+      label: 'Japanese',
+      shortLabel: '日',
+      storagePrefix: 'japanese-study',
+      fields: [
+        {key: 'english', label: 'English', role: 'gloss', required: true},
+        {key: 'romaji', label: 'Romaji', role: 'secondary'},
+        {key: 'kanji', label: 'Kanji / Japanese', role: 'native', required: true},
+        {key: 'kana', label: 'Kana', role: 'native-alt'},
+      ],
+      columnGroups: [
+        {key: 'reading', label: 'Romaji / Kanji / Japanese / Kana', fields: ['romaji', 'kanji', 'kana']},
+      ],
+      identityFields: ['kanji', 'kana'],
+      seedWords: () => window.INITIAL_WORDS || [],
+      seedSentences: () => window.INITIAL_SENTENCES || [],
+      supportsOcr: true,
+      supportsMarkdownImport: true,
+    },
+    de: {
+      id: 'de',
+      label: 'German',
+      shortLabel: 'DE',
+      storagePrefix: 'german-study',
+      fields: [
+        {key: 'english', label: 'English', role: 'gloss', required: true},
+        {key: 'german', label: 'German', role: 'native', required: true},
+      ],
+      identityFields: ['german'],
+      seedWords: () => window.INITIAL_WORDS_DE || [],
+      seedSentences: () => window.INITIAL_SENTENCES_DE || [],
+      supportsOcr: false,
+      supportsMarkdownImport: false,
+    },
+  };
+
+  const storedLanguage = localStorage.getItem(LANGUAGE_KEY);
+  const initialLanguage = LANGUAGES[storedLanguage] ? storedLanguage : 'ja';
+  const initialLanguageConfig = LANGUAGES[initialLanguage];
 
   const state = {
-    collections: loadCollections(),
+    language: initialLanguage,
+    collections: loadCollections(initialLanguageConfig),
     screen: 'list',
     view: 'word',
     search: '',
+    sortDirection: 'desc',
     covered: new Set(),
-    revealedCells: new Set(),
+    cellOverrides: new Set(),
     shuffledIds: null,
     card: {
       setup: null,
@@ -42,9 +89,16 @@
     resultSummary: document.querySelector('#resultSummary'),
     wordCount: document.querySelector('#wordCount'),
     sentenceCount: document.querySelector('#sentenceCount'),
+    brandMark: document.querySelector('#brandMark'),
     tabs: [...document.querySelectorAll('.tab')],
-    coverButtons: [...document.querySelectorAll('.cover-button')],
+    importTab: document.querySelector('[data-view="import"]'),
+    coverControls: document.querySelector('#coverControls'),
     addButton: document.querySelector('#addButton'),
+    tableHeadRow: document.querySelector('#tableHeadRow'),
+    languageSelect: document.querySelector('#languageSelect'),
+    idFilterFrom: document.querySelector('#idFilterFrom'),
+    idFilterTo: document.querySelector('#idFilterTo'),
+    idFilterResetButton: document.querySelector('#idFilterResetButton'),
     revealButton: document.querySelector('#revealButton'),
     shuffleButton: document.querySelector('#shuffleButton'),
     importButton: document.querySelector('#importButton'),
@@ -59,16 +113,14 @@
     entryOriginalType: document.querySelector('#entryOriginalType'),
     dialogEyebrow: document.querySelector('#dialogEyebrow'),
     dialogTitle: document.querySelector('#dialogTitle'),
-    englishField: document.querySelector('#englishField'),
-    romajiField: document.querySelector('#romajiField'),
-    kanjiField: document.querySelector('#kanjiField'),
-    kanaField: document.querySelector('#kanaField'),
+    dialogFieldGrid: document.querySelector('#dialogFieldGrid'),
     closeDialogButton: document.querySelector('#closeDialogButton'),
     cancelDialogButton: document.querySelector('#cancelDialogButton'),
     themeButton: document.querySelector('#themeButton'),
     toast: document.querySelector('#toast'),
     cardsSetup: document.querySelector('#cardsSetup'),
     cardSetupForm: document.querySelector('#cardSetupForm'),
+    cardDirectionChoices: document.querySelector('#cardDirectionChoices'),
     cardFromId: document.querySelector('#cardFromId'),
     cardToId: document.querySelector('#cardToId'),
     cardRangeHint: document.querySelector('#cardRangeHint'),
@@ -114,12 +166,16 @@
     newWordsSummaryText: document.querySelector('#newWordsSummaryText'),
     newWordsList: document.querySelector('#newWordsList'),
     refreshNewWordsButton: document.querySelector('#refreshNewWordsButton'),
+    importWordsButton: document.querySelector('#importWordsButton'),
   };
 
   initTheme();
+  renderStructuralElements();
   saveCollections();
+  if (state.language === 'de') ensureGermanGenderDictionary();
   bindEvents();
   setCardCategory('word', true);
+  resetIdFilterToFullRange();
   elements.serverNotice.hidden = location.protocol !== 'file:';
   render();
 
@@ -127,34 +183,80 @@
     return JSON.parse(JSON.stringify(value));
   }
 
-  function loadCollections() {
-    const wordsSaved = readJsonStorage(WORDS_STORAGE_KEY);
-    const sentencesSaved = readJsonStorage(SENTENCES_STORAGE_KEY);
+  function languageConfig(id = state.language) {
+    return LANGUAGES[id] || LANGUAGES.ja;
+  }
+
+  function activeFields() {
+    return languageConfig().fields;
+  }
+
+  // Groups multiple data fields (e.g. romaji/kanji/kana) into a single
+  // table column with one cover button, per the language's columnGroups
+  // config. Fields not listed in any group each become their own column.
+  function activeColumns() {
+    const fields = activeFields();
+    const groupByField = new Map();
+    (languageConfig().columnGroups || []).forEach(group => {
+      group.fields.forEach(fieldKey => groupByField.set(fieldKey, group));
+    });
+    const columns = [];
+    const emittedGroups = new Set();
+    fields.forEach(field => {
+      const group = groupByField.get(field.key);
+      if (group) {
+        if (emittedGroups.has(group.key)) return;
+        emittedGroups.add(group.key);
+        columns.push({key: group.key, label: group.label, fields: group.fields});
+      } else {
+        columns.push({key: field.key, label: field.label, fields: [field.key]});
+      }
+    });
+    return columns;
+  }
+
+  function wordsKey(config) {
+    return `${config.storagePrefix}-words-v2`;
+  }
+
+  function sentencesKey(config) {
+    return `${config.storagePrefix}-sentences-v2`;
+  }
+
+  function seedCollections(config) {
+    return {
+      word: normalizeCollection(clone(config.seedWords() || []), 'word', config),
+      sentence: normalizeCollection(clone(config.seedSentences() || []), 'sentence', config),
+    };
+  }
+
+  function loadCollections(config) {
+    const wordsSaved = readJsonStorage(wordsKey(config));
+    const sentencesSaved = readJsonStorage(sentencesKey(config));
 
     if (Array.isArray(wordsSaved) || Array.isArray(sentencesSaved)) {
       return {
-        word: normalizeCollection(Array.isArray(wordsSaved) ? wordsSaved : clone(window.INITIAL_WORDS || []), 'word'),
-        sentence: normalizeCollection(Array.isArray(sentencesSaved) ? sentencesSaved : clone(window.INITIAL_SENTENCES || []), 'sentence'),
+        word: normalizeCollection(Array.isArray(wordsSaved) ? wordsSaved : clone(config.seedWords() || []), 'word', config),
+        sentence: normalizeCollection(Array.isArray(sentencesSaved) ? sentencesSaved : clone(config.seedSentences() || []), 'sentence', config),
       };
     }
 
-    const legacy = readJsonStorage(LEGACY_STORAGE_KEY);
-    if (Array.isArray(legacy)) {
-      const ordered = legacy
-        .map((item, index) => ({...item, _legacyOrder: parseNumericId(item.id) || index + 1}))
-        .sort((a, b) => a._legacyOrder - b._legacyOrder);
-      const words = ordered.filter(item => item.type !== 'sentence').map((item, index) => ({...item, id: index + 1}));
-      const sentences = ordered.filter(item => item.type === 'sentence').map((item, index) => ({...item, id: index + 1}));
-      return {
-        word: normalizeCollection(words, 'word'),
-        sentence: normalizeCollection(sentences, 'sentence'),
-      };
+    if (config.id === 'ja') {
+      const legacy = readJsonStorage(LEGACY_STORAGE_KEY);
+      if (Array.isArray(legacy)) {
+        const ordered = legacy
+          .map((item, index) => ({...item, _legacyOrder: parseNumericId(item.id) || index + 1}))
+          .sort((a, b) => a._legacyOrder - b._legacyOrder);
+        const words = ordered.filter(item => item.type !== 'sentence').map((item, index) => ({...item, id: index + 1}));
+        const sentences = ordered.filter(item => item.type === 'sentence').map((item, index) => ({...item, id: index + 1}));
+        return {
+          word: normalizeCollection(words, 'word', config),
+          sentence: normalizeCollection(sentences, 'sentence', config),
+        };
+      }
     }
 
-    return {
-      word: normalizeCollection(clone(window.INITIAL_WORDS || []), 'word'),
-      sentence: normalizeCollection(clone(window.INITIAL_SENTENCES || []), 'sentence'),
-    };
+    return seedCollections(config);
   }
 
   function readJsonStorage(key) {
@@ -168,7 +270,7 @@
     }
   }
 
-  function normalizeCollection(items, type) {
+  function normalizeCollection(items, type, config = languageConfig()) {
     const normalized = [];
     const used = new Set();
     let highestId = 0;
@@ -180,15 +282,13 @@
         used.add(id);
         highestId = Math.max(highestId, id);
       }
-      normalized.push({
-        id,
-        type,
-        english: String(raw.english || '').trim(),
-        romaji: String(raw.romaji || '').trim(),
-        kanji: String(raw.kanji || '').trim(),
-        kana: String(raw.kana || '').trim(),
-        ...(raw.source ? {source: raw.source} : {}),
-      });
+      const entry = {id, type};
+      for (const field of config.fields) {
+        entry[field.key] = String(raw[field.key] || '').trim();
+      }
+      if (raw.article) entry.article = raw.article;
+      if (raw.source) entry.source = raw.source;
+      normalized.push(entry);
     }
 
     for (const item of normalized) {
@@ -222,8 +322,9 @@
   }
 
   function saveCollections() {
-    localStorage.setItem(WORDS_STORAGE_KEY, JSON.stringify(state.collections.word));
-    localStorage.setItem(SENTENCES_STORAGE_KEY, JSON.stringify(state.collections.sentence));
+    const config = languageConfig();
+    localStorage.setItem(wordsKey(config), JSON.stringify(state.collections.word));
+    localStorage.setItem(sentencesKey(config), JSON.stringify(state.collections.sentence));
   }
 
   function bindEvents() {
@@ -234,17 +335,21 @@
       renderTable();
     });
 
-    elements.coverButtons.forEach(button => button.addEventListener('click', () => {
+    elements.coverControls.addEventListener('click', event => {
+      const button = event.target.closest('.cover-button');
+      if (!button) return;
       const column = button.dataset.column;
       state.covered.has(column) ? state.covered.delete(column) : state.covered.add(column);
-      state.revealedCells.clear();
+      state.cellOverrides.clear();
       renderCoverButtons();
       renderTable();
-    }));
+    });
+
+    elements.languageSelect.addEventListener('change', event => switchLanguage(event.target.value));
 
     elements.revealButton.addEventListener('click', () => {
       state.covered.clear();
-      state.revealedCells.clear();
+      state.cellOverrides.clear();
       renderCoverButtons();
       renderTable();
     });
@@ -253,6 +358,13 @@
       state.shuffledIds = shuffle(filteredItems().map(item => item.id));
       renderTable();
       showToast('Current list shuffled');
+    });
+
+    elements.idFilterFrom.addEventListener('input', () => { state.idFilterCustom = true; renderTable(); });
+    elements.idFilterTo.addEventListener('input', () => { state.idFilterCustom = true; renderTable(); });
+    elements.idFilterResetButton.addEventListener('click', () => {
+      resetIdFilterToFullRange();
+      renderTable();
     });
 
     elements.addButton.addEventListener('click', () => openDialog());
@@ -270,10 +382,11 @@
     elements.themeButton.addEventListener('click', toggleTheme);
 
     elements.tbody.addEventListener('click', event => {
-      const revealTarget = event.target.closest('.study-cell.covered');
-      if (revealTarget) {
-        state.revealedCells.add(revealTarget.dataset.revealKey);
-        revealTarget.classList.remove('covered');
+      const cell = event.target.closest('.study-cell[data-reveal-key]');
+      if (cell) {
+        const key = cell.dataset.revealKey;
+        state.cellOverrides.has(key) ? state.cellOverrides.delete(key) : state.cellOverrides.add(key);
+        renderTable();
         return;
       }
 
@@ -313,14 +426,21 @@
     });
     elements.scanScreenshotsButton.addEventListener('click', scanScreenshots);
     elements.clearScansButton.addEventListener('click', clearScreenshotWorkspace);
-    elements.importScannedButton.addEventListener('click', importSelectedScans);
+    elements.importScannedButton.addEventListener('click', importSelectedSentences);
+    elements.importWordsButton.addEventListener('click', importSelectedWords);
     elements.scanReviewList.addEventListener('input', updateScanDraftFromInput);
     elements.scanReviewList.addEventListener('change', updateScanDraftFromInput);
     elements.refreshNewWordsButton.addEventListener('click', renderNewWordsSummary);
-    elements.scanReviewList.addEventListener('click', handleScanReviewClick);
+    elements.newWordsList.addEventListener('input', updateNewWordDraftFromInput);
+    elements.newWordsList.addEventListener('change', updateNewWordDraftFromInput);
+    elements.newWordsList.addEventListener('click', handleNewWordsClick);
   }
 
   function switchView(view) {
+    if (view === 'import' && !languageConfig().supportsOcr) {
+      showToast(`Screenshot import isn't available for ${languageConfig().label} yet`);
+      return;
+    }
     if (view === 'cards' || view === 'import') {
       state.screen = view;
       if (view === 'cards') {
@@ -331,9 +451,88 @@
       state.screen = 'list';
       state.view = view === 'sentence' ? 'sentence' : 'word';
       state.shuffledIds = null;
-      state.revealedCells.clear();
+      state.cellOverrides.clear();
+      resetIdFilterToFullRange();
     }
     render();
+  }
+
+  function renderStructuralElements() {
+    const config = languageConfig();
+
+    elements.brandMark.textContent = config.shortLabel;
+
+    elements.languageSelect.innerHTML = Object.values(LANGUAGES)
+      .map(lang => `<option value="${lang.id}"${lang.id === state.language ? ' selected' : ''}>${escapeHtml(lang.label)}</option>`)
+      .join('');
+
+    const dataHeaders = activeColumns().map(column => `<th scope="col">${escapeHtml(column.label)}</th>`).join('');
+    elements.tableHeadRow.innerHTML = `
+      <th scope="col" class="id-column"><button type="button" class="sort-button" id="idSortButton" aria-label="Sort by ID">ID <span id="idSortIndicator" aria-hidden="true">▼</span></button></th>
+      ${dataHeaders}
+      <th scope="col" class="actions-column"><span class="sr-only">Actions</span></th>
+    `;
+    elements.idSortButton = document.querySelector('#idSortButton');
+    elements.idSortIndicator = document.querySelector('#idSortIndicator');
+    elements.idSortButton.addEventListener('click', () => {
+      state.sortDirection = state.sortDirection === 'asc' ? 'desc' : 'asc';
+      state.shuffledIds = null;
+      renderTable();
+    });
+
+    elements.coverControls.innerHTML = activeColumns()
+      .map(column => `<button type="button" class="cover-button" data-column="${column.key}">${escapeHtml(column.label)}</button>`)
+      .join('');
+
+    elements.cardDirectionChoices.innerHTML = `
+      <label class="choice-card"><input type="radio" name="cardDirection" value="native-en" checked><span>${escapeHtml(config.label)} → English</span></label>
+      <label class="choice-card"><input type="radio" name="cardDirection" value="en-native"><span>English → ${escapeHtml(config.label)}</span></label>
+    `;
+
+    elements.importTab.hidden = !config.supportsOcr;
+
+    renderDialogFieldGrid();
+  }
+
+  function switchLanguage(id) {
+    if (!LANGUAGES[id] || id === state.language) return;
+    state.language = id;
+    localStorage.setItem(LANGUAGE_KEY, id);
+    if (id === 'de') ensureGermanGenderDictionary();
+    state.collections = loadCollections(languageConfig());
+    state.covered.clear();
+    state.cellOverrides.clear();
+    state.shuffledIds = null;
+    state.search = '';
+    elements.searchInput.value = '';
+    state.view = 'word';
+    state.screen = 'list';
+    renderStructuralElements();
+    resetIdFilterToFullRange();
+    saveCollections();
+    setCardCategory('word', true);
+    render();
+  }
+
+  function resetIdFilterToFullRange() {
+    state.idFilterCustom = false;
+    const items = collection(state.view);
+    if (!items.length) {
+      elements.idFilterFrom.value = '';
+      elements.idFilterTo.value = '';
+      return;
+    }
+    const ids = items.map(item => item.id);
+    // Prefilled highest-to-lowest to match the default descending sort.
+    elements.idFilterFrom.value = Math.max(...ids);
+    elements.idFilterTo.value = Math.min(...ids);
+  }
+
+  // Keeps an untouched (non-custom) ID filter tracking the full range as
+  // entries are added or removed in the current tab, so a freshly added
+  // or imported item doesn't silently fall outside the visible range.
+  function syncIdFilterIfNotCustom() {
+    if (!state.idFilterCustom) resetIdFilterToFullRange();
   }
 
   function render() {
@@ -368,28 +567,52 @@
   }
 
   function renderCoverButtons() {
-    elements.coverButtons.forEach(button => button.classList.toggle('is-covered', state.covered.has(button.dataset.column)));
+    elements.coverControls.querySelectorAll('.cover-button').forEach(button => button.classList.toggle('is-covered', state.covered.has(button.dataset.column)));
+  }
+
+  // The From/To fields only ever reflect the currently active tab's range
+  // (they're reset on every tab switch), so the filter they express only
+  // applies to that tab's type -- the other type's export stays unfiltered.
+  function filteredItemsForType(type) {
+    let items = [...collection(type)];
+    if (type === state.view) {
+      if (state.search) {
+        items = items.filter(item => {
+          const haystack = [item.id, ...activeFields().map(field => item[field.key])].join(' ').toLocaleLowerCase();
+          return haystack.includes(state.search);
+        });
+      }
+      const fromValue = elements.idFilterFrom.value;
+      const toValue = elements.idFilterTo.value;
+      if (fromValue !== '' && toValue !== '') {
+        const lo = Math.min(Number(fromValue), Number(toValue));
+        const hi = Math.max(Number(fromValue), Number(toValue));
+        items = items.filter(item => item.id >= lo && item.id <= hi);
+      }
+    }
+    return items.sort((a, b) => a.id - b.id);
   }
 
   function filteredItems() {
-    let items = [...collection(state.view)];
-    if (state.search) {
-      items = items.filter(item => {
-        const haystack = [item.id, item.english, item.romaji, item.kanji, item.kana].join(' ').toLocaleLowerCase();
-        return haystack.includes(state.search);
-      });
-    }
-
+    const items = filteredItemsForType(state.view);
     if (state.shuffledIds) {
       const order = new Map(state.shuffledIds.map((id, index) => [id, index]));
-      items.sort((a, b) => (order.get(a.id) ?? Number.MAX_SAFE_INTEGER) - (order.get(b.id) ?? Number.MAX_SAFE_INTEGER));
-    } else {
-      items.sort((a, b) => a.id - b.id);
+      return [...items].sort((a, b) => (order.get(a.id) ?? Number.MAX_SAFE_INTEGER) - (order.get(b.id) ?? Number.MAX_SAFE_INTEGER));
     }
-    return items;
+    return state.sortDirection === 'asc' ? items : [...items].reverse();
+  }
+
+  function renderSortIndicator() {
+    const shuffled = Boolean(state.shuffledIds);
+    elements.idSortIndicator.textContent = state.sortDirection === 'asc' ? '▲' : '▼';
+    elements.idSortButton.title = shuffled
+      ? 'Shuffled — click to sort by ID'
+      : `Sorted by ID, ${state.sortDirection === 'asc' ? 'ascending' : 'descending'}. Click to reverse.`;
+    elements.idSortButton.setAttribute('aria-sort', shuffled ? 'none' : state.sortDirection === 'asc' ? 'ascending' : 'descending');
   }
 
   function renderTable() {
+    renderSortIndicator();
     const items = filteredItems();
     const categoryTotal = collection(state.view).length;
     elements.resultSummary.textContent = state.search
@@ -400,7 +623,7 @@
     elements.tbody.innerHTML = items.map(item => `
       <tr>
         <td class="entry-id">${item.id}</td>
-        ${columns.map(column => cellTemplate(item, column)).join('')}
+        ${activeColumns().map(column => cellTemplate(item, column)).join('')}
         <td>
           <div class="row-actions">
             <button class="row-action" type="button" data-action="edit" data-type="${item.type}" data-id="${item.id}" title="Edit" aria-label="Edit ${item.type} ${item.id}">✎</button>
@@ -412,9 +635,65 @@
   }
 
   function cellTemplate(item, column) {
-    const key = `${compositeKey(item.type, item.id)}:${column}`;
-    const covered = state.covered.has(column) && !state.revealedCells.has(key);
-    return `<td data-column="${column}"><div class="study-cell${covered ? ' covered' : ''}" data-reveal-key="${key}">${escapeHtml(item[column] || '—')}</div></td>`;
+    const key = `${compositeKey(item.type, item.id)}:${column.key}`;
+    // XOR: a column's own default (state.covered) is flipped whenever this
+    // specific cell has been individually clicked (state.cellOverrides).
+    const covered = state.covered.has(column.key) !== state.cellOverrides.has(key);
+    const fieldDefs = column.fields.map(fieldKey => activeFields().find(field => field.key === fieldKey));
+    const isNative = fieldDefs.some(field => field.role === 'native' || field.role === 'native-alt');
+    const badge = isNative && !covered ? articleBadge(item) : '';
+    const text = fieldDefs.map(field => escapeHtml(item[field.key] || '—')).join(' · ');
+    return `<td data-column="${column.key}"${isNative ? ' data-script="native"' : ''}><div class="study-cell${covered ? ' covered' : ''}" data-reveal-key="${key}">${badge}${text}</div></td>`;
+  }
+
+  // Nice-to-have autofill for nouns typed without their article (e.g. "Tisch"
+  // instead of "der Tisch"), backed by a bundled lemma -> der/die/das lookup.
+  // Fails quietly like the English dictionary/tokenizer: if the lookup isn't
+  // loaded yet or doesn't recognize the word, the article is simply left blank
+  // for the user to fill in by hand.
+  function ensureGermanGenderDictionary() {
+    if (!germanGenderDictionaryPromise) {
+      germanGenderDictionaryPromise = prepareGermanGenderDictionary()
+        .then(dictionary => { germanGenderDictionaryCache = dictionary; return dictionary; })
+        .catch(error => {
+          console.warn('German gender dictionary unavailable, article badges will be left blank:', error);
+          return null;
+        });
+    }
+    return germanGenderDictionaryPromise;
+  }
+
+  async function prepareGermanGenderDictionary() {
+    const response = await fetch('./api/german-gender-status', {cache: 'no-store'});
+    const status = await response.json().catch(() => ({}));
+    if (!response.ok || !status.ready) throw new Error(status.message || 'German gender dictionary is not available.');
+
+    const dictResponse = await fetch('./vendor/dict/german-gender-lookup.json.gz', {cache: 'no-store'});
+    if (!dictResponse.ok) throw new Error(`Could not load the German gender dictionary (HTTP ${dictResponse.status}).`);
+    return dictResponse.json();
+  }
+
+  function deriveGermanArticle(text) {
+    const value = String(text || '').trim();
+    const leadMatch = value.match(/^(der|die|das)\b/i);
+    if (leadMatch) return leadMatch[1].toLowerCase();
+    if (!value) return '';
+
+    const candidate = value.split('/')[0].trim().split(/\s+/)[0];
+    if (candidate && /^[A-ZÄÖÜ]/.test(candidate) && germanGenderDictionaryCache?.[candidate]) {
+      return germanGenderDictionaryCache[candidate];
+    }
+    return value.includes('/') ? 'plural' : '';
+  }
+
+  function articleBadge(item) {
+    if (!item.article) return '';
+    return `<span class="badge badge-${item.article}">${escapeHtml(item.article)}</span>`;
+  }
+
+  function primaryDisplayField() {
+    const fields = activeFields().filter(field => field.role !== 'gloss');
+    return fields.find(field => field.role === 'native') || fields.find(field => field.role === 'native-alt') || fields[0] || null;
   }
 
   function openDialog(item = null) {
@@ -423,15 +702,34 @@
     elements.entryId.value = item?.id || '';
     elements.entryOriginalType.value = item?.type || '';
     elements.form.querySelector(`input[name="entryType"][value="${type}"]`).checked = true;
-    elements.englishField.value = item?.english || '';
-    elements.romajiField.value = item?.romaji || '';
-    elements.kanjiField.value = item?.kanji || '';
-    elements.kanaField.value = item?.kana || '';
+    renderDialogFieldGrid(item || {});
     elements.dialogTitle.textContent = item ? 'Edit entry' : 'Add entry';
     elements.dialogEyebrow.dataset.mode = item ? 'edit' : 'new';
     updateDialogIdPreview();
     elements.dialog.showModal();
-    setTimeout(() => elements.englishField.focus(), 0);
+    setTimeout(() => elements.dialogFieldGrid.querySelector('input')?.focus(), 0);
+  }
+
+  function renderDialogFieldGrid(values = {}) {
+    elements.dialogFieldGrid.innerHTML = activeFields().map(field => {
+      const attrs = `data-field="${field.key}"${field.required ? ' required' : ''} maxlength="240"`;
+      return `<label>${escapeHtml(field.label)}<input ${attrs} value="${escapeHtml(values[field.key] || '')}"></label>`;
+    }).join('');
+  }
+
+  function readDialogFields() {
+    const data = {};
+    elements.dialogFieldGrid.querySelectorAll('[data-field]').forEach(input => {
+      data[input.dataset.field] = input.value.trim();
+    });
+    applyDerivedFields(data);
+    return data;
+  }
+
+  function applyDerivedFields(data) {
+    if (state.language === 'de' && 'german' in data) {
+      data.article = deriveGermanArticle(data.german);
+    }
   }
 
   function updateDialogIdPreview() {
@@ -453,13 +751,7 @@
     const type = elements.form.elements.entryType.value === 'sentence' ? 'sentence' : 'word';
     const originalType = elements.entryOriginalType.value === 'sentence' ? 'sentence' : elements.entryOriginalType.value === 'word' ? 'word' : null;
     const originalId = Number(elements.entryId.value) || null;
-    const itemData = {
-      type,
-      english: elements.englishField.value.trim(),
-      romaji: elements.romajiField.value.trim(),
-      kanji: elements.kanjiField.value.trim(),
-      kana: elements.kanaField.value.trim(),
-    };
+    const itemData = {type, ...readDialogFields()};
 
     if (originalType && originalId) {
       const oldCollection = collection(originalType);
@@ -481,6 +773,7 @@
     state.view = type;
     state.screen = 'list';
     state.shuffledIds = null;
+    syncIdFilterIfNotCustom();
     closeDialog();
     render();
     showToast('Entry saved');
@@ -494,6 +787,7 @@
     if (index >= 0) items.splice(index, 1);
     saveCollections();
     state.shuffledIds = null;
+    syncIdFilterIfNotCustom();
     render();
     showToast(`${label} deleted`);
   }
@@ -513,12 +807,16 @@
         const filenameType = /sentence/i.test(file.name) ? 'sentence' : /word/i.test(file.name) ? 'word' : null;
         entries = array.map(item => ({...item, type: item.type === 'sentence' ? 'sentence' : item.type === 'word' ? 'word' : filenameType || guessType(item.english || '')}));
       } else {
+        if (!languageConfig().supportsMarkdownImport) {
+          throw new Error(`Markdown import isn't set up for ${languageConfig().label} yet.`);
+        }
         entries = parseMarkdown(text);
       }
 
       if (!entries.length) throw new Error('No valid entries were found.');
       const summary = mergeImportedEntries(entries, `file:${file.name}`);
       saveCollections();
+      syncIdFilterIfNotCustom();
       render();
       showToast(`${summary.added} imported · ${summary.duplicates} duplicates skipped`);
     } catch (error) {
@@ -527,6 +825,7 @@
   }
 
   function mergeImportedEntries(entries, sourceLabel = '') {
+    const config = languageConfig();
     let added = 0;
     let duplicates = 0;
     let invalid = 0;
@@ -534,15 +833,22 @@
 
     for (const raw of entries) {
       const type = raw.type === 'sentence' ? 'sentence' : 'word';
-      const candidate = {
-        type,
-        english: String(raw.english || '').trim(),
-        romaji: String(raw.romaji || '').trim(),
-        kanji: String(raw.kanji || '').trim(),
-        kana: String(raw.kana || '').trim(),
-        ...(raw.source ? {source: raw.source} : sourceLabel ? {source: {kind: sourceLabel, importedAt: new Date().toISOString()}} : {}),
-      };
-      if (!candidate.english || !(candidate.kanji || candidate.kana)) {
+      const candidate = {type};
+      for (const field of config.fields) {
+        candidate[field.key] = String(raw[field.key] || '').trim();
+      }
+      if (raw.source) candidate.source = raw.source;
+      else if (sourceLabel) candidate.source = {kind: sourceLabel, importedAt: new Date().toISOString()};
+      applyDerivedFields(candidate);
+
+      // Sentences need an English translation to be useful as a flashcard prompt,
+      // but words are still worth saving without one — the tokenizer that finds
+      // them has no English glosses, and the field stays editable after import.
+      const hasIdentity = config.identityFields.some(key => candidate[key]);
+      const missingRequiredField = type === 'sentence'
+        ? !candidate.english || !hasIdentity
+        : !hasIdentity;
+      if (missingRequiredField) {
         invalid += 1;
         continue;
       }
@@ -589,31 +895,33 @@
 
   function exportJson(type) {
     const label = type === 'sentence' ? 'sentences' : 'words';
-    downloadFile(`${label}.json`, JSON.stringify(collection(type), null, 2), 'application/json');
-    showToast(`${titleCase(label)} JSON exported`);
+    const items = filteredItemsForType(type);
+    downloadFile(`${label}.json`, JSON.stringify(items, null, 2), 'application/json');
+    const filtered = items.length !== collection(type).length;
+    showToast(`${items.length} ${label} exported${filtered ? ' (filtered)' : ''}`);
   }
 
   function exportMarkdown() {
+    const config = languageConfig();
     const sections = [
-      ['Words', collection('word')],
-      ['Sentences', collection('sentence')],
+      ['Words', filteredItemsForType('word')],
+      ['Sentences', filteredItemsForType('sentence')],
     ].map(([heading, items]) => {
-      const lines = [...items].sort((a, b) => a.id - b.id).map(item => `${item.english} . ${item.romaji} . ${item.kanji} . ${item.kana}`);
+      const lines = items.map(item => activeFields().map(field => item[field.key] || '').join(' . '));
       return `## ${heading}\n\n${lines.join('\n')}`;
     });
-    downloadFile('japanese-study-list.md', sections.join('\n\n###\n\n'), 'text/markdown');
+    downloadFile(`${config.storagePrefix}-list.md`, sections.join('\n\n###\n\n'), 'text/markdown');
     showToast('Markdown exported');
   }
 
   function resetData() {
     if (!confirm('Reset all edits and restore the original words and sentences?')) return;
-    state.collections = {
-      word: normalizeCollection(clone(window.INITIAL_WORDS || []), 'word'),
-      sentence: normalizeCollection(clone(window.INITIAL_SENTENCES || []), 'sentence'),
-    };
+    state.collections = seedCollections(languageConfig());
     state.shuffledIds = null;
     state.search = '';
     elements.searchInput.value = '';
+    state.view = 'word';
+    resetIdFilterToFullRange();
     saveCollections();
     setCardCategory('word', true);
     render();
@@ -720,7 +1028,7 @@
     elements.cardProgressText.textContent = `Card ${currentNumber} of ${total}`;
     elements.cardIdText.textContent = `${typeLabel} ID ${item.id}`;
     elements.cardProgressBar.style.width = `${(currentNumber / total) * 100}%`;
-    elements.cardSideLabel.textContent = state.card.revealed ? 'Answer revealed' : (direction === 'jp-en' ? 'Japanese → English' : 'English → Japanese');
+    elements.cardSideLabel.textContent = state.card.revealed ? 'Answer revealed' : (direction === 'native-en' ? `${languageConfig().label} → English` : `English → ${languageConfig().label}`);
     elements.cardContent.innerHTML = cardContentTemplate(item, direction, state.card.revealed);
     elements.answerActions.hidden = !state.card.revealed;
     elements.cardRevealHint.textContent = state.card.revealed ? 'Choose how well you knew it' : 'Click the card to reveal';
@@ -728,22 +1036,33 @@
   }
 
   function cardContentTemplate(item, direction, revealed) {
-    if (direction === 'jp-en') {
-      const japanese = japaneseTemplate(item);
-      if (!revealed) return japanese;
-      return `${japanese}<div class="card-answer-label">English</div><div class="card-secondary">${escapeHtml(item.english)}</div>`;
+    if (direction === 'native-en') {
+      const native = primaryFieldsTemplate(item);
+      if (!revealed) return native;
+      return `${native}<div class="card-answer-label">English</div><div class="card-secondary">${escapeHtml(item.english)}</div>`;
     }
 
     const english = `<div class="card-primary english-front">${escapeHtml(item.english)}</div>`;
     if (!revealed) return english;
-    return `${english}<div class="card-answer-label">Japanese</div>${japaneseTemplate(item)}`;
+    return `${english}<div class="card-answer-label">${escapeHtml(languageConfig().label)}</div>${primaryFieldsTemplate(item)}`;
   }
 
-  function japaneseTemplate(item) {
-    const primary = item.kanji || item.kana || item.romaji || '—';
-    const kana = item.kana && item.kana !== primary ? `<div class="card-secondary">${escapeHtml(item.kana)}</div>` : '';
-    const romaji = item.romaji ? `<div class="card-tertiary">${escapeHtml(item.romaji)}</div>` : '';
-    return `<div class="card-primary">${escapeHtml(primary)}</div>${kana}${romaji}`;
+  function primaryFieldsTemplate(item) {
+    const fields = activeFields().filter(field => field.role !== 'gloss');
+    const byRole = role => fields.find(field => field.role === role);
+    const primaryField = primaryDisplayField();
+    if (!primaryField) return '<div class="card-primary">—</div>';
+    const primaryValue = item[primaryField.key] || '—';
+    const badge = articleBadge(item);
+    const restFields = [byRole('native-alt'), byRole('secondary')].filter(field => field && field !== primaryField);
+    const lines = restFields
+      .map((field, index) => {
+        const value = item[field.key];
+        if (!value || value === primaryValue) return '';
+        return `<div class="${index === 0 ? 'card-secondary' : 'card-tertiary'}">${escapeHtml(value)}</div>`;
+      })
+      .join('');
+    return `<div class="card-primary">${badge}${escapeHtml(primaryValue)}</div>${lines}`;
   }
 
   function revealCurrentCard() {
@@ -780,14 +1099,24 @@
     elements.summaryKnown.textContent = known;
     elements.summaryUnknown.textContent = unknown.length;
     elements.reviewCountText.textContent = `${unknown.length} ${unknown.length === 1 ? 'card' : 'cards'}`;
+    const fields = activeFields().filter(field => field.role !== 'gloss');
+    const primaryField = primaryDisplayField();
     elements.reviewList.innerHTML = unknown.length
-      ? unknown.map(item => `
+      ? unknown.map(item => {
+          const primaryValue = primaryField ? item[primaryField.key] : '';
+          const restText = fields
+            .filter(field => field !== primaryField)
+            .map(field => item[field.key])
+            .filter(Boolean)
+            .join(' · ');
+          return `
           <div class="review-item">
             <span class="review-id">${item.type === 'word' ? 'W' : 'S'}#${item.id}</span>
             <span>${escapeHtml(item.english)}</span>
-            <span class="review-japanese">${escapeHtml(item.kanji || item.kana)}<small>${escapeHtml(item.kana)}${item.kana && item.romaji ? ' · ' : ''}${escapeHtml(item.romaji)}</small></span>
+            <span class="review-japanese">${escapeHtml(primaryValue)}${restText ? `<small>${escapeHtml(restText)}</small>` : ''}</span>
           </div>
-        `).join('')
+        `;
+        }).join('')
       : '<div class="review-empty">Excellent — you marked every card as known.</div>';
   }
 
@@ -853,6 +1182,9 @@
     elements.scanScreenshotsButton.disabled = true;
     elements.ocrProgress.hidden = false;
     updateOcrProgress(2, 'Loading the Japanese and English OCR engine…');
+
+    ensureTokenizerAnalyzer();
+    ensureEnglishDictionary();
 
     let worker = null;
     try {
@@ -957,6 +1289,166 @@
     });
   }
 
+  // Filling in kana/romaji/word readings is a nice-to-have on top of OCR, not a
+  // requirement, so every step here is designed to fail quietly (leaving fields
+  // blank as before) rather than ever interrupt a scan.
+  let tokenizerAnalyzerPromise = null;
+
+  function ensureTokenizerAnalyzer() {
+    if (!tokenizerAnalyzerPromise) {
+      tokenizerAnalyzerPromise = prepareTokenizerAnalyzer().catch(error => {
+        console.warn('Japanese tokenizer unavailable, word readings will be left blank:', error);
+        return null;
+      });
+    }
+    return tokenizerAnalyzerPromise;
+  }
+
+  async function prepareTokenizerAnalyzer() {
+    const status = await getLocalTokenizerStatus();
+    if (!status.ready) throw new Error(status.message);
+
+    const assetRoot = new URL(`${OCR_ASSET_ROOT}/`, window.location.href).href.replace(/\/$/, '');
+    await loadTokenizerScript(`${assetRoot}/tokenizer.min.js`);
+    if (!window.KuromojiAnalyzer) throw new Error('The local tokenizer library could not be loaded.');
+
+    // kuromoji's bundled path.join mangles the "//" in an absolute http:// URL
+    // (collapsing it to "http:/host/...", which the browser then re-resolves
+    // relative to the page origin), so it needs a root-relative path here
+    // instead of the full assetRoot URL used for the other libraries.
+    const analyzer = new window.KuromojiAnalyzer({dictPath: '/vendor/tokenizer-dict/'});
+    await analyzer.init();
+    return analyzer;
+  }
+
+  async function getLocalTokenizerStatus() {
+    try {
+      const response = await fetch('./api/tokenizer-status', {cache: 'no-store'});
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        return {ready: false, message: payload.message || `Tokenizer server check failed with HTTP ${response.status}.`};
+      }
+      return payload;
+    } catch (error) {
+      return {ready: false, message: 'The local Node server is not providing the tokenizer package.'};
+    }
+  }
+
+  function loadTokenizerScript(source) {
+    if (window.KuromojiAnalyzer) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = source;
+      script.async = true;
+      script.onload = resolve;
+      script.onerror = () => reject(new Error(`Could not load tokenizer script: ${source}`));
+      document.head.appendChild(script);
+    });
+  }
+
+  // Filling in English glosses is a nice-to-have on top of word suggestions,
+  // not a requirement, so it's designed to fail quietly like the tokenizer.
+  let englishDictionaryPromise = null;
+
+  function ensureEnglishDictionary() {
+    if (!englishDictionaryPromise) {
+      englishDictionaryPromise = prepareEnglishDictionary().catch(error => {
+        console.warn('English dictionary unavailable, English fields will be left blank:', error);
+        return null;
+      });
+    }
+    return englishDictionaryPromise;
+  }
+
+  async function prepareEnglishDictionary() {
+    const response = await fetch('./api/dictionary-status', {cache: 'no-store'});
+    const status = await response.json().catch(() => ({}));
+    if (!response.ok || !status.ready) throw new Error(status.message || 'English dictionary is not available.');
+
+    const dictResponse = await fetch('./vendor/dict/jmdict-lookup.json.gz', {cache: 'no-store'});
+    if (!dictResponse.ok) throw new Error(`Could not load the English dictionary (HTTP ${dictResponse.status}).`);
+    return dictResponse.json();
+  }
+
+  function lookupEnglish(dictionary, kanji, kana) {
+    if (!dictionary) return '';
+    return dictionary[kanji] || dictionary[kana] || '';
+  }
+
+  function katakanaToHiragana(text) {
+    return text.replace(/[ァ-ヶ]/g, char => String.fromCharCode(char.charCodeAt(0) - 0x60));
+  }
+
+  async function readingFor(analyzer, text) {
+    if (!text) return '';
+    try {
+      const tokens = await analyzer.parse(text);
+      return katakanaToHiragana(tokens.map(token => token.reading || token.surface_form).join(''));
+    } catch (error) {
+      console.warn('Tokenizer reading failed:', error);
+      return '';
+    }
+  }
+
+  const TOKENIZER_WORD_POS = new Set(['名詞', '動詞', '形容詞', '副詞']);
+
+  async function enrichWithTokenizer(result) {
+    const analyzer = await ensureTokenizerAnalyzer();
+    if (!analyzer) return;
+    const dictionary = await ensureEnglishDictionary();
+
+    let sentenceTokens = [];
+    if (result.sentence.kanji) {
+      try {
+        sentenceTokens = await analyzer.parse(result.sentence.kanji);
+      } catch (error) {
+        console.warn('Tokenizer parse failed:', error);
+      }
+    }
+
+    if (sentenceTokens.length && !result.sentence.kana) {
+      const kana = katakanaToHiragana(sentenceTokens.map(token => token.reading || token.surface_form).join(''));
+      if (kana) {
+        result.sentence.kana = kana;
+        result.sentence.romaji = kanaToRomaji(kana);
+      }
+    }
+
+    for (const word of result.words) {
+      if (word.kanji && !word.kana) {
+        const kana = await readingFor(analyzer, word.kanji);
+        if (kana) {
+          word.kana = kana;
+          word.romaji = kanaToRomaji(kana);
+        }
+      }
+      if (!word.english) word.english = lookupEnglish(dictionary, word.kanji, word.kana);
+    }
+
+    if (!sentenceTokens.length) return;
+    const usedJapanese = new Set(result.words.map(word => normalizeDuplicateText(word.kanji || word.kana)));
+    usedJapanese.add(normalizeDuplicateText(result.sentence.kanji));
+
+    for (const token of sentenceTokens) {
+      if (result.words.length >= 6) break;
+      if (!TOKENIZER_WORD_POS.has(token.pos)) continue;
+      const kanji = token.basic_form && token.basic_form !== '*' ? token.basic_form : token.surface_form;
+      if (!kanji || (kanji.length <= 1 && !containsKanji(kanji))) continue;
+      const key = normalizeDuplicateText(kanji);
+      if (!key || usedJapanese.has(key)) continue;
+      usedJapanese.add(key);
+      const kana = katakanaToHiragana(token.reading || '');
+      result.words.push({
+        id: makeDraftId('word'),
+        selected: false,
+        english: lookupEnglish(dictionary, kanji, kana),
+        romaji: kana ? kanaToRomaji(kana) : '',
+        kanji,
+        kana,
+      });
+    }
+  }
+
   async function scanOneScreenshot(worker, selected, index) {
     const image = await loadImageBitmap(selected.file);
     await worker.setParameters({tessedit_pageseg_mode: '11', preserve_interword_spaces: '1'});
@@ -976,10 +1468,16 @@
     const selectedText = selectedAnswer.data?.text || '';
     const regions = ocrRegionTexts(main.data?.blocks, mainCanvas.width, mainCanvas.height, mainText);
     const exerciseType = detectExerciseType(`${regions.header}\n${mainText}`);
+    // A "NEW WORD" badge overlaid on a sentence exercise adds a short standalone
+    // vocab-word line above the sentence; without this it gets merged into the
+    // sentence itself (highest-Japanese-character-count wins the scoring in
+    // extractJapanese). Only the hybrid case (badge + real sentence exercise)
+    // needs it dropped — a genuine standalone "New word" flashcard wants it kept.
+    const isHybridNewWord = hasNewWordBadge(`${regions.header}\n${mainText}`) && exerciseType !== 'New word';
 
-    const upperJapanese = extractJapanese(regions.upper);
-    const lowerJapanese = extractJapanese(regions.lower);
-    const broadJapanese = extractJapanese(regions.content || mainText);
+    const upperJapanese = extractJapanese(regions.upper, {dropLeadingBadge: isHybridNewWord});
+    const lowerJapanese = extractJapanese(regions.lower, {dropLeadingBadge: isHybridNewWord});
+    const broadJapanese = extractJapanese(regions.content || mainText, {dropLeadingBadge: isHybridNewWord});
     const selectedJapanese = extractJapanese(selectedText);
     const upperEnglish = extractEnglishFromText(regions.upper);
     const lowerEnglish = extractEnglishFromText(regions.lower);
@@ -998,35 +1496,55 @@
       if (selectedJapanese && !normalizeDuplicateText(japanese).includes(normalizeDuplicateText(selectedJapanese))) {
         japanese = cleanupJapanese(`${selectedJapanese}${japanese}`);
       }
-      english = feedbackEnglish || selectedEnglish || lowerEnglish || upperEnglish;
+      english = pickBestEnglish(feedbackEnglish, upperEnglish, lowerEnglish, selectedEnglish);
     } else if (isTranslate) {
       // The "upper" region is cropped starting at 30% from the left to skip the
       // character illustration. Word-bank answer tiles can start at the very left
       // edge, so trusting "upper" alone drops tiles outside that crop. Blend in the
       // full-width regions and let bestJapaneseCandidate pick the most complete one.
       japanese = bestJapaneseCandidate(selectedJapanese, broadJapanese, upperJapanese, lowerJapanese);
-      english = japaneseCharacterCount(upperJapanese) >= 3
-        ? (feedbackEnglish || selectedEnglish || lowerEnglish || upperEnglish)
-        : (feedbackEnglish || upperEnglish || selectedEnglish || lowerEnglish);
+      // English tiles are reconstructed by joining separately-recognized OCR blocks,
+      // whose relative order Tesseract doesn't guarantee — so on a scoring tie, prefer
+      // a naturally single-line candidate (upper/lower) over the reconstructed join.
+      english = pickBestEnglish(feedbackEnglish, upperEnglish, lowerEnglish, selectedEnglish);
     } else if (isComplete || isFillBlank) {
       japanese = bestJapaneseCandidate(upperJapanese, lowerJapanese, broadJapanese);
-      english = feedbackEnglish || selectedEnglish || upperEnglish || lowerEnglish;
+      english = pickBestEnglish(feedbackEnglish, upperEnglish, lowerEnglish, selectedEnglish);
     } else {
       japanese = bestJapaneseCandidate(upperJapanese, lowerJapanese, selectedJapanese, broadJapanese);
-      english = feedbackEnglish || selectedEnglish || upperEnglish || lowerEnglish;
+      english = pickBestEnglish(feedbackEnglish, upperEnglish, lowerEnglish, selectedEnglish);
     }
 
     english = normalizeEnglishOcr(english);
+    // Screenshots from a different Duolingo course (e.g. German) can end up in the
+    // same folder. German is the main case seen in practice. Tesseract frequently
+    // drops umlaut/eszett diacritics (e.g. "über" -> "uber", "Fußball" -> "FuBball"),
+    // so umlaut characters alone are an unreliable signal — pair it with common German
+    // stopwords, which aren't English words and survive OCR fine. A screenshot with
+    // multiple German stopwords essentially can't be a genuine Japanese exercise, so
+    // only a generous cap guards against stray Japanese-looking OCR noise here.
+    const germanStopwordMatches = mainText.match(/\b(ist|nicht|und|der|die|das|dich|dir|mein|meine|meinen|dein|deine|kennst|warum|wieso|von|als|wahr)\b/gi) || [];
+    const germanMarkerCount = (mainText.match(/[äöüßÄÖÜ]/g) || []).length + germanStopwordMatches.length;
+    const isOtherLanguageCourse = germanMarkerCount >= 2 && japaneseCharacterCount(japanese) <= 5;
+    if (isOtherLanguageCourse) {
+      japanese = '';
+      english = '';
+    }
+    // If not a single Japanese character showed up anywhere in the screenshot, this
+    // likely isn't a Japanese-course exercise at all — don't leave unrelated OCR text
+    // sitting in the English field.
+    const hasAnyJapanese = !isOtherLanguageCourse && japaneseCharacterCount(`${mainText}\n${selectedText}`) > 0;
+    if (!japanese && !hasAnyJapanese) english = '';
     const kana = japanese && !containsKanji(japanese) ? japanese : '';
     const romaji = kana ? kanaToRomaji(kana) : '';
     const words = suggestWords(japanese, english, `${mainText}\n${selectedText}`, exerciseType, selectedJapanese);
     const warnings = [];
-    if (!japanese) warnings.push('Japanese was not detected');
+    if (!japanese) warnings.push(hasAnyJapanese ? 'Japanese was not detected' : 'No Japanese detected — this may not be a Japanese exercise screenshot');
     if (!english) warnings.push('English meaning was not detected');
     if (containsKanji(japanese)) warnings.push('Check kana and romaji');
     if (isFillBlank) warnings.push(selectedJapanese ? `Insert/check selected answer: ${selectedJapanese}` : 'Check the missing word');
 
-    return {
+    const result = {
       id: `scan-${Date.now()}-${index}`,
       fileName: selected.file.name,
       imageUrl: selected.url,
@@ -1044,6 +1562,8 @@
       },
       words,
     };
+    await enrichWithTokenizer(result);
+    return result;
   }
 
   function createEmptyScanResult(selected, index, message) {
@@ -1354,17 +1874,35 @@
   }
 
   function detectExerciseType(text) {
-    if (/new\s*word/i.test(text)) return 'New word';
+    // "NEW WORD" can appear as a small badge overlaid on top of a Translate/Complete/
+    // Fill-in exercise when it's introducing new vocabulary mid-sentence, not just on
+    // its own dedicated flashcard screen. Check the sentence-exercise phrases first so
+    // a badge doesn't misclassify (and garble) an otherwise-normal sentence exercise.
     if (/fill\s+in\s+the\s+blank/i.test(text)) return 'Fill in the blank';
     if (/complete\s+the\s+sentence/i.test(text)) return 'Complete the sentence';
     if (/translate\s+this\s+sentence/i.test(text)) return 'Translate the sentence';
+    if (/new\s*word/i.test(text)) return 'New word';
     return 'Sentence screenshot';
   }
 
-  function extractJapanese(text) {
-    const lines = cleanOcrLines(text)
+  function hasNewWordBadge(text) {
+    return /new\s*word/i.test(text);
+  }
+
+  function extractJapanese(text, options = {}) {
+    let lines = cleanOcrLines(text)
       .map(line => line.replace(/[|｜¦]/g, ''))
+      // A play/audio icon before the sentence is consistently misread as a lone
+      // ")" (or "q)"), often glued onto the same OCR line as the sentence text
+      // itself, which otherwise survives into the middle of the extracted string.
+      .map(line => line.replace(/^[a-zA-Z]?\s*[)\]]+\s*/, ''))
       .filter(line => hasJapanese(line));
+    if (options.dropLeadingBadge && lines.length > 1) {
+      const firstJapaneseChars = lines[0].replace(/[^ぁ-んァ-ヶ一-龯々ー]/g, '');
+      if (firstJapaneseChars.length > 0 && firstJapaneseChars.length <= 2) {
+        lines = lines.slice(1);
+      }
+    }
     if (!lines.length) return '';
 
     const candidates = [];
@@ -1398,16 +1936,51 @@
         candidates.push(lines.slice(start, start + length).join(' '));
       }
     }
+    // Translate exercises build the English answer from many single-word tapped
+    // tiles (one per OCR line). The windowed combos above cap out at 3 lines, so
+    // a 6+ word answer never gets reassembled. Add the full join as one more
+    // candidate, but only from lines that actually look like a single tile word
+    // (a play-icon before the tile row commonly misreads as noise like "q)").
+    const tileLines = lines.filter(looksLikeAnswerTile);
+    if (tileLines.length > 3) candidates.push(tileLines.join(' '));
     return chooseEnglishCandidate(candidates);
+  }
+
+  function looksLikeAnswerTile(line) {
+    return /^[A-Za-zÀ-ž]+(?:['-][A-Za-zÀ-ž]+)*[.,!?]?$/.test(String(line || '').trim());
+  }
+
+  // Common short real words that are legitimately all-uppercase on their own line
+  // (e.g. a standalone "UP" answer tile), so looksLikeGibberishLine doesn't reject them.
+  const COMMON_UPPERCASE_WORDS = new Set(['I', 'A', 'ID', 'UP', 'OK', 'TV', 'US', 'NO', 'GO', 'SO', 'HI', 'MY', 'BY', 'OF', 'IN', 'ON', 'AT', 'TO', 'IT', 'IS', 'DO', 'WE', 'AM', 'PM']);
+
+  // Word-bank tile regions sometimes contain OCR noise lines that aren't real
+  // English at all (icon/border misreads) but still look like plausible "words"
+  // to a length/word-count scorer — e.g. "ase eeeeee |" or "JIL JI". Reject them
+  // at the source instead of letting them out-score a genuinely correct sentence.
+  function looksLikeGibberishLine(line) {
+    if (/[|;]/.test(line)) return true;
+    if (/(.)\1{2,}/i.test(line.replace(/\s+/g, ''))) return true;
+    const words = line.trim().split(/\s+/);
+    return words.length > 0 && words.every(word => {
+      const letters = word.replace(/[^A-Za-zÀ-ž]/g, '');
+      return letters.length >= 2 && letters.length <= 4 && letters === letters.toUpperCase() && !COMMON_UPPERCASE_WORDS.has(letters.toUpperCase());
+    });
   }
 
   function englishCandidates(text) {
     const rejected = /^(combo|translate this sentence|complete the sentence|fill in the blank|new word|previous mistake|correct|correct meaning|good job|great|amazing|excellent|nicely done|nice|meaning|explain my answer|continue)$/i;
     const uiMessage = /^(correct|good job|great|amazing|excellent|nicely done|nice)(!|\.|:|\s|$)/i;
+    // A play/audio icon before the answer row is consistently misread as a lone
+    // ")" or "q)". Reject it at the source so it can't taint any candidate,
+    // including short 2-3 line combos (not just the full tile-join).
+    const iconGlyphNoise = /^[a-z]?\s*[)\]]+$/i;
     return cleanOcrLines(text)
       .map(normalizeEnglishOcr)
       .filter(line => /[A-Za-zÀ-ž]/.test(line))
       .filter(line => !hasJapanese(line))
+      .filter(line => !iconGlyphNoise.test(line))
+      .filter(line => !looksLikeGibberishLine(line))
       .filter(line => !rejected.test(line.replace(/[.!:]+$/g, '').trim()))
       .filter(line => !uiMessage.test(line))
       .filter(line => !/^(\d{1,2}:\d{2}|\d+%|ID\s*\d+)$/i.test(line))
@@ -1431,7 +2004,7 @@
   function normalizeEnglishOcr(value) {
     return String(value || '')
       .replace(/^[✓✔✕×@!•:;\-\s]+/, '')
-      .replace(/^\|(?=\s|$)/, 'I')
+      .replace(/(^|\s)\|(?=\s|$)/g, '$1I')
       .replace(/\s+/g, ' ')
       .replace(/^(correct!?\s*meaning|correct\s*meaning|nicely done\.?\s*meaning|nice!?\s*meaning|meaning)\s*:?\s*/i, '')
       .replace(/\s+([.!?,])/g, '$1')
@@ -1489,6 +2062,18 @@
       .sort((a, b) => japaneseCharacterCount(b) - japaneseCharacterCount(a) || b.length - a.length)[0] || '';
   }
 
+  // Picking "first non-empty region" is unsafe: a region meant for post-answer
+  // feedback banners often instead catches leftover word-bank distractor tiles
+  // (e.g. "want", "no pizza subway"), which are non-empty but wrong. Score every
+  // region's candidate and take the one that actually looks like a real sentence.
+  function pickBestEnglish(...values) {
+    const candidates = values.map(value => normalizeEnglishOcr(value || '')).filter(Boolean);
+    if (!candidates.length) return '';
+    const sentences = candidates.filter(looksLikeEnglishSentence);
+    const pool = sentences.length ? sentences : candidates;
+    return pool.sort((a, b) => englishLineScore(b) - englishLineScore(a))[0] || '';
+  }
+
   function suggestWords(japanese, english, rawMain, exerciseType, selectedJapanese = '') {
     const suggestions = [];
     const usedJapanese = new Set();
@@ -1535,6 +2120,11 @@
 
     const particleStopList = new Set(['は', 'が', 'を', 'に', 'で', 'と', 'の', 'へ', 'も', 'や', 'か', 'ね', 'よ', 'から', 'まで', 'です', 'ます']);
     const shortCandidates = cleanOcrLines(rawMain)
+      // Separate word-bank tiles on the same visual row often get read as one OCR
+      // line with icon-glyph noise glued between them (e.g. "そのにんき (o | スピーカー").
+      // Split on non-Japanese runs first so each real tile becomes its own candidate
+      // instead of one garbled blob.
+      .flatMap(line => line.split(/[^ぁ-んァ-ヶ一-龯々ー]+/))
       .map(cleanupJapanese)
       .filter(candidate => candidate && candidate !== japanese)
       .filter(candidate => !/[。！？!?]/.test(candidate))
@@ -1607,16 +2197,6 @@
           </div>
         </section>
 
-        <section class="draft-section word-drafts">
-          <div class="draft-section-title">
-            <strong>Suggested words</strong>
-            <button class="text-button" type="button" data-scan-action="add-word">＋ Add word</button>
-          </div>
-          <div class="word-draft-list">
-            ${result.words.length ? result.words.map(word => wordDraftTemplate(word)).join('') : '<p class="no-word-suggestions">No confident word suggestion. Add one manually when useful.</p>'}
-          </div>
-        </section>
-
         <details class="raw-ocr">
           <summary>Show raw OCR text</summary>
           <div><strong>Main area</strong><pre>${escapeHtml(result.rawMain || 'No text')}</pre></div>
@@ -1634,23 +2214,6 @@
     return `<label>${label}<input ${attributes} value="${escapeHtml(value)}"></label>`;
   }
 
-  function wordDraftTemplate(word) {
-    return `
-      <div class="word-draft" data-word-id="${word.id}">
-        <div class="word-draft-top">
-          <label class="select-entry"><input type="checkbox" data-section="word" data-field="selected" data-word-id="${word.id}" ${word.selected ? 'checked' : ''}> Import word</label>
-          <button class="row-action" type="button" data-scan-action="remove-word" data-word-id="${word.id}" title="Remove suggestion">×</button>
-        </div>
-        <div class="draft-fields">
-          ${draftField('English', 'word', 'english', word.english, false, word.id)}
-          ${draftField('Romaji', 'word', 'romaji', word.romaji, false, word.id)}
-          ${draftField('Kanji / Japanese', 'word', 'kanji', word.kanji, false, word.id)}
-          ${draftField('Kana', 'word', 'kana', word.kana, false, word.id)}
-        </div>
-      </div>
-    `;
-  }
-
   function updateScanDraftFromInput(event) {
     const target = event.target;
     const card = target.closest('[data-scan-id]');
@@ -1658,47 +2221,40 @@
     const result = state.screenshots.results.find(item => item.id === card.dataset.scanId);
     if (!result) return;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-
-    if (target.dataset.section === 'sentence') {
-      result.sentence[target.dataset.field] = value;
-      return;
-    }
-
-    const word = result.words.find(item => item.id === target.dataset.wordId);
-    if (word) word[target.dataset.field] = value;
-    renderNewWordsSummary();
+    result.sentence[target.dataset.field] = value;
   }
 
-  function handleScanReviewClick(event) {
-    const button = event.target.closest('[data-scan-action]');
+  function updateNewWordDraftFromInput(event) {
+    const target = event.target;
+    if (!target.dataset.field) return;
+    const row = target.closest('[data-scan-id]');
+    if (!row) return;
+    const result = state.screenshots.results.find(item => item.id === row.dataset.scanId);
+    const word = result?.words.find(item => item.id === row.dataset.wordId);
+    if (!word) return;
+    word[target.dataset.field] = target.type === 'checkbox' ? target.checked : target.value;
+  }
+
+  function handleNewWordsClick(event) {
+    const button = event.target.closest('[data-scan-action="remove-word"]');
     if (!button) return;
-    const card = button.closest('[data-scan-id]');
-    const result = state.screenshots.results.find(item => item.id === card?.dataset.scanId);
+    const row = button.closest('[data-scan-id]');
+    const result = state.screenshots.results.find(item => item.id === row?.dataset.scanId);
     if (!result) return;
-
-    if (button.dataset.scanAction === 'add-word') {
-      result.words.push({id: makeDraftId('word'), selected: true, english: '', romaji: '', kanji: '', kana: ''});
-      renderScanReviews();
-    }
-    if (button.dataset.scanAction === 'remove-word') {
-      result.words = result.words.filter(word => word.id !== button.dataset.wordId);
-      renderScanReviews();
-    }
+    result.words = result.words.filter(word => word.id !== row.dataset.wordId);
+    renderScanReviews();
   }
 
-  function importSelectedScans() {
+  function importSelectedSentences() {
     const entries = [];
     for (const result of state.screenshots.results) {
       if (result.sentence.selected) {
         entries.push({...result.sentence, type: 'sentence', source: screenshotSource(result)});
       }
-      for (const word of result.words) {
-        if (word.selected) entries.push({...word, type: 'word', source: screenshotSource(result)});
-      }
     }
 
     if (!entries.length) {
-      alert('Select at least one sentence or word to import.');
+      alert('Select at least one sentence to import.');
       return;
     }
 
@@ -1710,6 +2266,30 @@
 
     for (const result of state.screenshots.results) {
       result.sentence.selected = false;
+    }
+    renderScanReviews();
+  }
+
+  function importSelectedWords() {
+    const entries = [];
+    for (const result of state.screenshots.results) {
+      for (const word of result.words) {
+        if (word.selected) entries.push({...word, type: 'word', source: screenshotSource(result)});
+      }
+    }
+
+    if (!entries.length) {
+      alert('Select at least one word to import.');
+      return;
+    }
+
+    const summary = mergeImportedEntries(entries);
+    saveCollections();
+    renderCounts();
+    setCardCategory(elements.cardSetupForm.elements.cardType.value, false);
+    showToast(`${summary.added} added · ${summary.duplicates} duplicates · ${summary.invalid} incomplete`);
+
+    for (const result of state.screenshots.results) {
       result.words.forEach(word => { word.selected = false; });
     }
     renderScanReviews();
@@ -1725,14 +2305,16 @@
   }
 
   function findDuplicate(candidate) {
-    const japanese = normalizeDuplicateText(candidate.kanji || candidate.kana);
-    const kana = normalizeDuplicateText(candidate.kana);
+    const config = languageConfig();
     const english = normalizeDuplicateText(candidate.english);
     return collection(candidate.type).find(item => {
-      const itemJapanese = normalizeDuplicateText(item.kanji || item.kana);
-      const itemKana = normalizeDuplicateText(item.kana);
-      const itemEnglish = normalizeDuplicateText(item.english);
-      return (japanese && japanese === itemJapanese) || (kana && kana === itemKana) || (english && japanese && english === itemEnglish && japanese === itemJapanese);
+      const identityMatch = config.identityFields.some(key => {
+        const value = normalizeDuplicateText(candidate[key]);
+        return value && value === normalizeDuplicateText(item[key]);
+      });
+      if (identityMatch) return true;
+      if (!english || english !== normalizeDuplicateText(item.english)) return false;
+      return config.identityFields.every(key => normalizeDuplicateText(candidate[key]) === normalizeDuplicateText(item[key]));
     });
   }
 
@@ -1756,7 +2338,7 @@
         if (!key || seen.has(key)) continue;
         if (findDuplicate({type: 'word', kanji, kana, english})) continue;
         seen.add(key);
-        candidates.push({kanji, kana, english, source: result.fileName});
+        candidates.push({resultId: result.id, wordId: word.id, selected: word.selected, kanji, kana, english, source: result.fileName});
       }
     }
     return candidates;
@@ -1773,10 +2355,13 @@
       : 'No new words — everything suggested is already saved';
     elements.newWordsList.innerHTML = candidates.length
       ? candidates.map(candidate => `
-        <li>
-          <span class="new-word-jp">${escapeHtml(candidate.kanji || candidate.kana)}</span>
-          <span class="new-word-en">${escapeHtml(candidate.english || '—')}</span>
-          <span class="new-word-source">${escapeHtml(candidate.source)}</span>
+        <li class="new-word-row" data-scan-id="${candidate.resultId}" data-word-id="${candidate.wordId}">
+          <label class="select-entry" title="Import this word"><input type="checkbox" data-field="selected" ${candidate.selected ? 'checked' : ''}></label>
+          <input class="new-word-field" data-field="kanji" value="${escapeHtml(candidate.kanji)}" placeholder="Kanji">
+          <input class="new-word-field" data-field="kana" value="${escapeHtml(candidate.kana)}" placeholder="Kana">
+          <input class="new-word-field" data-field="english" value="${escapeHtml(candidate.english)}" placeholder="English">
+          <span class="new-word-source" title="${escapeHtml(candidate.source)}">${escapeHtml(candidate.source)}</span>
+          <button class="row-action" type="button" data-scan-action="remove-word" title="Remove suggestion">×</button>
         </li>
       `).join('')
       : '';
@@ -1890,10 +2475,6 @@
       [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
-  }
-
-  function titleCase(value) {
-    return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
   function escapeHtml(value) {

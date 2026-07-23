@@ -4,19 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f2ea">
-  <title>Japanese Study List</title>
+  <title>Lingo Study List</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="app-header">
     <div class="brand">
-      <div class="brand-mark" aria-hidden="true">日</div>
+      <div class="brand-mark" id="brandMark" aria-hidden="true">日</div>
       <div>
-        <h1>Japanese Study List</h1>
+        <h1>Lingo Study List</h1>
         <p>Words, sentences, cards, and local screenshot import</p>
       </div>
     </div>
-    <button class="icon-button" id="themeButton" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">◐</button>
+    <div class="header-actions">
+      <select class="language-select" id="languageSelect" aria-label="Study language"></select>
+      <button class="icon-button" id="themeButton" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">◐</button>
+    </div>
   </header>
 
   <main class="app-shell">
@@ -37,6 +40,12 @@
           <span aria-hidden="true">⌕</span>
           <input id="searchInput" type="search" placeholder="Search ID, English, romaji, kanji, or kana…" autocomplete="off">
         </label>
+        <div class="id-filter" id="idFilter">
+          <label>From<input id="idFilterFrom" type="number" min="1" step="1" inputmode="numeric"></label>
+          <span class="range-separator">–</span>
+          <label>To<input id="idFilterTo" type="number" min="1" step="1" inputmode="numeric"></label>
+          <button class="text-button" id="idFilterResetButton" type="button">Reset</button>
+        </div>
         <button class="primary-button" id="addButton" type="button">＋ Add entry</button>
       </div>
     </section>
@@ -47,12 +56,7 @@
           <strong>Cover columns</strong>
           <span>Hide a column, then click individual cells to reveal them.</span>
         </div>
-        <div class="cover-controls" id="coverControls">
-          <button type="button" class="cover-button" data-column="english">English</button>
-          <button type="button" class="cover-button" data-column="romaji">Romaji</button>
-          <button type="button" class="cover-button" data-column="kanji">Kanji</button>
-          <button type="button" class="cover-button" data-column="kana">Kana</button>
-        </div>
+        <div class="cover-controls" id="coverControls"></div>
         <div class="practice-actions">
           <button class="secondary-button" id="revealButton" type="button">Reveal all</button>
           <button class="secondary-button" id="shuffleButton" type="button">Shuffle</button>
@@ -78,14 +82,7 @@
         <div class="table-wrap">
           <table>
             <thead>
-              <tr>
-                <th scope="col" class="id-column">ID</th>
-                <th scope="col">English</th>
-                <th scope="col">Romaji</th>
-                <th scope="col">Kanji</th>
-                <th scope="col">Kana</th>
-                <th scope="col" class="actions-column"><span class="sr-only">Actions</span></th>
-              </tr>
+              <tr id="tableHeadRow"></tr>
             </thead>
             <tbody id="studyTableBody"></tbody>
           </table>
@@ -127,10 +124,7 @@
 
           <fieldset class="setup-group">
             <legend>Direction</legend>
-            <div class="choice-grid two-choice">
-              <label class="choice-card"><input type="radio" name="cardDirection" value="jp-en" checked><span>Japanese → English</span></label>
-              <label class="choice-card"><input type="radio" name="cardDirection" value="en-jp"><span>English → Japanese</span></label>
-            </div>
+            <div class="choice-grid two-choice" id="cardDirectionChoices"></div>
           </fieldset>
 
           <label class="shuffle-option"><input id="cardShuffle" type="checkbox" checked> Shuffle cards</label>
@@ -231,20 +225,24 @@
             <h3>New words found</h3>
             <p id="newWordsSummaryText">No new words yet</p>
           </div>
-          <button class="secondary-button" id="refreshNewWordsButton" type="button">Refresh</button>
+          <div class="new-words-actions">
+            <button class="secondary-button" id="refreshNewWordsButton" type="button">Refresh</button>
+            <button class="primary-button" id="importWordsButton" type="button">Import selected words</button>
+          </div>
         </div>
+        <p class="dict-attribution">English glosses use the <a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project" target="_blank" rel="noopener">JMdict/EDICT dictionary files</a>, property of the Electronic Dictionary Research and Development Group, used in conformance with the Group's licence.</p>
         <ul class="new-words-list" id="newWordsList"></ul>
       </section>
 
       <section class="review-panel" id="reviewPanel" hidden>
         <div class="review-toolbar">
           <div>
-            <h3>Review scanned entries</h3>
-            <p>Edit any incorrect text, then select only the sentences and words you want.</p>
+            <h3>Review scanned sentences</h3>
+            <p>Edit any incorrect text, then select only the sentences you want. Import words above.</p>
           </div>
           <div class="review-toolbar-actions">
             <button class="secondary-button" id="clearScansButton" type="button">Clear</button>
-            <button class="primary-button" id="importScannedButton" type="button">Import selected</button>
+            <button class="primary-button" id="importScannedButton" type="button">Import selected sentences</button>
           </div>
         </div>
         <div id="scanReviewList" class="scan-review-list"></div>
@@ -270,12 +268,7 @@
         <label><input type="radio" name="entryType" value="sentence"> Sentence</label>
       </fieldset>
 
-      <div class="form-grid">
-        <label>English<input id="englishField" required maxlength="240"></label>
-        <label>Romaji<input id="romajiField" maxlength="240"></label>
-        <label>Kanji / Japanese<input id="kanjiField" required maxlength="240"></label>
-        <label>Kana<input id="kanaField" maxlength="240"></label>
-      </div>
+      <div class="form-grid" id="dialogFieldGrid"></div>
 
       <div class="dialog-actions">
         <button class="secondary-button" id="cancelDialogButton" type="button">Cancel</button>
@@ -287,6 +280,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="data.js"></script>
+  <script src="data-de.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
