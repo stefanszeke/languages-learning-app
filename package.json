@@ -1,0 +1,19 @@
+{
+  "name": "japanese-study-list",
+  "version": "0.4.0",
+  "private": true,
+  "description": "Offline Japanese vocabulary, sentence, flashcard, and Duolingo screenshot review app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check app.js && node --check data.js"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "express": "4.21.2",
+    "tesseract.js": "7.0.0",
+    "tesseract.js-core": "7.0.0"
+  }
+}

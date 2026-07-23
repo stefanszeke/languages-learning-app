@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f2ea">
+  <title>Japanese Study List</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">日</div>
+      <div>
+        <h1>Japanese Study List</h1>
+        <p>Words, sentences, cards, and local screenshot import</p>
+      </div>
+    </div>
+    <button class="icon-button" id="themeButton" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">◐</button>
+  </header>
+
+  <main class="app-shell">
+    <section class="top-panel">
+      <nav class="tabs" aria-label="Study views">
+        <button class="tab is-active" type="button" data-view="word">
+          Words <span id="wordCount" class="count-pill">0</span>
+        </button>
+        <button class="tab" type="button" data-view="sentence">
+          Sentences <span id="sentenceCount" class="count-pill">0</span>
+        </button>
+        <button class="tab cards-tab" type="button" data-view="cards">Study cards</button>
+        <button class="tab" type="button" data-view="import">Screenshot import</button>
+      </nav>
+
+      <div class="search-row" id="listToolbar">
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="Search ID, English, romaji, kanji, or kana…" autocomplete="off">
+        </label>
+        <button class="primary-button" id="addButton" type="button">＋ Add entry</button>
+      </div>
+    </section>
+
+    <div id="listView">
+      <section class="practice-panel" aria-label="Practice controls">
+        <div class="practice-copy">
+          <strong>Cover columns</strong>
+          <span>Hide a column, then click individual cells to reveal them.</span>
+        </div>
+        <div class="cover-controls" id="coverControls">
+          <button type="button" class="cover-button" data-column="english">English</button>
+          <button type="button" class="cover-button" data-column="romaji">Romaji</button>
+          <button type="button" class="cover-button" data-column="kanji">Kanji</button>
+          <button type="button" class="cover-button" data-column="kana">Kana</button>
+        </div>
+        <div class="practice-actions">
+          <button class="secondary-button" id="revealButton" type="button">Reveal all</button>
+          <button class="secondary-button" id="shuffleButton" type="button">Shuffle</button>
+        </div>
+      </section>
+
+      <section class="list-panel">
+        <div class="list-heading">
+          <div>
+            <h2 id="viewTitle">Words</h2>
+            <p id="resultSummary">0 entries</p>
+          </div>
+          <div class="data-menu">
+            <button class="text-button" id="importButton" type="button">Import .md / JSON</button>
+            <button class="text-button" id="exportMdButton" type="button">Export .md</button>
+            <button class="text-button" id="exportWordsJsonButton" type="button">Words JSON</button>
+            <button class="text-button" id="exportSentencesJsonButton" type="button">Sentences JSON</button>
+            <button class="text-button danger-text" id="resetButton" type="button">Reset</button>
+            <input id="fileInput" type="file" accept=".md,.txt,.json,text/plain,application/json" hidden>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col" class="id-column">ID</th>
+                <th scope="col">English</th>
+                <th scope="col">Romaji</th>
+                <th scope="col">Kanji</th>
+                <th scope="col">Kana</th>
+                <th scope="col" class="actions-column"><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody id="studyTableBody"></tbody>
+          </table>
+          <div class="empty-state" id="emptyState" hidden>
+            <div class="empty-symbol">あ</div>
+            <h3>No matching entries</h3>
+            <p>Try another search or add a new item.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="cards-panel" id="cardsView" hidden>
+      <div class="cards-setup" id="cardsSetup">
+        <div class="cards-heading">
+          <span class="eyebrow">Focused practice</span>
+          <h2>Start a card session</h2>
+          <p>Words and sentences have their own numeric ID ranges. Choose a category, range, and direction.</p>
+        </div>
+
+        <form id="cardSetupForm" class="card-setup-form">
+          <fieldset class="setup-group">
+            <legend>Category</legend>
+            <div class="choice-grid two-choice">
+              <label class="choice-card"><input type="radio" name="cardType" value="word" checked><span>Words</span></label>
+              <label class="choice-card"><input type="radio" name="cardType" value="sentence"><span>Sentences</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="setup-group">
+            <legend>ID range</legend>
+            <div class="range-row">
+              <label>From ID<input id="cardFromId" type="number" min="1" step="1" required></label>
+              <span class="range-separator">–</span>
+              <label>To ID<input id="cardToId" type="number" min="1" step="1" required></label>
+            </div>
+            <p class="range-hint" id="cardRangeHint">Available IDs: —</p>
+          </fieldset>
+
+          <fieldset class="setup-group">
+            <legend>Direction</legend>
+            <div class="choice-grid two-choice">
+              <label class="choice-card"><input type="radio" name="cardDirection" value="jp-en" checked><span>Japanese → English</span></label>
+              <label class="choice-card"><input type="radio" name="cardDirection" value="en-jp"><span>English → Japanese</span></label>
+            </div>
+          </fieldset>
+
+          <label class="shuffle-option"><input id="cardShuffle" type="checkbox" checked> Shuffle cards</label>
+
+          <div class="setup-footer">
+            <span id="cardMatchCount">0 matching cards</span>
+            <button class="primary-button" id="startCardsButton" type="submit">Start cards</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card-session" id="cardSession" hidden>
+        <div class="session-topbar">
+          <button class="text-button" id="exitSessionButton" type="button">← End session</button>
+          <div class="session-progress-copy">
+            <strong id="cardProgressText">Card 1 of 1</strong>
+            <span id="cardIdText">Word ID 1</span>
+          </div>
+        </div>
+        <div class="progress-track" aria-hidden="true"><div id="cardProgressBar"></div></div>
+
+        <button class="study-card" id="studyCard" type="button" aria-label="Reveal answer">
+          <span class="card-side-label" id="cardSideLabel">Japanese</span>
+          <div class="card-content" id="cardContent"></div>
+          <span class="card-reveal-hint" id="cardRevealHint">Click the card to reveal</span>
+        </button>
+
+        <div class="answer-actions" id="answerActions" hidden>
+          <button class="answer-button unknown-button" id="unknownButton" type="button">✕ I don’t know</button>
+          <button class="answer-button known-button" id="knownButton" type="button">✓ I know it</button>
+        </div>
+        <p class="keyboard-hint">Space: reveal · 1: don’t know · 2: know</p>
+      </div>
+
+      <div class="card-summary" id="cardSummary" hidden>
+        <span class="eyebrow">Session complete</span>
+        <h2>Your summary</h2>
+        <div class="summary-score-row">
+          <div class="score-ring" id="scoreRing"><strong id="scorePercent">0%</strong><span>known</span></div>
+          <div class="summary-stats">
+            <div><strong id="summaryTotal">0</strong><span>Total</span></div>
+            <div><strong id="summaryKnown">0</strong><span>Known</span></div>
+            <div><strong id="summaryUnknown">0</strong><span>Review</span></div>
+          </div>
+        </div>
+
+        <div class="summary-review">
+          <div class="summary-review-heading">
+            <h3>Cards to review</h3>
+            <span id="reviewCountText">0 cards</span>
+          </div>
+          <div id="reviewList" class="review-list"></div>
+        </div>
+
+        <div class="summary-actions">
+          <button class="secondary-button" id="backToSetupButton" type="button">Change setup</button>
+          <button class="primary-button" id="restartSessionButton" type="button">Study same range again</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="import-panel" id="importView" hidden>
+      <div class="import-heading">
+        <span class="eyebrow">Private local processing</span>
+        <h2>Import Duolingo screenshots</h2>
+        <p>Select several screenshots. OCR creates editable drafts; you choose exactly which sentence and words are saved.</p>
+      </div>
+
+      <div class="import-notice" id="serverNotice" hidden>
+        <strong>Open the app with <code>npm start</code>, not by double-clicking <code>index.html</code>.</strong>
+        <span>The local Node server supplies the complete matching OCR package, including the correct WebAssembly build for your browser.</span>
+      </div>
+
+      <section class="drop-panel">
+        <label class="drop-zone" id="screenshotDropZone" for="screenshotInput">
+          <span class="drop-icon" aria-hidden="true">▧</span>
+          <strong>Drop screenshots here</strong>
+          <span>or click to select multiple PNG, JPG, or WebP files</span>
+          <input id="screenshotInput" type="file" accept="image/png,image/jpeg,image/webp" multiple hidden>
+        </label>
+        <div class="selected-files" id="selectedFiles"></div>
+        <div class="scan-actions">
+          <div>
+            <strong id="selectedFileCount">No screenshots selected</strong>
+            <span>Images stay on your computer. Always review OCR before importing.</span>
+          </div>
+          <button class="primary-button" id="scanScreenshotsButton" type="button" disabled>Scan screenshots</button>
+        </div>
+        <div class="ocr-progress" id="ocrProgress" hidden>
+          <div class="progress-track"><div id="ocrProgressBar"></div></div>
+          <p id="ocrProgressText">Preparing OCR…</p>
+        </div>
+      </section>
+
+      <section class="new-words-panel" id="newWordsPanel" hidden>
+        <div class="new-words-header">
+          <div>
+            <h3>New words found</h3>
+            <p id="newWordsSummaryText">No new words yet</p>
+          </div>
+          <button class="secondary-button" id="refreshNewWordsButton" type="button">Refresh</button>
+        </div>
+        <ul class="new-words-list" id="newWordsList"></ul>
+      </section>
+
+      <section class="review-panel" id="reviewPanel" hidden>
+        <div class="review-toolbar">
+          <div>
+            <h3>Review scanned entries</h3>
+            <p>Edit any incorrect text, then select only the sentences and words you want.</p>
+          </div>
+          <div class="review-toolbar-actions">
+            <button class="secondary-button" id="clearScansButton" type="button">Clear</button>
+            <button class="primary-button" id="importScannedButton" type="button">Import selected</button>
+          </div>
+        </div>
+        <div id="scanReviewList" class="scan-review-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <dialog id="entryDialog" class="entry-dialog">
+    <form id="entryForm" method="dialog">
+      <div class="dialog-header">
+        <div>
+          <span class="eyebrow" id="dialogEyebrow">New item</span>
+          <h2 id="dialogTitle">Add entry</h2>
+        </div>
+        <button class="icon-button" id="closeDialogButton" type="button" aria-label="Close">×</button>
+      </div>
+
+      <input id="entryId" type="hidden">
+      <input id="entryOriginalType" type="hidden">
+      <fieldset class="type-switch">
+        <legend>Category</legend>
+        <label><input type="radio" name="entryType" value="word" checked> Word</label>
+        <label><input type="radio" name="entryType" value="sentence"> Sentence</label>
+      </fieldset>
+
+      <div class="form-grid">
+        <label>English<input id="englishField" required maxlength="240"></label>
+        <label>Romaji<input id="romajiField" maxlength="240"></label>
+        <label>Kanji / Japanese<input id="kanjiField" required maxlength="240"></label>
+        <label>Kana<input id="kanaField" maxlength="240"></label>
+      </div>
+
+      <div class="dialog-actions">
+        <button class="secondary-button" id="cancelDialogButton" type="button">Cancel</button>
+        <button class="primary-button" type="submit">Save entry</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

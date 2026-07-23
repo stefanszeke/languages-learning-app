@@ -1,0 +1,12 @@
+This app uses the following third-party software when installed with npm:
+
+Tesseract.js 7.0.0 — Apache-2.0
+https://github.com/naptha/tesseract.js
+
+Tesseract.js Core 7.0.0 — Apache-2.0
+https://github.com/naptha/tesseract.js-core
+
+Express 4.21.2 — MIT
+https://expressjs.com/
+
+Japanese and English traineddata are derived from the Tesseract OCR language-data projects.
