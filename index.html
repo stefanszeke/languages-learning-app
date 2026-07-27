@@ -17,7 +17,10 @@
       </div>
     </div>
     <div class="header-actions">
-      <select class="language-select" id="languageSelect" aria-label="Study language"></select>
+      <div class="language-picker">
+        <span class="language-flag" id="languageFlag" aria-hidden="true"></span>
+        <select class="language-select" id="languageSelect" aria-label="Study language"></select>
+      </div>
       <button class="icon-button" id="themeButton" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">◐</button>
     </div>
   </header>
@@ -46,23 +49,15 @@
           <label>To<input id="idFilterTo" type="number" min="1" step="1" inputmode="numeric"></label>
           <button class="text-button" id="idFilterResetButton" type="button">Reset</button>
         </div>
+        <label class="hard-filter-toggle" id="hardFilterToggle">
+          <input id="hardOnlyCheckbox" type="checkbox">
+          <span>★ Hard only</span>
+        </label>
         <button class="primary-button" id="addButton" type="button">＋ Add entry</button>
       </div>
     </section>
 
     <div id="listView">
-      <section class="practice-panel" aria-label="Practice controls">
-        <div class="practice-copy">
-          <strong>Cover columns</strong>
-          <span>Hide a column, then click individual cells to reveal them.</span>
-        </div>
-        <div class="cover-controls" id="coverControls"></div>
-        <div class="practice-actions">
-          <button class="secondary-button" id="revealButton" type="button">Reveal all</button>
-          <button class="secondary-button" id="shuffleButton" type="button">Shuffle</button>
-        </div>
-      </section>
-
       <section class="list-panel">
         <div class="list-heading">
           <div>
@@ -70,12 +65,24 @@
             <p id="resultSummary">0 entries</p>
           </div>
           <div class="data-menu">
-            <button class="text-button" id="importButton" type="button">Import .md / JSON</button>
-            <button class="text-button" id="exportMdButton" type="button">Export .md</button>
-            <button class="text-button" id="exportWordsJsonButton" type="button">Words JSON</button>
-            <button class="text-button" id="exportSentencesJsonButton" type="button">Sentences JSON</button>
-            <button class="text-button danger-text" id="resetButton" type="button">Reset</button>
+            <button class="icon-button" id="dataMenuButton" type="button" aria-haspopup="true" aria-expanded="false" title="More options" aria-label="More options">⋮</button>
+            <div class="data-menu-list" id="dataMenuList" hidden>
+              <button class="menu-item" id="importButton" type="button">Import .md / JSON</button>
+              <button class="menu-item" id="exportMdButton" type="button">Export .md</button>
+              <button class="menu-item" id="exportWordsJsonButton" type="button">Words JSON</button>
+              <button class="menu-item" id="exportSentencesJsonButton" type="button">Sentences JSON</button>
+              <hr class="menu-divider">
+              <button class="menu-item danger-text" id="resetButton" type="button">Reset</button>
+            </div>
             <input id="fileInput" type="file" accept=".md,.txt,.json,text/plain,application/json" hidden>
+          </div>
+        </div>
+
+        <div class="table-toolbar" aria-label="Practice controls">
+          <div class="cover-controls" id="coverControls"></div>
+          <div class="practice-actions">
+            <button class="secondary-button" id="revealButton" type="button">Reveal all</button>
+            <button class="secondary-button" id="shuffleButton" type="button">Shuffle</button>
           </div>
         </div>
 
@@ -146,11 +153,14 @@
         </div>
         <div class="progress-track" aria-hidden="true"><div id="cardProgressBar"></div></div>
 
-        <button class="study-card" id="studyCard" type="button" aria-label="Reveal answer">
-          <span class="card-side-label" id="cardSideLabel">Japanese</span>
-          <div class="card-content" id="cardContent"></div>
-          <span class="card-reveal-hint" id="cardRevealHint">Click the card to reveal</span>
-        </button>
+        <div class="study-card-wrap">
+          <button class="study-card" id="studyCard" type="button" aria-label="Reveal answer">
+            <span class="card-side-label" id="cardSideLabel">Japanese</span>
+            <div class="card-content" id="cardContent"></div>
+            <span class="card-reveal-hint" id="cardRevealHint">Click the card to reveal</span>
+          </button>
+          <button class="hard-toggle card-hard-button" id="cardHardButton" type="button" title="Mark hard" aria-label="Mark this card hard">☆</button>
+        </div>
 
         <div class="answer-actions" id="answerActions" hidden>
           <button class="answer-button unknown-button" id="unknownButton" type="button">✕ I don’t know</button>
@@ -230,7 +240,7 @@
             <button class="primary-button" id="importWordsButton" type="button">Import selected words</button>
           </div>
         </div>
-        <p class="dict-attribution">English glosses use the <a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project" target="_blank" rel="noopener">JMdict/EDICT dictionary files</a>, property of the Electronic Dictionary Research and Development Group, used in conformance with the Group's licence.</p>
+        <p class="dict-attribution" id="dictAttribution"></p>
         <ul class="new-words-list" id="newWordsList"></ul>
       </section>
 
@@ -279,8 +289,10 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="data.js"></script>
-  <script src="data-de.js"></script>
+  <script src="data/japanese-words.js"></script>
+  <script src="data/japanese-sentences.js"></script>
+  <script src="data/german-words.js"></script>
+  <script src="data/german-sentences.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

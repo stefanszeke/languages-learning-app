@@ -11,11 +11,20 @@
   let germanGenderDictionaryPromise = null;
   let germanGenderDictionaryCache = null;
 
+  // Populated lazily by ensureGermanEnglishDictionary(); declared up front for
+  // the same reason as the gender dictionary above.
+  let germanEnglishDictionaryPromise = null;
+
+  // Populated lazily by ensureGermanVerbDictionary(); declared up front for
+  // the same reason as the gender dictionary above.
+  let germanVerbDictionaryPromise = null;
+
   const LANGUAGES = {
     ja: {
       id: 'ja',
       label: 'Japanese',
       shortLabel: '日',
+      flag: '🇯🇵',
       storagePrefix: 'japanese-study',
       fields: [
         {key: 'english', label: 'English', role: 'gloss', required: true},
@@ -30,12 +39,15 @@
       seedWords: () => window.INITIAL_WORDS || [],
       seedSentences: () => window.INITIAL_SENTENCES || [],
       supportsOcr: true,
+      ocrLanguages: ['jpn', 'eng'],
+      newWordFields: ['kanji', 'kana', 'english'],
       supportsMarkdownImport: true,
     },
     de: {
       id: 'de',
       label: 'German',
       shortLabel: 'DE',
+      flag: '🇩🇪',
       storagePrefix: 'german-study',
       fields: [
         {key: 'english', label: 'English', role: 'gloss', required: true},
@@ -44,7 +56,9 @@
       identityFields: ['german'],
       seedWords: () => window.INITIAL_WORDS_DE || [],
       seedSentences: () => window.INITIAL_SENTENCES_DE || [],
-      supportsOcr: false,
+      supportsOcr: true,
+      ocrLanguages: ['deu', 'eng'],
+      newWordFields: ['german', 'english'],
       supportsMarkdownImport: false,
     },
   };
@@ -59,6 +73,7 @@
     screen: 'list',
     view: 'word',
     search: '',
+    hardOnly: false,
     sortDirection: 'desc',
     covered: new Set(),
     cellOverrides: new Set(),
@@ -96,9 +111,11 @@
     addButton: document.querySelector('#addButton'),
     tableHeadRow: document.querySelector('#tableHeadRow'),
     languageSelect: document.querySelector('#languageSelect'),
+    languageFlag: document.querySelector('#languageFlag'),
     idFilterFrom: document.querySelector('#idFilterFrom'),
     idFilterTo: document.querySelector('#idFilterTo'),
     idFilterResetButton: document.querySelector('#idFilterResetButton'),
+    hardOnlyCheckbox: document.querySelector('#hardOnlyCheckbox'),
     revealButton: document.querySelector('#revealButton'),
     shuffleButton: document.querySelector('#shuffleButton'),
     importButton: document.querySelector('#importButton'),
@@ -107,6 +124,8 @@
     exportSentencesJsonButton: document.querySelector('#exportSentencesJsonButton'),
     resetButton: document.querySelector('#resetButton'),
     fileInput: document.querySelector('#fileInput'),
+    dataMenuButton: document.querySelector('#dataMenuButton'),
+    dataMenuList: document.querySelector('#dataMenuList'),
     dialog: document.querySelector('#entryDialog'),
     form: document.querySelector('#entryForm'),
     entryId: document.querySelector('#entryId'),
@@ -139,6 +158,7 @@
     answerActions: document.querySelector('#answerActions'),
     unknownButton: document.querySelector('#unknownButton'),
     knownButton: document.querySelector('#knownButton'),
+    cardHardButton: document.querySelector('#cardHardButton'),
     cardSummary: document.querySelector('#cardSummary'),
     scoreRing: document.querySelector('#scoreRing'),
     scorePercent: document.querySelector('#scorePercent'),
@@ -163,6 +183,7 @@
     clearScansButton: document.querySelector('#clearScansButton'),
     importScannedButton: document.querySelector('#importScannedButton'),
     newWordsPanel: document.querySelector('#newWordsPanel'),
+    dictAttribution: document.querySelector('#dictAttribution'),
     newWordsSummaryText: document.querySelector('#newWordsSummaryText'),
     newWordsList: document.querySelector('#newWordsList'),
     refreshNewWordsButton: document.querySelector('#refreshNewWordsButton'),
@@ -172,7 +193,11 @@
   initTheme();
   renderStructuralElements();
   saveCollections();
-  if (state.language === 'de') ensureGermanGenderDictionary();
+  if (state.language === 'de') {
+    ensureGermanGenderDictionary();
+    ensureGermanEnglishDictionary();
+    ensureGermanVerbDictionary();
+  }
   bindEvents();
   setCardCategory('word', true);
   resetIdFilterToFullRange();
@@ -288,6 +313,7 @@
       }
       if (raw.article) entry.article = raw.article;
       if (raw.source) entry.source = raw.source;
+      if (raw.hard) entry.hard = true;
       normalized.push(entry);
     }
 
@@ -367,6 +393,12 @@
       renderTable();
     });
 
+    elements.hardOnlyCheckbox.addEventListener('change', () => {
+      state.hardOnly = elements.hardOnlyCheckbox.checked;
+      elements.hardOnlyCheckbox.closest('.hard-filter-toggle')?.classList.toggle('is-active', state.hardOnly);
+      renderTable();
+    });
+
     elements.addButton.addEventListener('click', () => openDialog());
     elements.closeDialogButton.addEventListener('click', closeDialog);
     elements.cancelDialogButton.addEventListener('click', closeDialog);
@@ -379,6 +411,21 @@
     elements.exportSentencesJsonButton.addEventListener('click', () => exportJson('sentence'));
     elements.exportMdButton.addEventListener('click', exportMarkdown);
     elements.resetButton.addEventListener('click', resetData);
+
+    elements.dataMenuButton.addEventListener('click', event => {
+      event.stopPropagation();
+      const willOpen = elements.dataMenuList.hidden;
+      elements.dataMenuList.hidden = !willOpen;
+      elements.dataMenuButton.setAttribute('aria-expanded', String(willOpen));
+    });
+    elements.dataMenuList.addEventListener('click', closeDataMenu);
+    document.addEventListener('click', event => {
+      if (!elements.dataMenuList.hidden && !event.target.closest('.data-menu')) closeDataMenu();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeDataMenu();
+    });
+
     elements.themeButton.addEventListener('click', toggleTheme);
 
     elements.tbody.addEventListener('click', event => {
@@ -398,6 +445,7 @@
       if (!item) return;
       if (actionButton.dataset.action === 'edit') openDialog(item);
       if (actionButton.dataset.action === 'delete') deleteItem(item);
+      if (actionButton.dataset.action === 'toggle-hard') { toggleHardFlag(item); renderTable(); }
     });
 
     elements.cardSetupForm.addEventListener('submit', startCardSessionFromForm);
@@ -406,11 +454,22 @@
       else updateCardSetupDetails();
     });
     elements.studyCard.addEventListener('click', revealCurrentCard);
+    elements.cardHardButton.addEventListener('click', toggleHardCurrentCard);
     elements.unknownButton.addEventListener('click', () => recordCardAnswer(false));
     elements.knownButton.addEventListener('click', () => recordCardAnswer(true));
     elements.exitSessionButton.addEventListener('click', exitCardSession);
     elements.backToSetupButton.addEventListener('click', () => showCardStage('setup'));
     elements.restartSessionButton.addEventListener('click', restartCardSession);
+    elements.reviewList.addEventListener('click', event => {
+      const button = event.target.closest('[data-action="toggle-hard"]');
+      if (!button) return;
+      const id = Number(button.dataset.id);
+      const type = button.dataset.type === 'sentence' ? 'sentence' : 'word';
+      const item = collection(type).find(entry => entry.id === id);
+      if (!item) return;
+      toggleHardFlag(item);
+      renderCardSummary();
+    });
     document.addEventListener('keydown', handleCardKeyboard);
 
     elements.screenshotInput.addEventListener('change', event => setScreenshotFiles([...event.target.files]));
@@ -461,6 +520,7 @@
     const config = languageConfig();
 
     elements.brandMark.textContent = config.shortLabel;
+    elements.languageFlag.textContent = config.flag;
 
     elements.languageSelect.innerHTML = Object.values(LANGUAGES)
       .map(lang => `<option value="${lang.id}"${lang.id === state.language ? ' selected' : ''}>${escapeHtml(lang.label)}</option>`)
@@ -490,6 +550,9 @@
     `;
 
     elements.importTab.hidden = !config.supportsOcr;
+    elements.dictAttribution.innerHTML = config.id === 'de'
+      ? `English glosses use the <a href="https://freedict.org/" target="_blank" rel="noopener">FreeDict deu-eng dictionary</a>, generated from the Ding dictionary (dict.tu-chemnitz.de), licensed GPLv3+/AGPLv3+.`
+      : `English glosses use the <a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project" target="_blank" rel="noopener">JMdict/EDICT dictionary files</a>, property of the Electronic Dictionary Research and Development Group, used in conformance with the Group's licence.`;
 
     renderDialogFieldGrid();
   }
@@ -498,7 +561,11 @@
     if (!LANGUAGES[id] || id === state.language) return;
     state.language = id;
     localStorage.setItem(LANGUAGE_KEY, id);
-    if (id === 'de') ensureGermanGenderDictionary();
+    if (id === 'de') {
+      ensureGermanGenderDictionary();
+      ensureGermanEnglishDictionary();
+      ensureGermanVerbDictionary();
+    }
     state.collections = loadCollections(languageConfig());
     state.covered.clear();
     state.cellOverrides.clear();
@@ -589,6 +656,7 @@
         const hi = Math.max(Number(fromValue), Number(toValue));
         items = items.filter(item => item.id >= lo && item.id <= hi);
       }
+      if (state.hardOnly) items = items.filter(item => item.hard);
     }
     return items.sort((a, b) => a.id - b.id);
   }
@@ -615,17 +683,18 @@
     renderSortIndicator();
     const items = filteredItems();
     const categoryTotal = collection(state.view).length;
-    elements.resultSummary.textContent = state.search
+    elements.resultSummary.textContent = state.search || state.hardOnly
       ? `${items.length} of ${categoryTotal} entries`
       : `${items.length} ${items.length === 1 ? 'entry' : 'entries'} · ${state.view === 'word' ? 'Word' : 'Sentence'} IDs 1–${categoryTotal ? Math.max(...collection(state.view).map(item => item.id)) : 0}`;
     elements.emptyState.hidden = items.length > 0;
 
     elements.tbody.innerHTML = items.map(item => `
-      <tr>
+      <tr${item.hard ? ' class="is-hard"' : ''}>
         <td class="entry-id">${item.id}</td>
         ${activeColumns().map(column => cellTemplate(item, column)).join('')}
         <td>
           <div class="row-actions">
+            <button class="row-action hard-toggle${item.hard ? ' is-active' : ''}" type="button" data-action="toggle-hard" data-type="${item.type}" data-id="${item.id}" title="${item.hard ? 'Unmark hard' : 'Mark hard'}" aria-label="${item.hard ? 'Unmark' : 'Mark'} ${item.type} ${item.id} as hard">${item.hard ? '★' : '☆'}</button>
             <button class="row-action" type="button" data-action="edit" data-type="${item.type}" data-id="${item.id}" title="Edit" aria-label="Edit ${item.type} ${item.id}">✎</button>
             <button class="row-action" type="button" data-action="delete" data-type="${item.type}" data-id="${item.id}" title="Delete" aria-label="Delete ${item.type} ${item.id}">×</button>
           </div>
@@ -712,9 +781,233 @@
 
   function renderDialogFieldGrid(values = {}) {
     elements.dialogFieldGrid.innerHTML = activeFields().map(field => {
-      const attrs = `data-field="${field.key}"${field.required ? ' required' : ''} maxlength="240"`;
-      return `<label>${escapeHtml(field.label)}<input ${attrs} value="${escapeHtml(values[field.key] || '')}"></label>`;
+      const attrs = `data-field="${field.key}"${field.required ? ' required' : ''} maxlength="240" autocomplete="off"`;
+      return `<label>${escapeHtml(field.label)}<div class="field-autocomplete"><input ${attrs} value="${escapeHtml(values[field.key] || '')}"></div></label>`;
     }).join('');
+    bindDialogAutoFill();
+  }
+
+  // Manually adding an entry gets the same "suggestion fill" the OCR pipeline
+  // already does. Two ways in: leaving the native-script field (blur) quietly
+  // fills whatever's still blank (English gloss, and for Japanese, kana/
+  // romaji too); and typing into it pops a dropdown of matching dictionary
+  // headwords to pick from directly, like a search autocomplete. Picking a
+  // dropdown entry just writes it into the field and re-runs the same blur
+  // fill, so a recognized German verb still expands into the full 5-form
+  // conjugation set either way -- typing/picking "gehen" turns it into
+  // "gehen / ich gehe / er geht / du gehst / wir gehen".
+  function bindDialogAutoFill() {
+    const grid = elements.dialogFieldGrid;
+    if (state.language === 'de') {
+      const germanInput = grid.querySelector('[data-field="german"]');
+      if (germanInput) {
+        germanInput.addEventListener('blur', autoFillGermanDialogFields);
+        setupFieldAutocomplete(germanInput, germanDropdownMatches, match => {
+          germanInput.value = match.primary;
+          autoFillGermanDialogFields();
+        });
+      }
+    } else if (state.language === 'ja') {
+      const kanjiInput = grid.querySelector('[data-field="kanji"]');
+      const kanaInput = grid.querySelector('[data-field="kana"]');
+      if (kanjiInput) {
+        kanjiInput.addEventListener('blur', autoFillJapaneseDialogFields);
+        setupFieldAutocomplete(kanjiInput, japaneseDropdownMatches, match => {
+          kanjiInput.value = match.primary;
+          autoFillJapaneseDialogFields();
+        });
+      }
+      if (kanaInput) {
+        kanaInput.addEventListener('blur', autoFillJapaneseDialogFields);
+        setupFieldAutocomplete(kanaInput, japaneseDropdownMatches, match => {
+          kanaInput.value = match.primary;
+          autoFillJapaneseDialogFields();
+        });
+      }
+    }
+  }
+
+  // Generic type-ahead: after a short pause in typing, fetchMatches(prefix)
+  // is called and its results (each {primary, secondary}) are rendered as a
+  // clickable/keyboard-navigable dropdown under the input. `mousedown` on the
+  // list is prevented so clicking an item doesn't blur the input before the
+  // click (and this handler's blur-triggered autofill) gets to run.
+  function setupFieldAutocomplete(input, fetchMatches, onSelect) {
+    const wrap = input.closest('.field-autocomplete');
+    if (!wrap) return;
+    const list = document.createElement('ul');
+    list.className = 'autocomplete-list';
+    list.hidden = true;
+    wrap.appendChild(list);
+
+    let matches = [];
+    let activeIndex = -1;
+    let debounceTimer = null;
+    let requestToken = 0;
+
+    function closeList() {
+      list.hidden = true;
+      list.innerHTML = '';
+      matches = [];
+      activeIndex = -1;
+    }
+
+    function renderList() {
+      if (!matches.length) { closeList(); return; }
+      list.innerHTML = matches.map((match, index) =>
+        `<li data-index="${index}"><strong>${escapeHtml(match.primary)}</strong><span>${escapeHtml(match.secondary || '')}</span></li>`
+      ).join('');
+      list.hidden = false;
+      activeIndex = -1;
+    }
+
+    function highlight(index) {
+      activeIndex = index;
+      list.querySelectorAll('li').forEach((li, i) => li.classList.toggle('is-active', i === activeIndex));
+    }
+
+    function selectMatch(match) {
+      closeList();
+      onSelect(match);
+    }
+
+    list.addEventListener('mousedown', event => event.preventDefault());
+    list.addEventListener('click', event => {
+      const li = event.target.closest('li');
+      if (!li) return;
+      selectMatch(matches[Number(li.dataset.index)]);
+    });
+
+    input.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      const prefix = input.value.trim();
+      if (prefix.length < 2) { closeList(); return; }
+      const token = ++requestToken;
+      debounceTimer = setTimeout(async () => {
+        const results = await fetchMatches(prefix);
+        if (token !== requestToken || document.activeElement !== input) return;
+        matches = results;
+        renderList();
+      }, 200);
+    });
+
+    input.addEventListener('keydown', event => {
+      if (list.hidden) return;
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        highlight(Math.min(activeIndex + 1, matches.length - 1));
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        highlight(Math.max(activeIndex - 1, 0));
+      } else if (event.key === 'Enter' && activeIndex >= 0) {
+        event.preventDefault();
+        selectMatch(matches[activeIndex]);
+      } else if (event.key === 'Escape') {
+        closeList();
+      }
+    });
+
+    input.addEventListener('blur', () => setTimeout(closeList, 150));
+  }
+
+  function dictionaryPrefixMatches(dictionary, prefix, {caseSensitive = false, scanLimit = 60} = {}) {
+    if (!dictionary) return [];
+    const needle = caseSensitive ? prefix : prefix.toLowerCase();
+    const results = [];
+    for (const key in dictionary) {
+      const compareKey = caseSensitive ? key : key.toLowerCase();
+      if (!compareKey.startsWith(needle)) continue;
+      results.push(key);
+      if (results.length >= scanLimit) break;
+    }
+    return results;
+  }
+
+  function sortMatchesByLength(entries, limit = 8) {
+    return entries
+      .sort((a, b) => a.primary.length - b.primary.length || a.primary.localeCompare(b.primary))
+      .slice(0, limit);
+  }
+
+  async function germanDropdownMatches(prefix) {
+    const [verbDictionary, glossDictionary] = await Promise.all([ensureGermanVerbDictionary(), ensureGermanEnglishDictionary()]);
+    const seen = new Set();
+    const results = [];
+    if (verbDictionary) {
+      for (const infinitive of dictionaryPrefixMatches(verbDictionary.verbs, prefix)) {
+        seen.add(infinitive.toLowerCase());
+        results.push({primary: infinitive, secondary: verbDictionary.verbs[infinitive].english.split(' / ')[0]});
+      }
+    }
+    if (glossDictionary) {
+      for (const word of dictionaryPrefixMatches(glossDictionary, prefix)) {
+        if (seen.has(word.toLowerCase())) continue;
+        results.push({primary: word, secondary: glossDictionary[word].split(';')[0].trim()});
+      }
+    }
+    return sortMatchesByLength(results);
+  }
+
+  async function japaneseDropdownMatches(prefix) {
+    const dictionary = await ensureEnglishDictionary();
+    if (!dictionary) return [];
+    const words = dictionaryPrefixMatches(dictionary, prefix, {caseSensitive: true});
+    return sortMatchesByLength(words.map(word => ({primary: word, secondary: dictionary[word].split(';')[0].trim()})));
+  }
+
+  async function autoFillGermanDialogFields() {
+    const grid = elements.dialogFieldGrid;
+    const germanInput = grid.querySelector('[data-field="german"]');
+    const englishInput = grid.querySelector('[data-field="english"]');
+    const word = germanInput?.value.trim();
+    if (!word) return;
+
+    const verbDictionary = await ensureGermanVerbDictionary();
+    if (!elements.dialog.open) return;
+    const verb = verbDictionary ? lookupGermanVerb(verbDictionary, word) : null;
+    if (verb) {
+      germanInput.value = verb.german;
+      if (englishInput) englishInput.value = verb.english;
+      return;
+    }
+
+    if (englishInput && !englishInput.value.trim()) {
+      const dictionary = await ensureGermanEnglishDictionary();
+      if (!elements.dialog.open) return;
+      const gloss = lookupGermanEnglish(dictionary, word);
+      if (gloss) englishInput.value = gloss;
+    }
+  }
+
+  async function autoFillJapaneseDialogFields() {
+    const grid = elements.dialogFieldGrid;
+    const kanjiInput = grid.querySelector('[data-field="kanji"]');
+    const kanaInput = grid.querySelector('[data-field="kana"]');
+    const romajiInput = grid.querySelector('[data-field="romaji"]');
+    const englishInput = grid.querySelector('[data-field="english"]');
+    const kanji = kanjiInput?.value.trim() || '';
+    let kana = kanaInput?.value.trim() || '';
+    if (!kanji && !kana) return;
+
+    if (kanji && !kana) {
+      const analyzer = await ensureTokenizerAnalyzer();
+      if (!elements.dialog.open) return;
+      if (analyzer) {
+        kana = await readingFor(analyzer, kanji);
+        if (kana && kanaInput) kanaInput.value = kana;
+      }
+    }
+
+    if (kana && romajiInput && !romajiInput.value.trim()) {
+      romajiInput.value = kanaToRomaji(kana);
+    }
+
+    if (englishInput && !englishInput.value.trim()) {
+      const dictionary = await ensureEnglishDictionary();
+      if (!elements.dialog.open) return;
+      const gloss = lookupEnglish(dictionary, kanji, kana);
+      if (gloss) englishInput.value = gloss;
+    }
   }
 
   function readDialogFields() {
@@ -761,8 +1054,9 @@
       if (originalType === type) {
         oldCollection[oldIndex] = {...oldCollection[oldIndex], ...itemData, id: originalId};
       } else {
+        const hard = oldCollection[oldIndex].hard;
         oldCollection.splice(oldIndex, 1);
-        collection(type).push({...itemData, id: nextId(type)});
+        collection(type).push({...itemData, ...(hard ? {hard: true} : {}), id: nextId(type)});
         collection(type).sort((a, b) => a.id - b.id);
       }
     } else {
@@ -777,6 +1071,19 @@
     closeDialog();
     render();
     showToast('Entry saved');
+  }
+
+  function toggleHardFlag(item) {
+    item.hard = !item.hard;
+    if (!item.hard) delete item.hard;
+    saveCollections();
+  }
+
+  function toggleHardCurrentCard() {
+    const item = currentCard();
+    if (!item) return;
+    toggleHardFlag(item);
+    renderCurrentCard();
   }
 
   function deleteItem(item) {
@@ -839,6 +1146,7 @@
       }
       if (raw.source) candidate.source = raw.source;
       else if (sourceLabel) candidate.source = {kind: sourceLabel, importedAt: new Date().toISOString()};
+      if (raw.hard) candidate.hard = true;
       applyDerivedFields(candidate);
 
       // Sentences need an English translation to be useful as a flashcard prompt,
@@ -920,6 +1228,9 @@
     state.shuffledIds = null;
     state.search = '';
     elements.searchInput.value = '';
+    state.hardOnly = false;
+    elements.hardOnlyCheckbox.checked = false;
+    elements.hardOnlyCheckbox.closest('.hard-filter-toggle')?.classList.remove('is-active');
     state.view = 'word';
     resetIdFilterToFullRange();
     saveCollections();
@@ -1033,6 +1344,13 @@
     elements.answerActions.hidden = !state.card.revealed;
     elements.cardRevealHint.textContent = state.card.revealed ? 'Choose how well you knew it' : 'Click the card to reveal';
     elements.studyCard.setAttribute('aria-label', state.card.revealed ? 'Answer revealed' : 'Reveal answer');
+
+    const hard = Boolean(item.hard);
+    elements.studyCard.classList.toggle('is-hard', hard);
+    elements.cardHardButton.classList.toggle('is-active', hard);
+    elements.cardHardButton.textContent = hard ? '★' : '☆';
+    elements.cardHardButton.title = hard ? 'Unmark hard' : 'Mark hard';
+    elements.cardHardButton.setAttribute('aria-label', hard ? 'Unmark this card as hard' : 'Mark this card as hard');
   }
 
   function cardContentTemplate(item, direction, revealed) {
@@ -1110,8 +1428,11 @@
             .filter(Boolean)
             .join(' · ');
           return `
-          <div class="review-item">
-            <span class="review-id">${item.type === 'word' ? 'W' : 'S'}#${item.id}</span>
+          <div class="review-item${item.hard ? ' is-hard' : ''}">
+            <span class="review-id">
+              ${item.type === 'word' ? 'W' : 'S'}#${item.id}
+              <button class="row-action hard-toggle${item.hard ? ' is-active' : ''}" type="button" data-action="toggle-hard" data-type="${item.type}" data-id="${item.id}" title="${item.hard ? 'Unmark hard' : 'Mark hard'}" aria-label="${item.hard ? 'Unmark' : 'Mark'} ${item.type} ${item.id} as hard">${item.hard ? '★' : '☆'}</button>
+            </span>
             <span>${escapeHtml(item.english)}</span>
             <span class="review-japanese">${escapeHtml(primaryValue)}${restText ? `<small>${escapeHtml(restText)}</small>` : ''}</span>
           </div>
@@ -1181,26 +1502,31 @@
     state.screenshots.results = [];
     elements.scanScreenshotsButton.disabled = true;
     elements.ocrProgress.hidden = false;
-    updateOcrProgress(2, 'Loading the Japanese and English OCR engine…');
+    const config = languageConfig();
+    const isJapanese = config.id === 'ja';
+    updateOcrProgress(2, `Loading the ${config.label} and English OCR engine…`);
 
-    ensureTokenizerAnalyzer();
-    ensureEnglishDictionary();
+    if (isJapanese) {
+      ensureTokenizerAnalyzer();
+      ensureEnglishDictionary();
+    }
 
     let worker = null;
     try {
       worker = await prepareOcrWorker(message => {
         if (message.status === 'loading language traineddata') {
-          updateOcrProgress(4, 'Loading Japanese and English language data…');
+          updateOcrProgress(4, `Loading ${config.label} and English language data…`);
         }
       });
 
+      const scanFn = isJapanese ? scanOneScreenshot : scanOneGermanScreenshot;
       const total = state.screenshots.files.length;
       for (let index = 0; index < total; index += 1) {
         const selected = state.screenshots.files[index];
         const startPercent = 8 + (index / total) * 88;
         updateOcrProgress(startPercent, `Scanning ${index + 1} of ${total}: ${selected.file.name}`);
         try {
-          const result = await scanOneScreenshot(worker, selected, index);
+          const result = await scanFn(worker, selected, index);
           state.screenshots.results.push(result);
         } catch (error) {
           console.warn(`OCR failed for ${selected.file.name}:`, error);
@@ -1242,7 +1568,7 @@
       throw new Error('The local Tesseract.js browser library could not be loaded. Run npm install and restart the app.');
     }
 
-    const worker = await window.Tesseract.createWorker(['jpn', 'eng'], 1, {
+    const worker = await window.Tesseract.createWorker(languageConfig().ocrLanguages, 1, {
       workerPath: `${assetRoot}/worker.min.js`,
       corePath: `${assetRoot}/core`,
       langPath: `${assetRoot}/lang`,
@@ -1373,6 +1699,73 @@
   function lookupEnglish(dictionary, kanji, kana) {
     if (!dictionary) return '';
     return dictionary[kanji] || dictionary[kana] || '';
+  }
+
+  // Filling in English glosses for suggested German words is a nice-to-have,
+  // not a requirement, so it's designed to fail quietly like the English/
+  // gender dictionaries above.
+  function ensureGermanEnglishDictionary() {
+    if (!germanEnglishDictionaryPromise) {
+      germanEnglishDictionaryPromise = prepareGermanEnglishDictionary().catch(error => {
+        console.warn('German-English dictionary unavailable, word English fields will be left blank:', error);
+        return null;
+      });
+    }
+    return germanEnglishDictionaryPromise;
+  }
+
+  async function prepareGermanEnglishDictionary() {
+    const response = await fetch('./api/german-dictionary-status', {cache: 'no-store'});
+    const status = await response.json().catch(() => ({}));
+    if (!response.ok || !status.ready) throw new Error(status.message || 'German-English dictionary is not available.');
+
+    const dictResponse = await fetch('./vendor/dict/german-english-lookup.json.gz', {cache: 'no-store'});
+    if (!dictResponse.ok) throw new Error(`Could not load the German-English dictionary (HTTP ${dictResponse.status}).`);
+    return dictResponse.json();
+  }
+
+  // The dictionary's headword casing follows Ding's own convention (nouns
+  // capitalized, everything else lowercase), which doesn't always match a
+  // suggested word's OCR casing (e.g. a sentence-initial pronoun), so a plain
+  // lowercase and a title-case variant are tried as fallbacks.
+  function lookupGermanEnglish(dictionary, word) {
+    if (!dictionary || !word) return '';
+    const lower = word.toLowerCase();
+    const titleCase = lower.charAt(0).toUpperCase() + lower.slice(1);
+    return dictionary[word] || dictionary[titleCase] || dictionary[lower] || '';
+  }
+
+  // Expanding a suggested verb into the personal-collection's 5-form
+  // convention (see data/german-words.js, e.g. "klingen / ich klinge / es
+  // klingt / du klingst / wir klingen") is a nice-to-have, not a requirement,
+  // so it fails quietly like the dictionaries above.
+  function ensureGermanVerbDictionary() {
+    if (!germanVerbDictionaryPromise) {
+      germanVerbDictionaryPromise = prepareGermanVerbDictionary().catch(error => {
+        console.warn('German verb dictionary unavailable, suggested verbs will keep their single inflected form:', error);
+        return null;
+      });
+    }
+    return germanVerbDictionaryPromise;
+  }
+
+  async function prepareGermanVerbDictionary() {
+    const response = await fetch('./api/german-verb-status', {cache: 'no-store'});
+    const status = await response.json().catch(() => ({}));
+    if (!response.ok || !status.ready) throw new Error(status.message || 'German verb dictionary is not available.');
+
+    const dictResponse = await fetch('./vendor/dict/german-verb-lookup.json.gz', {cache: 'no-store'});
+    if (!dictResponse.ok) throw new Error(`Could not load the German verb dictionary (HTTP ${dictResponse.status}).`);
+    return dictResponse.json();
+  }
+
+  // Looks up a raw OCR token against the surface-form index and returns the
+  // matching verb's precomputed 5-form {german, english} record, or null if
+  // the token isn't a recognized conjugated form of any verb in the dataset.
+  function lookupGermanVerb(dictionary, word) {
+    if (!dictionary || !word) return null;
+    const infinitive = dictionary.forms[word.toLowerCase()];
+    return infinitive ? dictionary.verbs[infinitive] || null : null;
   }
 
   function katakanaToHiragana(text) {
@@ -1566,6 +1959,353 @@
     return result;
   }
 
+  // German has no separate script to key off of (unlike hasJapanese/containsKanji
+  // for the Japanese path), so region position does the heavy lifting instead: the
+  // crop geometry below is identical to scanOneScreenshot's (same Duolingo layout,
+  // different course language), and German vs. English text within a region is told
+  // apart by a content scorer (germanLineScore) tuned for umlauts/eszett and common
+  // German function words rather than by Unicode range. No kana/romaji/tokenizer
+  // step applies here — OCR'd German text is already the study text.
+  async function scanOneGermanScreenshot(worker, selected, index) {
+    const image = await loadImageBitmap(selected.file);
+    await worker.setParameters({tessedit_pageseg_mode: '11', preserve_interword_spaces: '1'});
+
+    const mainScan = await recognizeCropWithFallback(worker, image, {x: 0, y: 0.07, width: 1, height: 0.56}, 1.8, createTextMaskCrop, {text: true, blocks: true});
+    const feedbackScan = await recognizeCropWithFallback(worker, image, {x: 0, y: 0.69, width: 1, height: 0.23}, 1.8, createTextMaskCrop);
+    const selectedScan = await recognizeCropWithFallback(worker, image, {x: 0, y: 0.14, width: 1, height: 0.61}, 1.8, createSelectedTextCanvas);
+    if (typeof image.close === 'function') image.close();
+
+    const mainCanvas = mainScan.canvas;
+    const main = mainScan.result;
+    const feedback = feedbackScan.result;
+    const selectedAnswer = selectedScan.result;
+
+    const mainText = orderedOcrText(main.data?.blocks) || main.data?.text || '';
+    const feedbackText = feedback.data?.text || '';
+    const selectedText = selectedAnswer.data?.text || '';
+    const regions = ocrRegionTexts(main.data?.blocks, mainCanvas.width, mainCanvas.height, mainText);
+    const exerciseType = detectExerciseType(`${regions.header}\n${mainText}`);
+
+    const isFillBlank = exerciseType === 'Fill in the blank';
+
+    // createSelectedTextCanvas masks only the green/purple "tapped tile" pixels, so
+    // selectedText holds just the answer the learner built/picked — but Duolingo's
+    // German course mixes several exercise shapes, so which language that answer is
+    // in varies: "Fill in the blank" always offers German options (you're completing
+    // a German sentence), "Read and respond" always offers English options (you're
+    // answering a comprehension question about a German passage) — those two are
+    // structural certainties, not guesses. Everything else falls back to a content
+    // marker score (umlauts/stopwords), which is reliable for multi-word answers but
+    // can miss a short, unmarked single German word/phrase with no stopword hit.
+    const selectedIsGerman = exerciseType === 'Fill in the blank'
+      ? true
+      : exerciseType === 'Read and respond'
+        ? false
+        : germanMarkerScore(selectedText) > 0;
+    // The plain "light text" mask behind mainText/regions picks up BOTH the given/
+    // prompt sentence AND those very same tapped tiles (tile text is light-colored
+    // too), so the tapped tile words are stripped out of the region text word-by-word
+    // before extracting the *other* field — otherwise a sliding-window join can glue
+    // the given sentence and the tapped answer together into one garbled candidate.
+    // Capitalized tokens are left in place: German capitalizes every common noun, and
+    // proper nouns (character names like "David"/"Anja") legitimately recur verbatim
+    // in both languages, so stripping them risks deleting real prompt-sentence content
+    // rather than a genuine OCR duplicate.
+    const tileWordSet = new Set(
+      cleanOcrLines(selectedText)
+        .flatMap(line => line.split(/\s+/))
+        .filter(word => /^[a-zäöüß]/.test(word))
+        .map(normalizeDuplicateText)
+        .filter(Boolean)
+    );
+    const stripTileWords = text => cleanOcrLines(text)
+      .map(line => line.split(/\s+/).filter(word => !tileWordSet.has(normalizeDuplicateText(word))).join(' '))
+      .filter(line => line.trim().length >= 2)
+      .join('\n');
+
+    const promptUpper = tileWordSet.size ? stripTileWords(regions.upper) : regions.upper;
+    const promptLower = tileWordSet.size ? stripTileWords(regions.lower) : regions.lower;
+    const promptBroad = tileWordSet.size ? stripTileWords(regions.content || mainText) : (regions.content || mainText);
+
+    const tileGerman = extractGermanFromText(selectedText);
+    const tileEnglish = extractEnglishFromText(selectedText);
+    const promptGerman = bestGermanCandidate(extractGermanFromText(promptUpper), extractGermanFromText(promptLower), extractGermanFromText(promptBroad));
+    const promptEnglish = pickBestEnglish(extractEnglishFromText(feedbackText), extractEnglishFromText(promptUpper), extractEnglishFromText(promptLower), extractEnglishFromText(promptBroad));
+
+    let german = '';
+    let english = '';
+    if (selectedText && selectedIsGerman) {
+      german = bestGermanCandidate(tileGerman, promptGerman);
+      english = promptEnglish;
+    } else if (selectedText) {
+      english = pickBestEnglish(tileEnglish, promptEnglish);
+      german = promptGerman;
+    } else {
+      german = bestGermanCandidate(extractGermanFromText(regions.upper), extractGermanFromText(regions.content || mainText), extractGermanFromText(regions.lower));
+      english = pickBestEnglish(extractEnglishFromText(feedbackText), extractEnglishFromText(regions.upper), extractEnglishFromText(regions.lower));
+    }
+
+    german = normalizeGermanOcr(german);
+    english = normalizeEnglishOcr(english);
+    // Both extractors can land on the same OCR line when regions overlap (small
+    // screenshots, tight crops) — don't let the same text fill both fields.
+    if (german && normalizeDuplicateText(german) === normalizeDuplicateText(english)) english = '';
+
+    // Feed word-suggestion splitting only confirmed-German text (the resolved
+    // sentence plus the tapped tiles, when the tiles were the German side) — the
+    // raw screen text also contains the English instruction header ("Translate
+    // this sentence") and the English tiles, which aren't German vocabulary.
+    const germanSourceText = `${german}\n${selectedIsGerman ? selectedText : ''}`;
+    const words = await suggestGermanWords(german, english, germanSourceText, exerciseType, selectedIsGerman ? selectedText : '');
+    const warnings = [];
+    if (!german) warnings.push('German was not detected');
+    if (!english) warnings.push('English meaning was not detected');
+    if (isFillBlank) {
+      const hint = selectedIsGerman ? tileGerman : tileEnglish;
+      warnings.push(hint ? `Insert/check selected answer: ${hint}` : 'Check the missing word');
+    }
+
+    return {
+      id: `scan-${Date.now()}-${index}`,
+      fileName: selected.file.name,
+      imageUrl: selected.url,
+      exerciseType,
+      confidence: averageConfidence(main.data?.confidence, feedback.data?.confidence, selectedAnswer.data?.confidence),
+      warning: warnings.join(' · '),
+      rawMain: `${mainText}${selectedText ? `\n\n[Highlighted / selected text]\n${selectedText}` : ''}`,
+      rawFeedback: feedbackText,
+      sentence: {
+        selected: Boolean(german && english),
+        english,
+        german,
+      },
+      words,
+    };
+  }
+
+  function germanCandidates(text) {
+    const rejected = /^(combo|translate this sentence|complete the sentence|fill in the blank|new word|previous mistake|correct|correct meaning|good job|great|amazing|excellent|nicely done|nice|meaning|explain my answer|continue)$/i;
+    const uiMessage = /^(correct|good job|great|amazing|excellent|nicely done|nice)(!|\.|:|\s|$)/i;
+    const iconGlyphNoise = /^[a-z]?\s*[)\]]+$/i;
+    return cleanOcrLines(text)
+      .map(normalizeGermanOcr)
+      .filter(line => /[A-Za-zÀ-ž]/.test(line))
+      .filter(line => !iconGlyphNoise.test(line))
+      .filter(line => !looksLikeGibberishLine(line))
+      .filter(line => !rejected.test(line.replace(/[.!:]+$/g, '').trim()))
+      .filter(line => !uiMessage.test(line))
+      .filter(line => !/^(\d{1,2}:\d{2}|\d+%|ID\s*\d+)$/i.test(line))
+      .filter(line => line.length >= 2);
+  }
+
+  function looksLikeGermanSentence(line) {
+    const text = normalizeGermanOcr(line);
+    const words = text.split(/\s+/).filter(Boolean);
+    return words.length >= 3 || /[.!?]$/.test(text) || /[äöüßÄÖÜ]/.test(text)
+      || /\b(ich|du|er|sie|es|wir|ihr|das|die|der|und|ist|sind|nicht|auch|sehr|schon)\b/i.test(text);
+  }
+
+  function germanLineScore(line) {
+    const text = normalizeGermanOcr(line);
+    const words = text.split(/\s+/).filter(Boolean).length;
+    const shortDistractorPenalty = words <= 2 ? 35 : 0;
+    const uiPenalty = /\b(combo|continue|explain|good job|correct|amazing|excellent|previous mistake)\b/i.test(text) ? 80 : 0;
+    const umlautBonus = (text.match(/[äöüßÄÖÜ]/g) || []).length * 4;
+    // Neither this scorer nor its English mirror otherwise verifies language at
+    // all — a German-scored candidate is just "sentence-shaped text", so a clean
+    // English answer ending in a period (+22 terminal-punctuation bonus) can
+    // legitimately out-score the real German line and get crowned "German".
+    const wrongLanguagePenalty = englishMarkerScore(text) > 0 && germanMarkerScore(text) === 0 ? 500 : 0;
+    return text.length + words * 6 + (/[.!?]$/.test(text) ? 22 : 0) + umlautBonus - shortDistractorPenalty - uiPenalty - wrongLanguagePenalty;
+  }
+
+  function normalizeGermanOcr(value) {
+    return String(value || '')
+      .replace(/^[✓✔✕×@!•:;\-\s]+/, '')
+      // A play/audio icon before a sentence or tile row is consistently misread as
+      // a lone "q)"/"q@" (or similar single-letter-plus-glyph) fused onto the text.
+      .replace(/^[a-z]?[)@]\s*/i, '')
+      .replace(/(^|\s)\|(?=\s|$)/g, '$1I')
+      .replace(/\s+/g, ' ')
+      .replace(/^(correct!?\s*meaning|correct\s*meaning|nicely done\.?\s*meaning|nice!?\s*meaning|meaning)\s*:?\s*/i, '')
+      .replace(/\s+([.!?,])/g, '$1')
+      .trim();
+  }
+
+  function chooseGermanCandidate(lines) {
+    if (!lines.length) return '';
+    const unique = [...new Set(lines.map(normalizeGermanOcr).filter(Boolean))];
+    const sentenceLines = unique.filter(looksLikeGermanSentence);
+    const pool = sentenceLines.length ? sentenceLines : unique;
+    return normalizeGermanOcr(pool.sort((a, b) => germanLineScore(b) - germanLineScore(a))[0] || '');
+  }
+
+  // Closed-class English function words, mirroring GERMAN_WORD_STOP_LIST, used
+  // only to decide whether a line is distinctly English for language-boundary
+  // detection below. looksLikeEnglishSentence isn't usable for this: its
+  // ">=3 words" fallback (built for picking the best candidate among already-
+  // English text) matches ANY sentence-shaped line regardless of language, so
+  // it was flagging plain German fragments with no marker word as "English".
+  const ENGLISH_WORD_STOP_LIST = new Set([
+    'a', 'an', 'the', 'is', 'are', 'was', 'were', 'am', 'be', 'been', 'being',
+    'i', 'you', 'he', 'she', 'it', 'we', 'they', 'my', 'your', 'his', 'her', 'its', 'our', 'their',
+    'and', 'or', 'but', 'not', 'no', 'to', 'of', 'in', 'on', 'at', 'with', 'for', 'from', 'by',
+    'always', 'never', 'this', 'that', 'these', 'those', 'do', 'does', 'did',
+    'have', 'has', 'had', 'will', 'would', 'can', 'could', 'should', 'shall', 'there', 'here',
+  ]);
+
+  function englishMarkerScore(text) {
+    const words = String(text || '').toLowerCase().match(/[a-z']+/g) || [];
+    return words.filter(word => ENGLISH_WORD_STOP_LIST.has(word)).length;
+  }
+
+  // Used by both extractGermanFromText and extractEnglishFromText to keep a
+  // sliding-window join from gluing a leftover fragment of the *other*
+  // language onto an otherwise-clean candidate. A line only gets a flavor when
+  // it has a marker for ONE language and not the other — ambiguous/unmarked
+  // lines (e.g. a short German fragment with no stopword hit) stay neutral so
+  // they don't wrongly block a legitimate same-language join.
+  function lineLanguageFlavor(line) {
+    const de = germanMarkerScore(line);
+    const en = englishMarkerScore(line);
+    if (de > 0 && en === 0) return 'de';
+    if (en > 0 && de === 0) return 'en';
+    return null;
+  }
+
+  function crossesLanguageBoundary(lines) {
+    if (lines.length < 2) return false;
+    const flavors = new Set(lines.map(lineLanguageFlavor));
+    return flavors.has('de') && flavors.has('en');
+  }
+
+  function extractGermanFromText(text) {
+    const lines = germanCandidates(text);
+    if (!lines.length) return '';
+    const candidates = [...lines];
+    // Capped higher than a typical single-sentence answer needs, so a wrapped
+    // multi-sentence passage ("Read and respond" style, several short OCR lines)
+    // can still be joined into one full candidate instead of only ever seeing a
+    // truncated 2-3 line slice of it. Never span a detected language boundary
+    // though — tile-word stripping can leave a stray unstripped fragment of the
+    // *other* field's text as its own line (OCR variance between the broad and
+    // selected-tile passes means the strip's word match isn't guaranteed), and a
+    // long joined candidate that glues that fragment onto the real sentence
+    // otherwise out-scores the correct line on pure length.
+    for (let start = 0; start < lines.length; start += 1) {
+      for (let length = 2; length <= 6 && start + length <= lines.length; length += 1) {
+        const group = lines.slice(start, start + length);
+        if (crossesLanguageBoundary(group)) continue;
+        candidates.push(group.join(' '));
+      }
+    }
+    // Word-bank translate exercises build the German answer from several tapped
+    // single-word tiles — mirror the English tile-join fallback below the same way.
+    const tileLines = lines.filter(looksLikeAnswerTile);
+    if (tileLines.length > 3) candidates.push(tileLines.join(' '));
+    return chooseGermanCandidate(candidates);
+  }
+
+  function bestGermanCandidate(...values) {
+    return values
+      .map(value => normalizeGermanOcr(value || ''))
+      .filter(Boolean)
+      .sort((a, b) => germanLineScore(b) - germanLineScore(a))[0] || '';
+  }
+
+  const GERMAN_WORD_STOP_LIST = new Set([
+    'der', 'die', 'das', 'den', 'dem', 'des', 'ein', 'eine', 'einen', 'einem', 'einer', 'eines',
+    'und', 'oder', 'aber', 'ist', 'sind', 'war', 'waren', 'nicht', 'kein', 'keine',
+    'ich', 'du', 'er', 'sie', 'es', 'wir', 'ihr', 'sein', 'ihre', 'ihren',
+    'zu', 'im', 'in', 'am', 'an', 'auf', 'aus', 'bei', 'mit', 'nach', 'von', 'vor', 'für', 'über', 'unter', 'um',
+    // Fused preposition+article contractions (zu+dem, von+dem, etc.) are very
+    // common in short multiple-choice answers ("zum Stadion") but wouldn't
+    // otherwise hit any entry above, leaving germanMarkerScore blind to them.
+    'zum', 'zur', 'vom', 'beim', 'ins', 'ans', 'aufs',
+  ]);
+
+  // Umlaut/eszett characters plus a hit against the function-word stoplist above are
+  // a decent proxy for "this chunk of OCR text is German" without a script marker to
+  // key off — used to tell which language the tapped/selected answer tiles are in.
+  function germanMarkerScore(text) {
+    const value = String(text || '');
+    const umlauts = (value.match(/[äöüßÄÖÜ]/g) || []).length;
+    const words = value.toLowerCase().match(/[a-zäöüß]+/g) || [];
+    const stopwordHits = words.filter(word => GERMAN_WORD_STOP_LIST.has(word)).length;
+    return umlauts + stopwordHits;
+  }
+
+  async function suggestGermanWords(german, english, rawMain, exerciseType, selectedGerman = '') {
+    const suggestions = [];
+    const used = new Set();
+
+    if (exerciseType === 'New word' && german) {
+      const word = german.replace(/[.!?]+$/g, '').trim();
+      const en = english
+        .replace(/[.!?]+$/g, '')
+        .replace(/^(i am|i'm|it is|it's|we are|we're|you are|you're)\s+/i, '')
+        .trim();
+      if (word) {
+        used.add(normalizeDuplicateText(word));
+        suggestions.push({id: makeDraftId('word'), selected: true, english: en, german: word});
+      }
+    }
+
+    if (selectedGerman && exerciseType === 'Fill in the blank') {
+      const pieces = cleanOcrLines(selectedGerman).map(normalizeGermanOcr).filter(Boolean);
+      for (const piece of pieces) {
+        const key = normalizeDuplicateText(piece);
+        if (!key || used.has(key)) continue;
+        used.add(key);
+        suggestions.push({id: makeDraftId('word'), selected: false, english: '', german: piece});
+      }
+    }
+
+    // No kuromoji equivalent for German — word-bank tiles are just whitespace-
+    // separated, so a plain split stands in for the tokenizer step.
+    const rawTokens = String(rawMain || '')
+      .split(/\s+/)
+      .map(token => token.replace(/[^A-Za-zÀ-ž0-9äöüßÄÖÜ-]/g, ''))
+      .filter(token => token.length >= 2 && token.length <= 20)
+      .filter(token => !GERMAN_WORD_STOP_LIST.has(token.toLowerCase()));
+
+    for (const word of rawTokens) {
+      if (suggestions.length >= 4) break;
+      const key = normalizeDuplicateText(word);
+      if (!key || used.has(key)) continue;
+      used.add(key);
+      suggestions.push({id: makeDraftId('word'), selected: false, english: '', german: word});
+    }
+
+    const trimmed = suggestions.slice(0, 4);
+
+    // Any suggested word recognized as a verb gets expanded into the full
+    // 5-form conjugation-set convention (both sides), overriding whatever
+    // single inflected form/gloss it had -- this runs before the plain
+    // English-gloss fill below so a verb match always wins over it.
+    const verbDictionary = await ensureGermanVerbDictionary();
+    if (verbDictionary) {
+      for (const entry of trimmed) {
+        const verb = lookupGermanVerb(verbDictionary, entry.german);
+        if (verb) {
+          entry.german = verb.german;
+          entry.english = verb.english;
+        }
+      }
+    }
+
+    const withGloss = trimmed.some(entry => !entry.english);
+    if (withGloss) {
+      const dictionary = await ensureGermanEnglishDictionary();
+      if (dictionary) {
+        for (const entry of trimmed) {
+          if (!entry.english) entry.english = lookupGermanEnglish(dictionary, entry.german);
+        }
+      }
+    }
+    return trimmed;
+  }
+
   function createEmptyScanResult(selected, index, message) {
     return {
       id: `scan-${Date.now()}-${index}`,
@@ -1576,9 +2316,15 @@
       warning: message || 'OCR did not return text',
       rawMain: '',
       rawFeedback: '',
-      sentence: {selected: false, english: '', romaji: '', kanji: '', kana: ''},
+      sentence: emptySentenceDraft(),
       words: [],
     };
+  }
+
+  function emptySentenceDraft() {
+    const draft = {selected: false};
+    activeFields().forEach(field => { draft[field.key] = ''; });
+    return draft;
   }
 
   // Colour-based text masking (createTextMaskCrop / createSelectedTextCanvas) is tuned to
@@ -1710,10 +2456,15 @@
       mask[pixel] = greenText || purpleText ? 1 : 0;
     }
 
+    // Unlike createTextMaskCrop (tuned for individual word tiles), the "selected"
+    // pass also has to capture whole multi-choice answer buttons ("zum Stadion",
+    // "is upset with Anja") whose green outline/text forms one connected component
+    // spanning most of the screen width — a tile-sized limit here silently drops
+    // (or truncates) exactly the content this pass exists to collect.
     return maskToCanvas(canvas, pixels, mask, {
-      maxWidth: 230,
-      maxHeight: 175,
-      maxArea: 4800,
+      maxWidth: canvas.width,
+      maxHeight: 260,
+      maxArea: 150000,
     });
   }
 
@@ -1881,6 +2632,7 @@
     if (/fill\s+in\s+the\s+blank/i.test(text)) return 'Fill in the blank';
     if (/complete\s+the\s+sentence/i.test(text)) return 'Complete the sentence';
     if (/translate\s+this\s+sentence/i.test(text)) return 'Translate the sentence';
+    if (/read\s+and\s+respond/i.test(text)) return 'Read and respond';
     if (/new\s*word/i.test(text)) return 'New word';
     return 'Sentence screenshot';
   }
@@ -1931,9 +2683,14 @@
     const lines = englishCandidates(text);
     if (!lines.length) return '';
     const candidates = [...lines];
+    // See the matching comment in extractGermanFromText — capped higher than a
+    // single-sentence answer needs so a wrapped multi-sentence passage doesn't
+    // only ever surface as a truncated slice.
     for (let start = 0; start < lines.length; start += 1) {
-      for (let length = 2; length <= 3 && start + length <= lines.length; length += 1) {
-        candidates.push(lines.slice(start, start + length).join(' '));
+      for (let length = 2; length <= 6 && start + length <= lines.length; length += 1) {
+        const group = lines.slice(start, start + length);
+        if (crossesLanguageBoundary(group)) continue;
+        candidates.push(group.join(' '));
       }
     }
     // Translate exercises build the English answer from many single-word tapped
@@ -2004,6 +2761,10 @@
   function normalizeEnglishOcr(value) {
     return String(value || '')
       .replace(/^[✓✔✕×@!•:;\-\s]+/, '')
+      // Mirrors normalizeGermanOcr's play/audio-icon strip: the icon is sometimes
+      // misread as a lone letter-plus-glyph fused onto the start of the line
+      // (seen as "q)" on the German side, "a &" on the English side).
+      .replace(/^[a-z]?\s*[)\]@&]\s*/i, '')
       .replace(/(^|\s)\|(?=\s|$)/g, '$1I')
       .replace(/\s+/g, ' ')
       .replace(/^(correct!?\s*meaning|correct\s*meaning|nicely done\.?\s*meaning|nice!?\s*meaning|meaning)\s*:?\s*/i, '')
@@ -2017,7 +2778,11 @@
     const words = text.split(/\s+/).filter(Boolean).length;
     const shortDistractorPenalty = words <= 2 ? 35 : 0;
     const uiPenalty = /\b(combo|continue|explain|good job|correct|amazing|excellent|previous mistake)\b/i.test(text) ? 80 : 0;
-    return text.length + words * 6 + (/[.!?]$/.test(text) ? 22 : 0) - shortDistractorPenalty - uiPenalty;
+    // See the matching comment on germanLineScore: without this, a clean German
+    // sentence (esp. one ending in a period) can out-score the real English
+    // answer on pure sentence-shape and get wrongly crowned as "English".
+    const wrongLanguagePenalty = germanMarkerScore(text) > 0 && englishMarkerScore(text) === 0 ? 500 : 0;
+    return text.length + words * 6 + (/[.!?]$/.test(text) ? 22 : 0) - shortDistractorPenalty - uiPenalty - wrongLanguagePenalty;
   }
 
   function cleanOcrLines(text) {
@@ -2189,11 +2954,8 @@
             <label class="select-entry"><input type="checkbox" data-section="sentence" data-field="selected" ${result.sentence.selected ? 'checked' : ''}> Import sentence</label>
             <span>Sentence ID assigned on import</span>
           </div>
-          <div class="draft-fields">
-            ${draftField('English', 'sentence', 'english', result.sentence.english, true)}
-            ${draftField('Romaji', 'sentence', 'romaji', result.sentence.romaji, true)}
-            ${draftField('Kanji / Japanese', 'sentence', 'kanji', result.sentence.kanji, true)}
-            ${draftField('Kana', 'sentence', 'kana', result.sentence.kana, true)}
+          <div class="draft-fields" style="--draft-field-count: ${activeFields().length}">
+            ${activeFields().map(field => draftField(field.label, 'sentence', field.key, result.sentence[field.key], true)).join('')}
           </div>
         </section>
 
@@ -2326,19 +3088,20 @@
   }
 
   function computeNewWordCandidates() {
+    const config = languageConfig();
     const seen = new Set();
     const candidates = [];
     for (const result of state.screenshots.results) {
       for (const word of result.words) {
-        const kanji = String(word.kanji || '').trim();
-        const kana = String(word.kana || '').trim();
-        const english = String(word.english || '').trim();
-        if (!kanji && !kana) continue;
-        const key = normalizeDuplicateText(kanji || kana);
+        const values = {};
+        config.newWordFields.forEach(key => { values[key] = String(word[key] || '').trim(); });
+        const identityValue = config.identityFields.map(key => values[key]).find(Boolean);
+        if (!identityValue) continue;
+        const key = normalizeDuplicateText(identityValue);
         if (!key || seen.has(key)) continue;
-        if (findDuplicate({type: 'word', kanji, kana, english})) continue;
+        if (findDuplicate({type: 'word', ...values})) continue;
         seen.add(key);
-        candidates.push({resultId: result.id, wordId: word.id, selected: word.selected, kanji, kana, english, source: result.fileName});
+        candidates.push({resultId: result.id, wordId: word.id, selected: word.selected, ...values, source: result.fileName});
       }
     }
     return candidates;
@@ -2349,17 +3112,24 @@
     elements.newWordsPanel.hidden = !hasScans;
     if (!hasScans) return;
 
+    // Article derivation needs the (lazily-fetched) gender dictionary; if it's
+    // still loading, re-render once it lands so badges pop in rather than
+    // requiring the user to hit Refresh.
+    if (state.language === 'de' && !germanGenderDictionaryCache) {
+      ensureGermanGenderDictionary().then(() => renderNewWordsSummary());
+    }
+
+    const config = languageConfig();
+    const fieldLabel = key => (config.fields.find(field => field.key === key) || {}).label || key;
     const candidates = computeNewWordCandidates();
     elements.newWordsSummaryText.textContent = candidates.length
       ? `${candidates.length} new word${candidates.length === 1 ? '' : 's'} not already in your list`
       : 'No new words — everything suggested is already saved';
     elements.newWordsList.innerHTML = candidates.length
       ? candidates.map(candidate => `
-        <li class="new-word-row" data-scan-id="${candidate.resultId}" data-word-id="${candidate.wordId}">
+        <li class="new-word-row" data-scan-id="${candidate.resultId}" data-word-id="${candidate.wordId}" style="--word-field-count: ${config.newWordFields.length}">
           <label class="select-entry" title="Import this word"><input type="checkbox" data-field="selected" ${candidate.selected ? 'checked' : ''}></label>
-          <input class="new-word-field" data-field="kanji" value="${escapeHtml(candidate.kanji)}" placeholder="Kanji">
-          <input class="new-word-field" data-field="kana" value="${escapeHtml(candidate.kana)}" placeholder="Kana">
-          <input class="new-word-field" data-field="english" value="${escapeHtml(candidate.english)}" placeholder="English">
+          ${config.newWordFields.map(key => `<span class="new-word-field-wrap" data-field="${key}">${key === 'german' ? articleBadge({article: deriveGermanArticle(candidate[key])}) : ''}<input class="new-word-field" data-field="${key}" value="${escapeHtml(candidate[key] || '')}" placeholder="${escapeHtml(fieldLabel(key))}"></span>`).join('')}
           <span class="new-word-source" title="${escapeHtml(candidate.source)}">${escapeHtml(candidate.source)}</span>
           <button class="row-action" type="button" data-scan-action="remove-word" title="Remove suggestion">×</button>
         </li>
@@ -2448,6 +3218,11 @@
   function toggleTheme() {
     const dark = document.documentElement.classList.toggle('dark');
     localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
+  }
+
+  function closeDataMenu() {
+    elements.dataMenuList.hidden = true;
+    elements.dataMenuButton.setAttribute('aria-expanded', 'false');
   }
 
   function downloadFile(filename, content, type) {

@@ -76,7 +76,8 @@ function requiredOcrFiles() {
     path.join(tesseractDirectory, 'dist', 'worker.min.js'),
     ...coreNames.map(name => path.join(coreDirectory, name)),
     path.join(ROOT, 'vendor', 'lang', 'jpn.traineddata.gz'),
-    path.join(ROOT, 'vendor', 'lang', 'eng.traineddata.gz')
+    path.join(ROOT, 'vendor', 'lang', 'eng.traineddata.gz'),
+    path.join(ROOT, 'vendor', 'lang', 'deu.traineddata.gz')
   ];
 }
 
@@ -150,6 +151,46 @@ app.get('/api/german-gender-status', (request, response) => {
 app.get('/vendor/dict/german-gender-lookup.json.gz', (request, response) => {
   setAssetHeaders(response, germanGenderDictionaryFile);
   response.sendFile(germanGenderDictionaryFile, error => {
+    if (error) response.status(404).end();
+  });
+});
+
+// The German-English lookup is a nice-to-have on top of word suggestions,
+// not a requirement, so it gets its own status/route pair that never blocks
+// OCR if the bundled dictionary file is missing.
+const germanEnglishDictionaryFile = path.join(ROOT, 'vendor', 'dict', 'german-english-lookup.json.gz');
+
+app.get('/api/german-dictionary-status', (request, response) => {
+  const ready = fs.existsSync(germanEnglishDictionaryFile);
+  response.status(ready ? 200 : 503).json({
+    ready,
+    message: ready ? 'Local German-English dictionary is ready.' : 'German-English dictionary file is missing.'
+  });
+});
+
+app.get('/vendor/dict/german-english-lookup.json.gz', (request, response) => {
+  setAssetHeaders(response, germanEnglishDictionaryFile);
+  response.sendFile(germanEnglishDictionaryFile, error => {
+    if (error) response.status(404).end();
+  });
+});
+
+// The German verb-conjugation lookup expands a suggested German verb into
+// this app's personal-collection 5-form convention; also a nice-to-have that
+// never blocks OCR if the bundled dictionary file is missing.
+const germanVerbDictionaryFile = path.join(ROOT, 'vendor', 'dict', 'german-verb-lookup.json.gz');
+
+app.get('/api/german-verb-status', (request, response) => {
+  const ready = fs.existsSync(germanVerbDictionaryFile);
+  response.status(ready ? 200 : 503).json({
+    ready,
+    message: ready ? 'Local German verb dictionary is ready.' : 'German verb dictionary file is missing.'
+  });
+});
+
+app.get('/vendor/dict/german-verb-lookup.json.gz', (request, response) => {
+  setAssetHeaders(response, germanVerbDictionaryFile);
+  response.sendFile(germanVerbDictionaryFile, error => {
     if (error) response.status(404).end();
   });
 });

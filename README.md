@@ -53,3 +53,13 @@ Data is saved in browser local storage for `http://127.0.0.1:8000`. If moving fr
 ## Backup
 
 Use the export buttons regularly. Browser storage is convenient but should not be the only copy of your study list.
+
+background-image: url("https://wallpapercat.com/w/full/1/a/1/34391-1920x1200-desktop-hd-germany-wallpaper.jpg");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+
+background-image: url("https://blog.globalbasecamps.com/hs-fs/hubfs/mount-fuji-sunset-cherry-blossom-spring-pagoda-16811%20(1).jpg?width=3000&name=mount-fuji-sunset-cherry-blossom-spring-pagoda-16811%20(1).jpg");
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;

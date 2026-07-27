@@ -6,7 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check app.js && node --check data.js && node --check data-de.js"
+    "check": "node --check server.js && node --check app.js && node --check data/japanese-words.js && node --check data/japanese-sentences.js && node --check data/german-words.js && node --check data/german-sentences.js"
   },
   "engines": {
     "node": ">=16"
