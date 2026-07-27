@@ -74,6 +74,7 @@
     view: 'word',
     search: '',
     hardOnly: false,
+    ocrAvailable: true,
     sortDirection: 'desc',
     covered: new Set(),
     cellOverrides: new Set(),
@@ -201,8 +202,16 @@
   bindEvents();
   setCardCategory('word', true);
   resetIdFilterToFullRange();
-  elements.serverNotice.hidden = location.protocol !== 'file:';
+  elements.serverNotice.hidden = true;
   render();
+  checkOcrAvailability();
+
+  async function checkOcrAvailability() {
+    const status = await getLocalOcrStatus();
+    state.ocrAvailable = status.ready;
+    elements.serverNotice.hidden = status.ready;
+    elements.importTab.hidden = !languageConfig().supportsOcr || !status.ready;
+  }
 
   function clone(value) {
     return JSON.parse(JSON.stringify(value));
@@ -500,6 +509,10 @@
       showToast(`Screenshot import isn't available for ${languageConfig().label} yet`);
       return;
     }
+    if (view === 'import' && !state.ocrAvailable) {
+      showToast('Screenshot import needs the local Node server (run npm start).');
+      return;
+    }
     if (view === 'cards' || view === 'import') {
       state.screen = view;
       if (view === 'cards') {
@@ -549,7 +562,7 @@
       <label class="choice-card"><input type="radio" name="cardDirection" value="en-native"><span>English → ${escapeHtml(config.label)}</span></label>
     `;
 
-    elements.importTab.hidden = !config.supportsOcr;
+    elements.importTab.hidden = !config.supportsOcr || !state.ocrAvailable;
     elements.dictAttribution.innerHTML = config.id === 'de'
       ? `English glosses use the <a href="https://freedict.org/" target="_blank" rel="noopener">FreeDict deu-eng dictionary</a>, generated from the Ding dictionary (dict.tu-chemnitz.de), licensed GPLv3+/AGPLv3+.`
       : `English glosses use the <a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project" target="_blank" rel="noopener">JMdict/EDICT dictionary files</a>, property of the Electronic Dictionary Research and Development Group, used in conformance with the Group's licence.`;
