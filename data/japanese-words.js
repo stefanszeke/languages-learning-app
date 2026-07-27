@@ -1198,5 +1198,199 @@ window.INITIAL_WORDS = [
     "romaji": "hashi",
     "kanji": "橋",
     "kana": "はし"
+  },
+  {
+    "id": 151,
+    "type": "word",
+    "english": "to search for; to look for; to hunt for",
+    "romaji": "sagashi",
+    "kanji": "さがす",
+    "kana": "さがし",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111701.Duolingo.png",
+      "importedAt": "2026-07-23T12:24:08.045Z",
+      "ocrConfidence": 91
+    }
+  },
+  {
+    "id": 152,
+    "type": "word",
+    "english": "rural area; countryside; the sticks",
+    "romaji": "inaka",
+    "kanji": "いなか",
+    "kana": "いなか",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111729.Duolingo.png",
+      "importedAt": "2026-07-23T12:26:53.036Z",
+      "ocrConfidence": 88
+    }
+  },
+  {
+    "id": 153,
+    "type": "word",
+    "english": "to move (house); to change residence",
+    "romaji": "hikkoshi",
+    "kanji": "ひっこす",
+    "kana": "ひっこし",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111729.Duolingo.png",
+      "importedAt": "2026-07-23T12:26:53.036Z",
+      "ocrConfidence": 88
+    }
+  },
+  {
+    "id": 154,
+    "type": "word",
+    "english": "festival; feast; matsuri",
+    "romaji": "matsuri",
+    "kanji": "まつり",
+    "kana": "まつり",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260407-082214.Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 87
+    },
+    "hard": true
+  },
+  {
+    "id": 155,
+    "type": "word",
+    "english": "ticket",
+    "romaji": "kippu",
+    "kanji": "きっぷ",
+    "kana": "きっぷ",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090251_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 83
+    }
+  },
+  {
+    "id": 156,
+    "type": "word",
+    "english": "underground; below the ground",
+    "romaji": "chika",
+    "kanji": "ちか",
+    "kana": "ちか",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090651_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 90
+    }
+  },
+  {
+    "id": 157,
+    "type": "word",
+    "english": "iron (Fe)",
+    "romaji": "tetsu",
+    "kanji": "てつ",
+    "kana": "てつ",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090651_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 90
+    }
+  },
+  {
+    "id": 158,
+    "type": "word",
+    "english": "to take (a resource, e.g. time or money)",
+    "romaji": "kakari",
+    "kanji": "かかる",
+    "kana": "かかり",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090657_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 86
+    },
+    "hard": true
+  },
+  {
+    "id": 159,
+    "type": "word",
+    "english": "to put in order; to tidy up; to clean up",
+    "romaji": "katazuke",
+    "kanji": "かたづける",
+    "kana": "かたづけ",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260412-203116_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 75
+    },
+    "hard": true
+  },
+  {
+    "id": 160,
+    "type": "word",
+    "english": "to return; to come home; to go home",
+    "romaji": "kaeri",
+    "kanji": "帰る",
+    "kana": "かえり",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260412-203347_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 81
+    }
+  },
+  {
+    "id": 161,
+    "type": "word",
+    "english": "newspaper",
+    "romaji": "shimbun",
+    "kanji": "新聞",
+    "kana": "しんぶん",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260415-074613_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 90
+    }
+  },
+  {
+    "id": 162,
+    "type": "word",
+    "english": "still; as yet; only",
+    "romaji": "mada",
+    "kanji": "まだ",
+    "kana": "まだ",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260415-074613_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 90
+    }
+  },
+  {
+    "id": 163,
+    "type": "word",
+    "english": "to get up; to rise; to blaze up (fire)",
+    "romaji": "oki",
+    "kanji": "おきる",
+    "kana": "おき",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260415-074613_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 90
+    },
+    "hard": true
+  },
+  {
+    "id": 164,
+    "type": "word",
+    "english": "flesh; meat",
+    "romaji": "niku",
+    "kanji": "肉",
+    "kana": "にく"
   }
 ];

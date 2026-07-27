@@ -10,6 +10,36 @@ const ROOT = __dirname;
 const HOST = '127.0.0.1';
 const PORT = Number(process.env.PORT) || 8000;
 
+app.use(express.json({limit: '10mb'}));
+
+// Lets the running app write its current word/sentence lists straight back
+// into the seed files it was loaded from, so the next git push carries them
+// to GitHub Pages -- only reachable locally via `npm start`, since a static
+// deploy has no server to receive this request.
+const SEED_FILE_TARGETS = {
+  ja: {words: 'japanese-words.js', wordsVar: 'INITIAL_WORDS', sentences: 'japanese-sentences.js', sentencesVar: 'INITIAL_SENTENCES'},
+  de: {words: 'german-words.js', wordsVar: 'INITIAL_WORDS_DE', sentences: 'german-sentences.js', sentencesVar: 'INITIAL_SENTENCES_DE'},
+};
+
+function writeSeedFile(fileName, varName, items) {
+  const filePath = path.join(ROOT, 'data', fileName);
+  const contents = `window.${varName} = ${JSON.stringify(items, null, 2)};\n`;
+  fs.writeFileSync(filePath, contents);
+}
+
+app.post('/api/sync-seed-data', (request, response) => {
+  const {language, words, sentences} = request.body || {};
+  const target = SEED_FILE_TARGETS[language];
+  if (!target || !Array.isArray(words) || !Array.isArray(sentences)) {
+    response.status(400).json({error: 'Expected {language: "ja"|"de", words: [], sentences: []}.'});
+    return;
+  }
+
+  writeSeedFile(target.words, target.wordsVar, words);
+  writeSeedFile(target.sentences, target.sentencesVar, sentences);
+  response.json({written: {words: words.length, sentences: sentences.length}});
+});
+
 function resolvePackageDirectory(packageName) {
   return path.dirname(require.resolve(`${packageName}/package.json`));
 }

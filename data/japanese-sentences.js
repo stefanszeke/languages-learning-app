@@ -350,5 +350,131 @@ window.INITIAL_SENTENCES = [
     "romaji": "imasu",
     "kanji": "います",
     "kana": "います"
+  },
+  {
+    "id": 45,
+    "type": "sentence",
+    "english": "We should search for that popular speaker.",
+    "romaji": "sono ninki no supiikaa wo sagashimashou。",
+    "kanji": "そのにんきのスピーカーをさがしましょう。",
+    "kana": "そのにんきのスピーカーをさがしましょう。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111701.Duolingo.png",
+      "importedAt": "2026-07-23T12:24:09.410Z",
+      "ocrConfidence": 91
+    }
+  },
+  {
+    "id": 46,
+    "type": "sentence",
+    "english": "I moved to the countryside.",
+    "romaji": "inaka ni hikkoshimashita",
+    "kanji": "いなかにひっこしました",
+    "kana": "いなかにひっこしました",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111729.Duolingo.png",
+      "importedAt": "2026-07-23T12:26:54.308Z",
+      "ocrConfidence": 88
+    }
+  },
+  {
+    "id": 47,
+    "type": "sentence",
+    "english": "There was a train accident",
+    "romaji": "denshanojikogaarimashita",
+    "kanji": "電車のじこがありました",
+    "kana": "でんしゃのじこがありました",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260701-111233_Duolingo.png",
+      "importedAt": "2026-07-26T07:52:30.575Z",
+      "ocrConfidence": 75
+    }
+  },
+  {
+    "id": 48,
+    "type": "sentence",
+    "english": "We should come here next year too",
+    "romaji": "rainemmokokonikimashou!",
+    "kanji": "来年もここに来ましょう!",
+    "kana": "らいねんもここにきましょう!",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260623-073716_Duolingo.png",
+      "importedAt": "2026-07-26T07:53:18.277Z",
+      "ocrConfidence": 77
+    }
+  },
+  {
+    "id": 49,
+    "type": "sentence",
+    "english": "From what time is the festival",
+    "romaji": "omatsurihananjikaradesuka",
+    "kanji": "おまつりは何時からですか",
+    "kana": "おまつりはなんじからですか",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260407-082214.Duolingo.png",
+      "importedAt": "2026-07-26T08:06:49.141Z",
+      "ocrConfidence": 87
+    }
+  },
+  {
+    "id": 50,
+    "type": "sentence",
+    "english": "Did you already buy the train ticket",
+    "romaji": "moudenshanokippuwokaimashitaka。",
+    "kanji": "もうでんしゃのきっぷを買いましたか。",
+    "kana": "もうでんしゃのきっぷをかいましたか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090251_Duolingo.png",
+      "importedAt": "2026-07-26T08:06:49.141Z",
+      "ocrConfidence": 83
+    }
+  },
+  {
+    "id": 51,
+    "type": "sentence",
+    "english": "lt takes about one hour to go to the party by subway.",
+    "romaji": "paatiimadechikatetsudeichijikanguraikakarimasu。",
+    "kanji": "パーティーまでちかてつで一時間ぐらいかかります。",
+    "kana": "ぱーてぃーまでちかてつでいちじかんぐらいかかります。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090657_Duolingo.png",
+      "importedAt": "2026-07-26T08:06:49.141Z",
+      "ocrConfidence": 86
+    }
+  },
+  {
+    "id": 52,
+    "type": "sentence",
+    "english": "It takes about twenty minutes by bike to Ken's house",
+    "romaji": "kensannoiemadejitenshade=juufunguraikakarimasu。",
+    "kanji": "けんさんの家までじてんしゃで=十分ぐらいかかります。",
+    "kana": "けんさんのいえまでじてんしゃで=じゅうふんぐらいかかります。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090705_Duolingo.png",
+      "importedAt": "2026-07-26T08:06:49.141Z",
+      "ocrConfidence": 91
+    }
+  },
+  {
+    "id": 53,
+    "type": "sentence",
+    "english": "I'm going to tidy UP the table",
+    "romaji": "teeburuwokatazukemasu。",
+    "kanji": "テーブルをかたづけます。",
+    "kana": "テーブルをかたづけます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260412-203116_Duolingo.png",
+      "importedAt": "2026-07-26T08:06:49.141Z",
+      "ocrConfidence": 75
+    }
   }
 ];

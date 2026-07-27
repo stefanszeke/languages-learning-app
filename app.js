@@ -19,6 +19,10 @@
   // the same reason as the gender dictionary above.
   let germanVerbDictionaryPromise = null;
 
+  // Populated lazily by ensureRomajiIndex(), the first time the Romaji field's
+  // autocomplete runs; declared up front for the same reason as above.
+  let romajiIndexCache = null;
+
   const LANGUAGES = {
     ja: {
       id: 'ja',
@@ -123,6 +127,7 @@
     exportMdButton: document.querySelector('#exportMdButton'),
     exportWordsJsonButton: document.querySelector('#exportWordsJsonButton'),
     exportSentencesJsonButton: document.querySelector('#exportSentencesJsonButton'),
+    syncSeedDataButton: document.querySelector('#syncSeedDataButton'),
     resetButton: document.querySelector('#resetButton'),
     fileInput: document.querySelector('#fileInput'),
     dataMenuButton: document.querySelector('#dataMenuButton'),
@@ -419,6 +424,7 @@
     elements.exportWordsJsonButton.addEventListener('click', () => exportJson('word'));
     elements.exportSentencesJsonButton.addEventListener('click', () => exportJson('sentence'));
     elements.exportMdButton.addEventListener('click', exportMarkdown);
+    elements.syncSeedDataButton.addEventListener('click', syncSeedDataToDisk);
     elements.resetButton.addEventListener('click', resetData);
 
     elements.dataMenuButton.addEventListener('click', event => {
@@ -811,6 +817,7 @@
   // "gehen / ich gehe / er geht / du gehst / wir gehen".
   function bindDialogAutoFill() {
     const grid = elements.dialogFieldGrid;
+    const englishInput = grid.querySelector('[data-field="english"]');
     if (state.language === 'de') {
       const germanInput = grid.querySelector('[data-field="german"]');
       if (germanInput) {
@@ -820,20 +827,42 @@
           autoFillGermanDialogFields();
         });
       }
+      if (englishInput) {
+        setupFieldAutocomplete(englishInput, germanEnglishDropdownMatches, match => {
+          englishInput.value = match.primary;
+          if (germanInput && !germanInput.value.trim()) germanInput.value = match.germanKey;
+          autoFillGermanDialogFields();
+        });
+      }
     } else if (state.language === 'ja') {
       const kanjiInput = grid.querySelector('[data-field="kanji"]');
       const kanaInput = grid.querySelector('[data-field="kana"]');
+      const romajiInput = grid.querySelector('[data-field="romaji"]');
       if (kanjiInput) {
         kanjiInput.addEventListener('blur', autoFillJapaneseDialogFields);
         setupFieldAutocomplete(kanjiInput, japaneseDropdownMatches, match => {
           kanjiInput.value = match.primary;
           autoFillJapaneseDialogFields();
-        });
+        }, {minLength: 1});
       }
       if (kanaInput) {
         kanaInput.addEventListener('blur', autoFillJapaneseDialogFields);
         setupFieldAutocomplete(kanaInput, japaneseDropdownMatches, match => {
           kanaInput.value = match.primary;
+          autoFillJapaneseDialogFields();
+        }, {minLength: 1});
+      }
+      if (romajiInput) {
+        setupFieldAutocomplete(romajiInput, romajiDropdownMatches, match => {
+          romajiInput.value = match.primary;
+          if (kanjiInput && !kanjiInput.value.trim()) kanjiInput.value = match.japaneseKey;
+          autoFillJapaneseDialogFields();
+        });
+      }
+      if (englishInput) {
+        setupFieldAutocomplete(englishInput, englishDropdownMatches, match => {
+          englishInput.value = match.primary;
+          if (kanjiInput && !kanjiInput.value.trim()) kanjiInput.value = match.japaneseKey;
           autoFillJapaneseDialogFields();
         });
       }
@@ -845,7 +874,7 @@
   // clickable/keyboard-navigable dropdown under the input. `mousedown` on the
   // list is prevented so clicking an item doesn't blur the input before the
   // click (and this handler's blur-triggered autofill) gets to run.
-  function setupFieldAutocomplete(input, fetchMatches, onSelect) {
+  function setupFieldAutocomplete(input, fetchMatches, onSelect, {minLength = 2} = {}) {
     const wrap = input.closest('.field-autocomplete');
     if (!wrap) return;
     const list = document.createElement('ul');
@@ -894,7 +923,7 @@
     input.addEventListener('input', () => {
       clearTimeout(debounceTimer);
       const prefix = input.value.trim();
-      if (prefix.length < 2) { closeList(); return; }
+      if (prefix.length < minLength) { closeList(); return; }
       const token = ++requestToken;
       debounceTimer = setTimeout(async () => {
         const results = await fetchMatches(prefix);
@@ -964,8 +993,84 @@
   async function japaneseDropdownMatches(prefix) {
     const dictionary = await ensureEnglishDictionary();
     if (!dictionary) return [];
-    const words = dictionaryPrefixMatches(dictionary, prefix, {caseSensitive: true});
-    return sortMatchesByLength(words.map(word => ({primary: word, secondary: dictionary[word].split(';')[0].trim()})));
+    const words = dictionaryPrefixMatches(dictionary.glosses, prefix, {caseSensitive: true});
+    return sortMatchesByLength(words.map(word => ({primary: word, secondary: dictionary.glosses[word].split(';')[0].trim()})));
+  }
+
+  // Reverse lookup for the English/gloss-driven autocomplete fields: scans a
+  // {headword: "sense one; sense two"} dictionary for entries where any
+  // semicolon-separated sense starts with the typed prefix.
+  function reverseGlossMatches(dictionary, prefix, {scanLimit = 400} = {}) {
+    if (!dictionary) return [];
+    const needle = prefix.toLowerCase();
+    const results = [];
+    for (const key in dictionary) {
+      const gloss = dictionary[key];
+      const matchesSense = gloss.split(';').some(sense => sense.trim().toLowerCase().startsWith(needle));
+      if (!matchesSense) continue;
+      results.push({key, gloss: gloss.split(';')[0].trim()});
+      if (results.length >= scanLimit) break;
+    }
+    return results;
+  }
+
+  async function englishDropdownMatches(prefix) {
+    const dictionary = await ensureEnglishDictionary();
+    if (!dictionary) return [];
+    return sortMatchesByLength(reverseGlossMatches(dictionary.glosses, prefix).map(({key, gloss}) =>
+      ({primary: gloss, secondary: key, japaneseKey: dictionary.kanaToKanji[key] || key})));
+  }
+
+  async function germanEnglishDropdownMatches(prefix) {
+    const [verbDictionary, glossDictionary] = await Promise.all([ensureGermanVerbDictionary(), ensureGermanEnglishDictionary()]);
+    const needle = prefix.toLowerCase();
+    const seen = new Set();
+    const results = [];
+    if (verbDictionary) {
+      for (const infinitive in verbDictionary.verbs) {
+        const firstSense = verbDictionary.verbs[infinitive].english.split(' / ')[0].trim();
+        if (!firstSense.toLowerCase().startsWith(needle)) continue;
+        seen.add(infinitive.toLowerCase());
+        results.push({primary: firstSense, secondary: infinitive, germanKey: infinitive});
+      }
+    }
+    if (glossDictionary) {
+      for (const {key, gloss} of reverseGlossMatches(glossDictionary, prefix)) {
+        if (seen.has(key.toLowerCase())) continue;
+        results.push({primary: gloss, secondary: key, germanKey: key});
+      }
+    }
+    return sortMatchesByLength(results);
+  }
+
+  // Lets the Romaji field suggest from the same JMdict-derived dictionary:
+  // every headword (kanji or kana) gets romanized once and cached, then
+  // matched by romaji prefix. Kanji characters pass through kanaToRomaji()
+  // unchanged, so kanji-only headwords simply never match a romaji query.
+  function ensureRomajiIndex(dictionary) {
+    if (!romajiIndexCache) {
+      romajiIndexCache = Object.keys(dictionary.glosses).map(key => ({key, romaji: kanaToRomaji(key).toLowerCase()}));
+    }
+    return romajiIndexCache;
+  }
+
+  async function romajiDropdownMatches(prefix) {
+    const dictionary = await ensureEnglishDictionary();
+    if (!dictionary) return [];
+    const needle = prefix.toLowerCase();
+    const index = ensureRomajiIndex(dictionary);
+    const results = [];
+    for (const entry of index) {
+      if (!entry.romaji.startsWith(needle)) continue;
+      const kanjiForm = dictionary.kanaToKanji[entry.key] || entry.key;
+      results.push({
+        primary: entry.romaji,
+        secondary: `${kanjiForm} — ${dictionary.glosses[entry.key].split(';')[0].trim()}`,
+        japaneseKey: kanjiForm,
+      });
+      if (results.length >= 60) break;
+    }
+    return sortMatchesByLength(results);
   }
 
   async function autoFillGermanDialogFields() {
@@ -1023,17 +1128,18 @@
     }
   }
 
-  function readDialogFields() {
+  async function readDialogFields() {
     const data = {};
     elements.dialogFieldGrid.querySelectorAll('[data-field]').forEach(input => {
       data[input.dataset.field] = input.value.trim();
     });
-    applyDerivedFields(data);
+    await applyDerivedFields(data);
     return data;
   }
 
-  function applyDerivedFields(data) {
+  async function applyDerivedFields(data) {
     if (state.language === 'de' && 'german' in data) {
+      await ensureGermanGenderDictionary();
       data.article = deriveGermanArticle(data.german);
     }
   }
@@ -1050,14 +1156,14 @@
     elements.dialog.close();
   }
 
-  function saveEntryFromForm(event) {
+  async function saveEntryFromForm(event) {
     event.preventDefault();
     if (!elements.form.reportValidity()) return;
 
     const type = elements.form.elements.entryType.value === 'sentence' ? 'sentence' : 'word';
     const originalType = elements.entryOriginalType.value === 'sentence' ? 'sentence' : elements.entryOriginalType.value === 'word' ? 'word' : null;
     const originalId = Number(elements.entryId.value) || null;
-    const itemData = {type, ...readDialogFields()};
+    const itemData = {type, ...(await readDialogFields())};
 
     if (originalType && originalId) {
       const oldCollection = collection(originalType);
@@ -1220,6 +1326,28 @@
     downloadFile(`${label}.json`, JSON.stringify(items, null, 2), 'application/json');
     const filtered = items.length !== collection(type).length;
     showToast(`${items.length} ${label} exported${filtered ? ' (filtered)' : ''}`);
+  }
+
+  async function syncSeedDataToDisk() {
+    const results = [];
+    for (const id of Object.keys(LANGUAGES)) {
+      const config = LANGUAGES[id];
+      const collections = id === state.language ? state.collections : loadCollections(config);
+      try {
+        const response = await fetch('/api/sync-seed-data', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({language: id, words: collections.word, sentences: collections.sentence}),
+        });
+        if (!response.ok) throw new Error(`status ${response.status}`);
+        const {written} = await response.json();
+        results.push(`${config.label}: ${written.words} words, ${written.sentences} sentences`);
+      } catch (error) {
+        showToast('Sync to disk only works locally via npm start (no server found).');
+        return;
+      }
+    }
+    showToast(`Synced to data/*.js — ${results.join(' · ')}. Commit & push to publish.`);
   }
 
   function exportMarkdown() {
@@ -1711,7 +1839,7 @@
 
   function lookupEnglish(dictionary, kanji, kana) {
     if (!dictionary) return '';
-    return dictionary[kanji] || dictionary[kana] || '';
+    return dictionary.glosses[kanji] || dictionary.glosses[kana] || '';
   }
 
   // Filling in English glosses for suggested German words is a nice-to-have,
