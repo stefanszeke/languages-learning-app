@@ -172,7 +172,8 @@ window.INITIAL_WORDS_DE = [
     "id": 28,
     "type": "word",
     "english": "tell jokes / I tell jokes / he tells jokes / you tell jokes / we tell jokes",
-    "german": "Witze erzählen / ich erzähle Witze / er erzählt Witze / du erzählst Witze / wir erzählen Witze"
+    "german": "Witze erzählen / ich erzähle Witze / er erzählt Witze / du erzählst Witze / wir erzählen Witze",
+    "article": "plural"
   },
   {
     "id": 29,
@@ -215,7 +216,8 @@ window.INITIAL_WORDS_DE = [
     "id": 35,
     "type": "word",
     "english": "gone / my phone is gone",
-    "german": "weg / Mein Handy ist weg"
+    "german": "weg / Mein Handy ist weg",
+    "article": "plural"
   },
   {
     "id": 36,

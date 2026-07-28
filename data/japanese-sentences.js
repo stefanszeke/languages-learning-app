@@ -26,7 +26,7 @@ window.INITIAL_SENTENCES = [
   {
     "id": 4,
     "type": "sentence",
-    "english": "I want to sleep a little longer",
+    "english": "I want to sleep a bit longer",
     "romaji": "Mou sukoshi netaidesu",
     "kanji": "もう少し寝たいです",
     "kana": "もうすこしねたいです"
@@ -118,6 +118,14 @@ window.INITIAL_SENTENCES = [
     "romaji": "Souji shimasu",
     "kanji": "掃除します",
     "kana": "そうじします"
+  },
+  {
+    "id": 16,
+    "type": "sentence",
+    "english": "I want to sleep a little longer",
+    "romaji": "Mou sukoshi netaidesu",
+    "kanji": "もう少し寝たいです",
+    "kana": "もうすこしねたいです"
   },
   {
     "id": 17,
@@ -467,6 +475,20 @@ window.INITIAL_SENTENCES = [
       "filename": "Screenshot_20260412-203116_Duolingo.png",
       "importedAt": "2026-07-26T08:06:49.141Z",
       "ocrConfidence": 75
+    }
+  },
+  {
+    "id": 54,
+    "type": "sentence",
+    "english": "I want to buy a cute scarf next time.",
+    "romaji": "kondokawaiimafuraakaitaidesu。",
+    "kanji": "こんどかわいいマフラー買いたいです。",
+    "kana": "こんどかわいいまふらーかいたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111751.Duolingo.png",
+      "importedAt": "2026-07-28T16:11:28.372Z",
+      "ocrConfidence": 90
     }
   }
 ];
