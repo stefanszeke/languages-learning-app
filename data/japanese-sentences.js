@@ -26,7 +26,7 @@ window.INITIAL_SENTENCES = [
   {
     "id": 4,
     "type": "sentence",
-    "english": "I want to sleep a bit longer",
+    "english": "I want to sleep a little longer",
     "romaji": "Mou sukoshi netaidesu",
     "kanji": "もう少し寝たいです",
     "kana": "もうすこしねたいです"
@@ -118,14 +118,6 @@ window.INITIAL_SENTENCES = [
     "romaji": "Souji shimasu",
     "kanji": "掃除します",
     "kana": "そうじします"
-  },
-  {
-    "id": 16,
-    "type": "sentence",
-    "english": "I want to sleep a little longer",
-    "romaji": "Mou sukoshi netaidesu",
-    "kanji": "もう少し寝たいです",
-    "kana": "もうすこしねたいです"
   },
   {
     "id": 17,

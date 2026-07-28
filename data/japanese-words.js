@@ -154,7 +154,7 @@ window.INITIAL_WORDS = [
   {
     "id": 20,
     "type": "word",
-    "english": "look for",
+    "english": "look for / search for",
     "romaji": "sagasu / sagashimasu / sagashita / sagasanai",
     "kanji": "探す / 探します / 探した / 探さない",
     "kana": "さがす / さがします / さがした / さがさない"
@@ -672,14 +672,6 @@ window.INITIAL_WORDS = [
     "kana": "あに"
   },
   {
-    "id": 85,
-    "type": "word",
-    "english": "stay",
-    "romaji": "tomaru / tomarimasu / tomatta / tomaranai",
-    "kanji": "泊まる / 泊まります / 泊まった / 泊まらない",
-    "kana": "とまる / とまります / とまった / とまらない"
-  },
-  {
     "id": 86,
     "type": "word",
     "english": "beach",
@@ -702,22 +694,6 @@ window.INITIAL_WORDS = [
     "romaji": "sotsugyoshimasu",
     "kanji": "卒業します",
     "kana": "そつぎょうします"
-  },
-  {
-    "id": 89,
-    "type": "word",
-    "english": "popular (person)",
-    "romaji": "ninki",
-    "kanji": "人気",
-    "kana": "にんき"
-  },
-  {
-    "id": 90,
-    "type": "word",
-    "english": "search for",
-    "romaji": "sagasu / sagashimasu / sagashita / sagasanai",
-    "kanji": "探す / 探します / 探した / 探さない",
-    "kana": "さがす / さがします / さがした / さがさない"
   },
   {
     "id": 91,
@@ -786,15 +762,16 @@ window.INITIAL_WORDS = [
   {
     "id": 99,
     "type": "word",
-    "english": "tidy up",
+    "english": "to put in order; to tidy up; to clean up",
     "romaji": "katazukeru / katazukemasu / katazuketa / katazukenai",
     "kanji": "片付ける / 片付けます / 片付けた / 片付けない",
-    "kana": "かたづける / かたづけます / かたづけた / かたづけない"
+    "kana": "かたづける / かたづけます / かたづけた / かたづけない",
+    "hard": true
   },
   {
     "id": 100,
     "type": "word",
-    "english": "in a bit",
+    "english": "in a bit / soon / about time",
     "romaji": "sorosoro",
     "kanji": "そろそろ",
     "kana": "そろそろ"
@@ -806,14 +783,6 @@ window.INITIAL_WORDS = [
     "romaji": "isu",
     "kanji": "椅子",
     "kana": "いす"
-  },
-  {
-    "id": 102,
-    "type": "word",
-    "english": "subway",
-    "romaji": "chikatetsu",
-    "kanji": "地下鉄",
-    "kana": "ちかてつ"
   },
   {
     "id": 103,
@@ -1054,14 +1023,6 @@ window.INITIAL_WORDS = [
     "romaji": "okuru / okurimasu / okutta / okuranai",
     "kanji": "送る / 送ります / 送った / 送らない",
     "kana": "おくる / おくります / おくった / おくらない"
-  },
-  {
-    "id": 133,
-    "type": "word",
-    "english": "in a bit / soon / about time",
-    "romaji": "sorosoro",
-    "kanji": "そろそろ",
-    "kana": "そろそろ"
   },
   {
     "id": 134,
@@ -1310,21 +1271,6 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260411-090657_Duolingo.png",
       "importedAt": "2026-07-26T08:04:18.386Z",
       "ocrConfidence": 86
-    },
-    "hard": true
-  },
-  {
-    "id": 159,
-    "type": "word",
-    "english": "to put in order; to tidy up; to clean up",
-    "romaji": "katazukeru / katazukemasu / katazuketa / katazukenai",
-    "kanji": "かたづける / かたづけます / かたづけた / かたづけない",
-    "kana": "かたづける / かたづけます / かたづけた / かたづけない",
-    "source": {
-      "kind": "duolingo-screenshot",
-      "filename": "Screenshot_20260412-203116_Duolingo.png",
-      "importedAt": "2026-07-26T08:04:18.386Z",
-      "ocrConfidence": 75
     },
     "hard": true
   },

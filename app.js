@@ -98,7 +98,7 @@
     search: '',
     hardOnly: false,
     simpleView: true,
-    ocrAvailable: true,
+    localServerAvailable: true,
     sortDirection: 'desc',
     covered: new Set(),
     cellOverrides: new Set(),
@@ -239,9 +239,35 @@
 
   async function checkOcrAvailability() {
     const status = await getLocalOcrStatus();
-    state.ocrAvailable = status.ready;
+    state.localServerAvailable = status.ready;
     elements.serverNotice.hidden = status.ready;
     elements.importTab.hidden = !languageConfig().supportsOcr || !status.ready;
+    elements.addButton.hidden = !status.ready;
+    if (!status.ready) {
+      reseedFromStaticData();
+      render();
+    }
+  }
+
+  // On static hosting (GitHub Pages, no local server) there's no way to sync
+  // manual edits back to the seed files, so bundled seed data is always the
+  // source of truth: rebuild the collections from it on every load, keeping
+  // only each entry's hard flag (matched by id) from what was stored locally.
+  function reseedFromStaticData() {
+    const config = languageConfig();
+    const hardIds = {word: new Set(), sentence: new Set()};
+    for (const type of ['word', 'sentence']) {
+      for (const item of state.collections[type]) {
+        if (item.hard) hardIds[type].add(item.id);
+      }
+    }
+    state.collections = seedCollections(config);
+    for (const type of ['word', 'sentence']) {
+      for (const item of state.collections[type]) {
+        if (hardIds[type].has(item.id)) item.hard = true;
+      }
+    }
+    saveCollections();
   }
 
   function clone(value) {
@@ -550,7 +576,7 @@
       showToast(`Screenshot import isn't available for ${languageConfig().label} yet`);
       return;
     }
-    if (view === 'import' && !state.ocrAvailable) {
+    if (view === 'import' && !state.localServerAvailable) {
       showToast('Screenshot import needs the local Node server (run npm start).');
       return;
     }
@@ -603,7 +629,8 @@
       <label class="choice-card"><input type="radio" name="cardDirection" value="en-native"><span>English → ${escapeHtml(config.label)}</span></label>
     `;
 
-    elements.importTab.hidden = !config.supportsOcr || !state.ocrAvailable;
+    elements.importTab.hidden = !config.supportsOcr || !state.localServerAvailable;
+    elements.addButton.hidden = !state.localServerAvailable;
     elements.dictAttribution.innerHTML = config.id === 'de'
       ? `English glosses use the <a href="https://freedict.org/" target="_blank" rel="noopener">FreeDict deu-eng dictionary</a>, generated from the Ding dictionary (dict.tu-chemnitz.de), licensed GPLv3+/AGPLv3+.`
       : `English glosses use the <a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project" target="_blank" rel="noopener">JMdict/EDICT dictionary files</a>, property of the Electronic Dictionary Research and Development Group, used in conformance with the Group's licence.`;
@@ -622,6 +649,7 @@
       ensureGermanAdjectiveDictionary();
     }
     state.collections = loadCollections(languageConfig());
+    if (!state.localServerAvailable) reseedFromStaticData();
     if (id === 'ja') migrateJapaneseVerbForms();
     migratePartsOfSpeech();
     state.covered.clear();
@@ -754,8 +782,10 @@
             <span class="row-badge">${nativeBadgeForItem(item)}</span>
             <div class="row-action-buttons">
               <button class="row-action hard-toggle${item.hard ? ' is-active' : ''}" type="button" data-action="toggle-hard" data-type="${item.type}" data-id="${item.id}" title="${item.hard ? 'Unmark hard' : 'Mark hard'}" aria-label="${item.hard ? 'Unmark' : 'Mark'} ${item.type} ${item.id} as hard">${item.hard ? '★' : '☆'}</button>
+              ${state.localServerAvailable ? `
               <button class="row-action" type="button" data-action="edit" data-type="${item.type}" data-id="${item.id}" title="Edit" aria-label="Edit ${item.type} ${item.id}">✎</button>
               <button class="row-action" type="button" data-action="delete" data-type="${item.type}" data-id="${item.id}" title="Delete" aria-label="Delete ${item.type} ${item.id}">×</button>
+              ` : ''}
             </div>
           </div>
         </td>
@@ -1388,6 +1418,11 @@
     const originalId = Number(elements.entryId.value) || null;
     const itemData = {type, ...(await readDialogFields())};
 
+    const duplicate = findDuplicate(itemData, originalId);
+    if (duplicate && !confirm(`This looks like a duplicate of entry #${duplicate.id}. Save anyway?`)) {
+      return;
+    }
+
     if (originalType && originalId) {
       const oldCollection = collection(originalType);
       const oldIndex = oldCollection.findIndex(item => item.id === originalId);
@@ -1463,7 +1498,7 @@
       }
 
       if (!entries.length) throw new Error('No valid entries were found.');
-      const summary = mergeImportedEntries(entries, `file:${file.name}`);
+      const summary = await mergeImportedEntries(entries, `file:${file.name}`);
       saveCollections();
       syncIdFilterIfNotCustom();
       render();
@@ -1473,7 +1508,7 @@
     }
   }
 
-  function mergeImportedEntries(entries, sourceLabel = '') {
+  async function mergeImportedEntries(entries, sourceLabel = '') {
     const config = languageConfig();
     let added = 0;
     let duplicates = 0;
@@ -1489,7 +1524,7 @@
       if (raw.source) candidate.source = raw.source;
       else if (sourceLabel) candidate.source = {kind: sourceLabel, importedAt: new Date().toISOString()};
       if (raw.hard) candidate.hard = true;
-      applyDerivedFields(candidate);
+      await applyDerivedFields(candidate);
 
       // Sentences need an English translation to be useful as a flashcard prompt,
       // but words are still worth saving without one — the tokenizer that finds
@@ -3704,7 +3739,7 @@
     renderScanReviews();
   }
 
-  function importSelectedSentences() {
+  async function importSelectedSentences() {
     const entries = [];
     for (const result of state.screenshots.results) {
       if (result.sentence.selected) {
@@ -3717,7 +3752,7 @@
       return;
     }
 
-    const summary = mergeImportedEntries(entries);
+    const summary = await mergeImportedEntries(entries);
     saveCollections();
     renderCounts();
     setCardCategory(elements.cardSetupForm.elements.cardType.value, false);
@@ -3729,7 +3764,7 @@
     renderScanReviews();
   }
 
-  function importSelectedWords() {
+  async function importSelectedWords() {
     const entries = [];
     for (const result of state.screenshots.results) {
       for (const word of result.words) {
@@ -3742,7 +3777,7 @@
       return;
     }
 
-    const summary = mergeImportedEntries(entries);
+    const summary = await mergeImportedEntries(entries);
     saveCollections();
     renderCounts();
     setCardCategory(elements.cardSetupForm.elements.cardType.value, false);
@@ -3763,18 +3798,30 @@
     };
   }
 
-  function findDuplicate(candidate) {
+  function findDuplicate(candidate, excludeId = null) {
     const config = languageConfig();
     const english = normalizeDuplicateText(candidate.english);
     return collection(candidate.type).find(item => {
-      const identityMatch = config.identityFields.some(key => {
-        const value = normalizeDuplicateText(candidate[key]);
-        return value && value === normalizeDuplicateText(item[key]);
-      });
-      if (identityMatch) return true;
+      if (excludeId != null && item.id === excludeId) return false;
+      if (identityFieldsMatch(candidate, item, config.identityFields)) return true;
       if (!english || english !== normalizeDuplicateText(item.english)) return false;
       return config.identityFields.every(key => normalizeDuplicateText(candidate[key]) === normalizeDuplicateText(item[key]));
     });
+  }
+
+  // Checks identity fields in priority order (Japanese lists kanji before
+  // kana) and decides at the first field both sides actually have -- so two
+  // different kanji that share a kana reading (homophones like 熱い/暑い,
+  // both あつい) aren't flagged as duplicates just because their kana matches.
+  // Kana is only consulted when one or both sides lack a kanji form.
+  function identityFieldsMatch(candidate, item, identityFields) {
+    for (const key of identityFields) {
+      const value = normalizeDuplicateText(candidate[key]);
+      const other = normalizeDuplicateText(item[key]);
+      if (!value || !other) continue;
+      return value === other;
+    }
+    return false;
   }
 
   function normalizeDuplicateText(value) {
