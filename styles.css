@@ -169,6 +169,8 @@ button { color: inherit; }
 }
 .hard-filter-toggle input { margin: 0; accent-color: var(--hard); }
 .hard-filter-toggle.is-active { background: var(--hard-soft); color: var(--hard); border-color: color-mix(in srgb, var(--hard) 50%, var(--line)); }
+#simpleViewToggle input { accent-color: var(--accent); }
+#simpleViewToggle.is-active { background: var(--accent-soft); color: var(--accent-strong); border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
 .search-box {
   flex: 1;
   min-width: 0;
@@ -324,20 +326,24 @@ td[data-script="native"] { font-size: .96rem; }
 .badge {
   display: inline-block;
   margin-right: 6px;
-  padding: 1px 7px;
+  padding: 1px 5px;
   border-radius: 999px;
-  font-size: .65rem;
+  font-size: .56rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: .04em;
+  letter-spacing: .03em;
   vertical-align: middle;
 }
 .badge-die { background: color-mix(in srgb, #d43b6f 22%, transparent); color: #d43b6f; }
 .badge-der { background: color-mix(in srgb, #3ba86a 22%, transparent); color: #3ba86a; }
 .badge-das { background: color-mix(in srgb, #252525 22%, transparent); color: #3f3f3f; }
 .badge-plural { background: color-mix(in srgb, var(--muted) 22%, transparent); color: var(--muted); }
+.badge-noun { background: color-mix(in srgb, #2f6fd4 22%, transparent); color: #2f6fd4; }
+.badge-verb { background: color-mix(in srgb, #c8871a 22%, transparent); color: #c8871a; }
+.badge-adjective { background: color-mix(in srgb, #8a4fd4 22%, transparent); color: #8a4fd4; }
+.badge-adverb { background: color-mix(in srgb, #1f9e8b 22%, transparent); color: #1f9e8b; }
 
-.study-cell { position: relative; min-height: 20px; cursor: pointer; border-radius: 5px; }
+.study-cell { position: relative; min-height: 20px; cursor: pointer; border-radius: 5px; display: flex; align-items: baseline; gap: 6px; }
 .study-cell:hover:not(.covered) { background: color-mix(in srgb, var(--covered) 35%, transparent); }
 .study-cell.covered {
   user-select: none;
@@ -355,7 +361,13 @@ td[data-script="native"] { font-size: .96rem; }
   font-size: .63rem;
   letter-spacing: .02em;
 }
-.row-actions { display: flex; justify-content: flex-end; gap: 2px; }
+/* Fixed-width badge slot so the word that follows lines up in its own
+   column across rows, instead of drifting with each badge label's length. */
+.study-cell .badge { flex: 0 0 auto; min-width: 54px; margin-right: 0; text-align: center; }
+.study-cell .cell-text { flex: 1; min-width: 0; }
+.row-actions { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
+.row-badge { display: none; }
+.row-action-buttons { display: flex; gap: 2px; }
 .row-action {
   width: 25px;
   height: 25px;
@@ -514,6 +526,8 @@ td[data-script="native"] { font-size: .96rem; }
 .entry-dialog form { padding: 20px; }
 .dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 .dialog-header h2 { margin: 2px 0 0; }
+.badge-row:empty { display: none; }
+.badge-row { display: block; margin-top: 4px; }
 .type-switch { border: 0; padding: 0; margin: 17px 0 14px; display: flex; align-items: center; gap: 14px; }
 .type-switch legend { float: left; margin-right: 15px; font-weight: 750; }
 .type-switch label { display: flex; align-items: center; gap: 6px; }
@@ -593,7 +607,7 @@ td[data-script="native"] { font-size: .96rem; }
   table, tbody, tr { display: block; width: 100%; }
   tbody tr {
     position: relative;
-    padding: 9px 46px 8px 11px;
+    padding: 9px 46px 0px 11px;
     border: 1px solid var(--line);
     border-radius: 10px;
     background: var(--panel-strong);
@@ -622,7 +636,14 @@ td[data-script="native"] { font-size: .96rem; }
     letter-spacing: .04em;
   }
   td[data-column] > .study-cell { flex: 1; min-width: 0; }
-  td:last-child { margin-top: 5px; padding-top: 7px; border-top: 1px solid var(--line-soft); }
+  /* The inline badge is dropped from the word line here -- it's shown via
+     .row-badge in the actions row instead, on the opposite side from the
+     edit/delete/hard buttons. */
+  td[data-column] .study-cell .badge { display: none; }
+  td:last-child { border-top: 1px solid var(--line-soft); }
+  .row-actions { justify-content: space-between; }
+  .row-badge { display: inline-flex; align-items: center; }
+  .row-action-buttons { gap: 20px; }
 }
 
 @media (max-width: 620px) {

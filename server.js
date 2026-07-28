@@ -225,6 +225,26 @@ app.get('/vendor/dict/german-verb-lookup.json.gz', (request, response) => {
   });
 });
 
+// The German adjective lookup backs the adjective part-of-speech badge; also
+// a nice-to-have that never blocks entry editing if the bundled dictionary
+// file is missing.
+const germanAdjectiveDictionaryFile = path.join(ROOT, 'vendor', 'dict', 'german-adjective-lookup.json.gz');
+
+app.get('/api/german-adjective-status', (request, response) => {
+  const ready = fs.existsSync(germanAdjectiveDictionaryFile);
+  response.status(ready ? 200 : 503).json({
+    ready,
+    message: ready ? 'Local German adjective dictionary is ready.' : 'German adjective dictionary file is missing.'
+  });
+});
+
+app.get('/vendor/dict/german-adjective-lookup.json.gz', (request, response) => {
+  setAssetHeaders(response, germanAdjectiveDictionaryFile);
+  response.sendFile(germanAdjectiveDictionaryFile, error => {
+    if (error) response.status(404).end();
+  });
+});
+
 if (tesseractDirectory) {
   app.get('/vendor/tesseract.min.js', (request, response) => {
     response.sendFile(path.join(tesseractDirectory, 'dist', 'tesseract.min.js'), {headers: {'Cache-Control': 'no-cache'}});

@@ -35,17 +35,17 @@ window.INITIAL_WORDS = [
     "id": 5,
     "type": "word",
     "english": "pay",
-    "romaji": "haraimasu",
-    "kanji": "払います",
-    "kana": "はらいます"
+    "romaji": "harau / haraimasu / haratta / harawanai",
+    "kanji": "払う / 払います / 払った / 払わない",
+    "kana": "はらう / はらいます / はらった / はらわない"
   },
   {
     "id": 6,
     "type": "word",
     "english": "grill",
-    "romaji": "yakimasu",
-    "kanji": "焼きます",
-    "kana": "やきます"
+    "romaji": "yaku / yakimasu / yaita / yakanai",
+    "kanji": "焼く / 焼きます / 焼いた / 焼かない",
+    "kana": "やく / やきます / やいた / やかない"
   },
   {
     "id": 7,
@@ -147,17 +147,17 @@ window.INITIAL_WORDS = [
     "id": 19,
     "type": "word",
     "english": "stay",
-    "romaji": "tomarimasu",
-    "kanji": "泊まります",
-    "kana": "とまります"
+    "romaji": "tomaru / tomarimasu / tomatta / tomaranai",
+    "kanji": "泊まる / 泊まります / 泊まった / 泊まらない",
+    "kana": "とまる / とまります / とまった / とまらない"
   },
   {
     "id": 20,
     "type": "word",
     "english": "look for",
-    "romaji": "sagashimasu",
-    "kanji": "探します",
-    "kana": "さがします"
+    "romaji": "sagasu / sagashimasu / sagashita / sagasanai",
+    "kanji": "探す / 探します / 探した / 探さない",
+    "kana": "さがす / さがします / さがした / さがさない"
   },
   {
     "id": 21,
@@ -291,17 +291,17 @@ window.INITIAL_WORDS = [
     "id": 37,
     "type": "word",
     "english": "light up",
-    "romaji": "hikarimasu",
-    "kanji": "光ります",
-    "kana": "ひかります"
+    "romaji": "hikaru / hikarimasu / hikatta / hikaranai",
+    "kanji": "光る / 光ります / 光った / 光らない",
+    "kana": "ひかる / ひかります / ひかった / ひからない"
   },
   {
     "id": 38,
     "type": "word",
     "english": "find",
-    "romaji": "mitsukemasu",
-    "kanji": "見つけます",
-    "kana": "みつけます"
+    "romaji": "mitsukeru / mitsukemasu / mitsuketa / mitsukenai",
+    "kanji": "見つける / 見つけます / 見つけた / 見つけない",
+    "kana": "みつける / みつけます / みつけた / みつけない"
   },
   {
     "id": 39,
@@ -323,17 +323,17 @@ window.INITIAL_WORDS = [
     "id": 41,
     "type": "word",
     "english": "cross",
-    "romaji": "watarimasu",
-    "kanji": "渡ります",
-    "kana": "わたります"
+    "romaji": "wataru / watarimasu / watatta / wataranai",
+    "kanji": "渡る / 渡ります / 渡った / 渡らない",
+    "kana": "わたる / わたります / わたった / わたらない"
   },
   {
     "id": 42,
     "type": "word",
     "english": "walk",
-    "romaji": "arukimasu",
-    "kanji": "歩きます",
-    "kana": "あるきます"
+    "romaji": "aruku / arukimasu / aruita / arukanai",
+    "kanji": "歩く / 歩きます / 歩いた / 歩かない",
+    "kana": "あるく / あるきます / あるいた / あるかない"
   },
   {
     "id": 43,
@@ -355,17 +355,17 @@ window.INITIAL_WORDS = [
     "id": 45,
     "type": "word",
     "english": "use",
-    "romaji": "tsukaimasu",
-    "kanji": "使います",
-    "kana": "つかいます"
+    "romaji": "tsukau / tsukaimasu / tsukatta / tsukawanai",
+    "kanji": "使う / 使います / 使った / 使わない",
+    "kana": "つかう / つかいます / つかった / つかわない"
   },
   {
     "id": 46,
     "type": "word",
     "english": "make",
-    "romaji": "tsukurimasu",
-    "kanji": "作ります",
-    "kana": "つくります"
+    "romaji": "tsukuru / tsukurimasu / tsukutta / tsukuranai",
+    "kanji": "作る / 作ります / 作った / 作らない",
+    "kana": "つくる / つくります / つくった / つくらない"
   },
   {
     "id": 47,
@@ -387,9 +387,9 @@ window.INITIAL_WORDS = [
     "id": 49,
     "type": "word",
     "english": "bloom",
-    "romaji": "sakimasu",
-    "kanji": "咲きます",
-    "kana": "さきます"
+    "romaji": "saku / sakimasu / saita / sakanai",
+    "kanji": "咲く / 咲きます / 咲いた / 咲かない",
+    "kana": "さく / さきます / さいた / さかない"
   },
   {
     "id": 50,
@@ -443,9 +443,9 @@ window.INITIAL_WORDS = [
     "id": 56,
     "type": "word",
     "english": "go up",
-    "romaji": "agarimasu",
-    "kanji": "上ります",
-    "kana": "あがります"
+    "romaji": "agaru / agarimasu / agatta / agaranai",
+    "kanji": "上がる / 上がります / 上がった / 上がらない",
+    "kana": "あがる / あがります / あがった / あがらない"
   },
   {
     "id": 57,
@@ -507,17 +507,17 @@ window.INITIAL_WORDS = [
     "id": 64,
     "type": "word",
     "english": "end",
-    "romaji": "owarimasu",
-    "kanji": "終わります",
-    "kana": "おわります"
+    "romaji": "owaru / owarimasu / owatta / owaranai",
+    "kanji": "終わる / 終わります / 終わった / 終わらない",
+    "kana": "おわる / おわります / おわった / おわらない"
   },
   {
     "id": 65,
     "type": "word",
     "english": "start",
-    "romaji": "hajimarimasu",
-    "kanji": "始まります",
-    "kana": "はじまります"
+    "romaji": "hajimaru / hajimarimasu / hajimatta / hajimaranai",
+    "kanji": "始まる / 始まります / 始まった / 始まらない",
+    "kana": "はじまる / はじまります / はじまった / はじまらない"
   },
   {
     "id": 66,
@@ -579,9 +579,9 @@ window.INITIAL_WORDS = [
     "id": 73,
     "type": "word",
     "english": "take(time)",
-    "romaji": "kakarimasu",
-    "kanji": "かかります",
-    "kana": "かかります"
+    "romaji": "kakaru / kakarimasu / kakatta / kakaranai",
+    "kanji": "掛かる / 掛かります / 掛かった / 掛からない",
+    "kana": "かかる / かかります / かかった / かからない"
   },
   {
     "id": 74,
@@ -611,9 +611,9 @@ window.INITIAL_WORDS = [
     "id": 77,
     "type": "word",
     "english": "invite",
-    "romaji": "yobimasu",
-    "kanji": "呼びます",
-    "kana": "よびます"
+    "romaji": "yobu / yobimasu / yonda / yobanai",
+    "kanji": "呼ぶ / 呼びます / 呼んだ / 呼ばない",
+    "kana": "よぶ / よびます / よんだ / よばない"
   },
   {
     "id": 78,
@@ -675,9 +675,9 @@ window.INITIAL_WORDS = [
     "id": 85,
     "type": "word",
     "english": "stay",
-    "romaji": "tomarimasu",
-    "kanji": "泊まります",
-    "kana": "とまります"
+    "romaji": "tomaru / tomarimasu / tomatta / tomaranai",
+    "kanji": "泊まる / 泊まります / 泊まった / 泊まらない",
+    "kana": "とまる / とまります / とまった / とまらない"
   },
   {
     "id": 86,
@@ -715,9 +715,9 @@ window.INITIAL_WORDS = [
     "id": 90,
     "type": "word",
     "english": "search for",
-    "romaji": "sagashimasu",
-    "kanji": "探します",
-    "kana": "さがします"
+    "romaji": "sagasu / sagashimasu / sagashita / sagasanai",
+    "kanji": "探す / 探します / 探した / 探さない",
+    "kana": "さがす / さがします / さがした / さがさない"
   },
   {
     "id": 91,
@@ -731,49 +731,49 @@ window.INITIAL_WORDS = [
     "id": 92,
     "type": "word",
     "english": "go down",
-    "romaji": "orimasu",
-    "kanji": "降ります",
-    "kana": "おります"
+    "romaji": "oriru / orimasu / orita / orinai",
+    "kanji": "降りる / 降ります / 降りた / 降りない",
+    "kana": "おりる / おります / おりた / おりない"
   },
   {
     "id": 93,
     "type": "word",
     "english": "turn on",
-    "romaji": "tsukemasu",
-    "kanji": "つけます",
-    "kana": "つけます"
+    "romaji": "tsukeru / tsukemasu / tsuketa / tsukenai",
+    "kanji": "漬ける / 漬けます / 漬けた / 漬けない",
+    "kana": "つける / つけます / つけた / つけない"
   },
   {
     "id": 94,
     "type": "word",
     "english": "turn off",
-    "romaji": "keshimasu",
-    "kanji": "消します",
-    "kana": "けします"
+    "romaji": "kesu / keshimasu / keshita / kesanai",
+    "kanji": "消す / 消します / 消した / 消さない",
+    "kana": "けす / けします / けした / けさない"
   },
   {
     "id": 95,
     "type": "word",
     "english": "turning(age)",
-    "romaji": "narimasu",
-    "kanji": "なります",
-    "kana": "なります"
+    "romaji": "naru / narimasu / natta / naranai",
+    "kanji": "成る / 成ります / 成った / 成らない",
+    "kana": "なる / なります / なった / ならない"
   },
   {
     "id": 96,
     "type": "word",
     "english": "closes at (time)",
-    "romaji": "shimarimasu",
-    "kanji": "閉まります",
-    "kana": "しまります"
+    "romaji": "shimaru / shimarimasu / shimatta / shimaranai",
+    "kanji": "閉まる / 閉まります / 閉まった / 閉まらない",
+    "kana": "しまる / しまります / しまった / しまらない"
   },
   {
     "id": 97,
     "type": "word",
     "english": "go home",
-    "romaji": "kaerimasu",
-    "kanji": "帰ります",
-    "kana": "かえります"
+    "romaji": "kaeru / kaerimasu / kaetta / kaeranai",
+    "kanji": "帰る / 帰ります / 帰った / 帰らない",
+    "kana": "かえる / かえります / かえった / かえらない"
   },
   {
     "id": 98,
@@ -787,9 +787,9 @@ window.INITIAL_WORDS = [
     "id": 99,
     "type": "word",
     "english": "tidy up",
-    "romaji": "katazukemasu",
-    "kanji": "片付けます",
-    "kana": "かたづけます"
+    "romaji": "katazukeru / katazukemasu / katazuketa / katazukenai",
+    "kanji": "片付ける / 片付けます / 片付けた / 片付けない",
+    "kana": "かたづける / かたづけます / かたづけた / かたづけない"
   },
   {
     "id": 100,
@@ -835,17 +835,17 @@ window.INITIAL_WORDS = [
     "id": 105,
     "type": "word",
     "english": "wear",
-    "romaji": "kimasu",
-    "kanji": "着ます",
-    "kana": "きます"
+    "romaji": "kiru / kimasu / kita / kinai",
+    "kanji": "着る / 着ます / 着た / 着ない",
+    "kana": "きる / きます / きた / きない"
   },
   {
     "id": 106,
     "type": "word",
     "english": "run",
-    "romaji": "hashirimasu",
-    "kanji": "走ります",
-    "kana": "はしります"
+    "romaji": "hashiru / hashirimasu / hashitta / hashiranai",
+    "kanji": "走る / 走ります / 走った / 走らない",
+    "kana": "はしる / はしります / はしった / はしらない"
   },
   {
     "id": 107,
@@ -859,9 +859,9 @@ window.INITIAL_WORDS = [
     "id": 108,
     "type": "word",
     "english": "read",
-    "romaji": "yomimasu",
-    "kanji": "読みます",
-    "kana": "よみます"
+    "romaji": "yomu / yomimasu / yonda / yomanai",
+    "kanji": "読む / 読みます / 読んだ / 読まない",
+    "kana": "よむ / よみます / よんだ / よまない"
   },
   {
     "id": 109,
@@ -915,9 +915,9 @@ window.INITIAL_WORDS = [
     "id": 115,
     "type": "word",
     "english": "relax",
-    "romaji": "kutsurogimasu",
-    "kanji": "寛ぎます",
-    "kana": "くつろぎます"
+    "romaji": "kutsurogu / kutsurogimasu / kutsuroida / kutsuroganai",
+    "kanji": "寛ぐ / 寛ぎます / 寛いだ / 寛がない",
+    "kana": "くつろぐ / くつろぎます / くつろいだ / くつろがない"
   },
   {
     "id": 116,
@@ -931,17 +931,17 @@ window.INITIAL_WORDS = [
     "id": 117,
     "type": "word",
     "english": "became dry",
-    "romaji": "Kawakimashita",
-    "kanji": "渇きました",
-    "kana": "かわきました"
+    "romaji": "kawaku / kawakimasu / kawaita / kawakanai",
+    "kanji": "渇く / 渇きます / 渇いた / 渇かない",
+    "kana": "かわく / かわきます / かわいた / かわかない"
   },
   {
     "id": 118,
     "type": "word",
     "english": "became empty/opened",
-    "romaji": "Sukimashita",
-    "kanji": "空きました",
-    "kana": "すきました"
+    "romaji": "suku / sukimasu / suita / sukanai",
+    "kanji": "空く / 空きます / 空いた / 空かない",
+    "kana": "すく / すきます / すいた / すかない"
   },
   {
     "id": 119,
@@ -963,17 +963,17 @@ window.INITIAL_WORDS = [
     "id": 121,
     "type": "word",
     "english": "line up",
-    "romaji": "narabimasu",
-    "kanji": "並びます",
-    "kana": "ならびます"
+    "romaji": "narabu / narabimasu / naranda / narabanai",
+    "kanji": "並ぶ / 並びます / 並んだ / 並ばない",
+    "kana": "ならぶ / ならびます / ならんだ / ならばない"
   },
   {
     "id": 122,
     "type": "word",
     "english": "wait",
-    "romaji": "machimasu",
-    "kanji": "待ちます",
-    "kana": "まちます"
+    "romaji": "matsu / machimasu / matta / matanai",
+    "kanji": "待つ / 待ちます / 待った / 待たない",
+    "kana": "まつ / まちます / まった / またない"
   },
   {
     "id": 123,
@@ -1011,17 +1011,17 @@ window.INITIAL_WORDS = [
     "id": 127,
     "type": "word",
     "english": "be late / be delayed",
-    "romaji": "okuremasu",
-    "kanji": "遅れます",
-    "kana": "おくれます"
+    "romaji": "okureru / okuremasu / okureta / okurenai",
+    "kanji": "遅れる / 遅れます / 遅れた / 遅れない",
+    "kana": "おくれる / おくれます / おくれた / おくれない"
   },
   {
     "id": 128,
     "type": "word",
     "english": "hurry",
-    "romaji": "isogimasu",
-    "kanji": "急ぎます",
-    "kana": "いそぎます"
+    "romaji": "isogu / isogimasu / isoida / isoganai",
+    "kanji": "急ぐ / 急ぎます / 急いだ / 急がない",
+    "kana": "いそぐ / いそぎます / いそいだ / いそがない"
   },
   {
     "id": 129,
@@ -1043,17 +1043,17 @@ window.INITIAL_WORDS = [
     "id": 131,
     "type": "word",
     "english": "not here / not there / does not exist",
-    "romaji": "imasen",
-    "kanji": "いません",
-    "kana": "いません"
+    "romaji": "iru / imasu / ita / inai",
+    "kanji": "いる / います / いた / いない",
+    "kana": "いる / います / いた / いない"
   },
   {
     "id": 132,
     "type": "word",
     "english": "send / send a message",
-    "romaji": "okurimasu",
-    "kanji": "送ります",
-    "kana": "おくります"
+    "romaji": "okuru / okurimasu / okutta / okuranai",
+    "kanji": "送る / 送ります / 送った / 送らない",
+    "kana": "おくる / おくります / おくった / おくらない"
   },
   {
     "id": 133,
@@ -1067,17 +1067,17 @@ window.INITIAL_WORDS = [
     "id": 134,
     "type": "word",
     "english": "arrive",
-    "romaji": "tsukimasu",
-    "kanji": "着きます",
-    "kana": "つきます"
+    "romaji": "tsuku / tsukimasu / tsuita / tsukanai",
+    "kanji": "着く / 着きます / 着いた / 着かない",
+    "kana": "つく / つきます / ついた / つかない"
   },
   {
     "id": 135,
     "type": "word",
     "english": "leave / go out",
-    "romaji": "demasu",
-    "kanji": "出ます",
-    "kana": "でます"
+    "romaji": "deru / demasu / deta / denai",
+    "kanji": "出る / 出ます / 出た / 出ない",
+    "kana": "でる / でます / でた / でない"
   },
   {
     "id": 136,
@@ -1115,25 +1115,25 @@ window.INITIAL_WORDS = [
     "id": 140,
     "type": "word",
     "english": "stop",
-    "romaji": "tomarimasu",
-    "kanji": "止まります",
-    "kana": "とまります"
+    "romaji": "tomaru / tomarimasu / tomatta / tomaranai",
+    "kanji": "止まる / 止まります / 止まった / 止まらない",
+    "kana": "とまる / とまります / とまった / とまらない"
   },
   {
     "id": 141,
     "type": "word",
     "english": "switch / transfer trains",
-    "romaji": "norikaemasu",
-    "kanji": "乗り換えます",
-    "kana": "のりかえます"
+    "romaji": "norikaeru / norikaemasu / norikaeta / norikaenai",
+    "kanji": "乗り換える / 乗り換えます / 乗り換えた / 乗り換えない",
+    "kana": "のりかえる / のりかえます / のりかえた / のりかえない"
   },
   {
     "id": 142,
     "type": "word",
     "english": "forget",
-    "romaji": "wasuremasu",
-    "kanji": "忘れます",
-    "kana": "わすれます"
+    "romaji": "wasureru / wasuremasu / wasureta / wasurenai",
+    "kanji": "忘れる / 忘れます / 忘れた / 忘れない",
+    "kana": "わすれる / わすれます / わすれた / わすれない"
   },
   {
     "id": 143,
@@ -1317,9 +1317,9 @@ window.INITIAL_WORDS = [
     "id": 159,
     "type": "word",
     "english": "to put in order; to tidy up; to clean up",
-    "romaji": "katazuke",
-    "kanji": "かたづける",
-    "kana": "かたづけ",
+    "romaji": "katazukeru / katazukemasu / katazuketa / katazukenai",
+    "kanji": "かたづける / かたづけます / かたづけた / かたづけない",
+    "kana": "かたづける / かたづけます / かたづけた / かたづけない",
     "source": {
       "kind": "duolingo-screenshot",
       "filename": "Screenshot_20260412-203116_Duolingo.png",
@@ -1374,9 +1374,9 @@ window.INITIAL_WORDS = [
     "id": 163,
     "type": "word",
     "english": "to get up; to rise; to blaze up (fire)",
-    "romaji": "oki",
-    "kanji": "おきる",
-    "kana": "おき",
+    "romaji": "okiru / okimasu / okita / okinai",
+    "kanji": "おきる / おきます / おきた / おきない",
+    "kana": "おきる / おきます / おきた / おきない",
     "source": {
       "kind": "duolingo-screenshot",
       "filename": "Screenshot_20260415-074613_Duolingo.png",
@@ -1392,5 +1392,13 @@ window.INITIAL_WORDS = [
     "romaji": "niku",
     "kanji": "肉",
     "kana": "にく"
+  },
+  {
+    "type": "word",
+    "english": "to buy",
+    "romaji": "kau / kaimasu / katta / kawanai",
+    "kanji": "買う / 買います / 買った / 買わない",
+    "kana": "かう / かいます / かった / かわない",
+    "id": 165
   }
 ];

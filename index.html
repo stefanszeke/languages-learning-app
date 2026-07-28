@@ -53,6 +53,10 @@
           <input id="hardOnlyCheckbox" type="checkbox">
           <span>★ Hard only</span>
         </label>
+        <label class="hard-filter-toggle is-active" id="simpleViewToggle">
+          <input id="simpleViewCheckbox" type="checkbox" checked>
+          <span>Simple view</span>
+        </label>
         <button class="primary-button" id="addButton" type="button">＋ Add entry</button>
       </div>
     </section>
@@ -267,6 +271,7 @@
       <div class="dialog-header">
         <div>
           <span class="eyebrow" id="dialogEyebrow">New item</span>
+          <span class="badge-row" id="dialogPosPreview"></span>
           <h2 id="dialogTitle">Add entry</h2>
         </div>
         <button class="icon-button" id="closeDialogButton" type="button" aria-label="Close">×</button>

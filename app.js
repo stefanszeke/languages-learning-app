@@ -19,9 +19,28 @@
   // the same reason as the gender dictionary above.
   let germanVerbDictionaryPromise = null;
 
+  // Populated lazily by ensureGermanAdjectiveDictionary(); declared up front
+  // for the same reason as the gender dictionary above.
+  let germanAdjectiveDictionaryPromise = null;
+
+  // Populated lazily by ensureTokenizerAnalyzer(); declared up front since
+  // migratePartsOfSpeech() (called from init() below) reaches it synchronously
+  // for the first Japanese entry, before its definition further down runs.
+  let tokenizerAnalyzerPromise = null;
+
+  // Populated lazily by ensureEnglishDictionary(); declared up front for the
+  // same reason as the tokenizer promise above.
+  let englishDictionaryPromise = null;
+
   // Populated lazily by ensureRomajiIndex(), the first time the Romaji field's
   // autocomplete runs; declared up front for the same reason as above.
   let romajiIndexCache = null;
+
+  // Populated lazily by ensureJapaneseDictionaryFormIndex(), the first time an
+  // OCR scan needs to dedupe against the existing collection by dictionary
+  // (citation) form rather than exact surface text; reset in saveCollections()
+  // whenever the collection changes so it never goes stale.
+  let japaneseDictionaryFormIndexPromise = null;
 
   const LANGUAGES = {
     ja: {
@@ -78,6 +97,7 @@
     view: 'word',
     search: '',
     hardOnly: false,
+    simpleView: true,
     ocrAvailable: true,
     sortDirection: 'desc',
     covered: new Set(),
@@ -121,6 +141,7 @@
     idFilterTo: document.querySelector('#idFilterTo'),
     idFilterResetButton: document.querySelector('#idFilterResetButton'),
     hardOnlyCheckbox: document.querySelector('#hardOnlyCheckbox'),
+    simpleViewCheckbox: document.querySelector('#simpleViewCheckbox'),
     revealButton: document.querySelector('#revealButton'),
     shuffleButton: document.querySelector('#shuffleButton'),
     importButton: document.querySelector('#importButton'),
@@ -137,6 +158,7 @@
     entryId: document.querySelector('#entryId'),
     entryOriginalType: document.querySelector('#entryOriginalType'),
     dialogEyebrow: document.querySelector('#dialogEyebrow'),
+    dialogPosPreview: document.querySelector('#dialogPosPreview'),
     dialogTitle: document.querySelector('#dialogTitle'),
     dialogFieldGrid: document.querySelector('#dialogFieldGrid'),
     closeDialogButton: document.querySelector('#closeDialogButton'),
@@ -203,7 +225,11 @@
     ensureGermanGenderDictionary();
     ensureGermanEnglishDictionary();
     ensureGermanVerbDictionary();
+    ensureGermanAdjectiveDictionary();
+  } else if (state.language === 'ja') {
+    migrateJapaneseVerbForms();
   }
+  migratePartsOfSpeech();
   bindEvents();
   setCardCategory('word', true);
   resetIdFilterToFullRange();
@@ -365,6 +391,7 @@
     const config = languageConfig();
     localStorage.setItem(wordsKey(config), JSON.stringify(state.collections.word));
     localStorage.setItem(sentencesKey(config), JSON.stringify(state.collections.sentence));
+    japaneseDictionaryFormIndexPromise = null;
   }
 
   function bindEvents() {
@@ -411,6 +438,14 @@
       state.hardOnly = elements.hardOnlyCheckbox.checked;
       elements.hardOnlyCheckbox.closest('.hard-filter-toggle')?.classList.toggle('is-active', state.hardOnly);
       renderTable();
+    });
+
+    elements.simpleViewCheckbox.addEventListener('change', () => {
+      state.simpleView = elements.simpleViewCheckbox.checked;
+      elements.simpleViewCheckbox.closest('.hard-filter-toggle')?.classList.toggle('is-active', state.simpleView);
+      if (state.screen === 'list') renderTable();
+      if (!elements.cardSession.hidden) renderCurrentCard();
+      if (!elements.cardSummary.hidden) renderCardSummary();
     });
 
     elements.addButton.addEventListener('click', () => openDialog());
@@ -584,8 +619,11 @@
       ensureGermanGenderDictionary();
       ensureGermanEnglishDictionary();
       ensureGermanVerbDictionary();
+      ensureGermanAdjectiveDictionary();
     }
     state.collections = loadCollections(languageConfig());
+    if (id === 'ja') migrateJapaneseVerbForms();
+    migratePartsOfSpeech();
     state.covered.clear();
     state.cellOverrides.clear();
     state.shuffledIds = null;
@@ -713,9 +751,12 @@
         ${activeColumns().map(column => cellTemplate(item, column)).join('')}
         <td>
           <div class="row-actions">
-            <button class="row-action hard-toggle${item.hard ? ' is-active' : ''}" type="button" data-action="toggle-hard" data-type="${item.type}" data-id="${item.id}" title="${item.hard ? 'Unmark hard' : 'Mark hard'}" aria-label="${item.hard ? 'Unmark' : 'Mark'} ${item.type} ${item.id} as hard">${item.hard ? '★' : '☆'}</button>
-            <button class="row-action" type="button" data-action="edit" data-type="${item.type}" data-id="${item.id}" title="Edit" aria-label="Edit ${item.type} ${item.id}">✎</button>
-            <button class="row-action" type="button" data-action="delete" data-type="${item.type}" data-id="${item.id}" title="Delete" aria-label="Delete ${item.type} ${item.id}">×</button>
+            <span class="row-badge">${nativeBadgeForItem(item)}</span>
+            <div class="row-action-buttons">
+              <button class="row-action hard-toggle${item.hard ? ' is-active' : ''}" type="button" data-action="toggle-hard" data-type="${item.type}" data-id="${item.id}" title="${item.hard ? 'Unmark hard' : 'Mark hard'}" aria-label="${item.hard ? 'Unmark' : 'Mark'} ${item.type} ${item.id} as hard">${item.hard ? '★' : '☆'}</button>
+              <button class="row-action" type="button" data-action="edit" data-type="${item.type}" data-id="${item.id}" title="Edit" aria-label="Edit ${item.type} ${item.id}">✎</button>
+              <button class="row-action" type="button" data-action="delete" data-type="${item.type}" data-id="${item.id}" title="Delete" aria-label="Delete ${item.type} ${item.id}">×</button>
+            </div>
           </div>
         </td>
       </tr>
@@ -729,9 +770,37 @@
     const covered = state.covered.has(column.key) !== state.cellOverrides.has(key);
     const fieldDefs = column.fields.map(fieldKey => activeFields().find(field => field.key === fieldKey));
     const isNative = fieldDefs.some(field => field.role === 'native' || field.role === 'native-alt');
-    const badge = isNative && !covered ? articleBadge(item) : '';
-    const text = fieldDefs.map(field => escapeHtml(item[field.key] || '—')).join(' · ');
-    return `<td data-column="${column.key}"${isNative ? ' data-script="native"' : ''}><div class="study-cell${covered ? ' covered' : ''}" data-reveal-key="${key}">${badge}${text}</div></td>`;
+    const badge = isNative && !covered ? entryBadges(item) : '';
+    const text = fieldDefs.map(field => escapeHtml(displayForm(item[field.key]) || '—')).join(' · ');
+    const content = badge ? `${badge}<span class="cell-text">${text}</span>` : text;
+    return `<td data-column="${column.key}"${isNative ? ' data-script="native"' : ''}><div class="study-cell${covered ? ' covered' : ''}" data-reveal-key="${key}">${content}</div></td>`;
+  }
+
+  // The table's one native-script column carries the badge inline (desktop
+  // layout); on narrow screens that copy is hidden and this duplicate is
+  // shown instead, relocated into the actions row so the badge isn't
+  // squeezed into the same cramped line as the word itself. Mirrors
+  // cellTemplate's own covered-state check so a hidden/covered cell doesn't
+  // leak its part of speech through the relocated copy either.
+  function nativeBadgeForItem(item) {
+    const column = activeColumns().find(candidate =>
+      candidate.fields.some(fieldKey => {
+        const field = activeFields().find(candidateField => candidateField.key === fieldKey);
+        return field && (field.role === 'native' || field.role === 'native-alt');
+      })
+    );
+    if (!column) return '';
+    const key = `${compositeKey(item.type, item.id)}:${column.key}`;
+    const covered = state.covered.has(column.key) !== state.cellOverrides.has(key);
+    return covered ? '' : entryBadges(item);
+  }
+
+  // Multi-form fields (Japanese verb conjugations, German verb forms) are
+  // stored as a single " / "-joined string. Simple view shows just the first
+  // (dictionary) form; fields without a " / " separator pass through as-is.
+  function displayForm(value) {
+    if (!value) return value;
+    return state.simpleView ? value.split(' / ')[0] : value;
   }
 
   // Nice-to-have autofill for nouns typed without their article (e.g. "Tisch"
@@ -779,6 +848,19 @@
     return `<span class="badge badge-${item.article}">${escapeHtml(item.article)}</span>`;
   }
 
+  // Skips the badge when article is already set (German nouns already carry
+  // der/die/das, which conveys noun-ness on its own -- a second "noun" badge
+  // would be redundant) and for sentences, which aren't a single part of
+  // speech.
+  function posBadge(item) {
+    if (item.type !== 'word' || item.article || !item.pos) return '';
+    return `<span class="badge badge-${item.pos}">${escapeHtml(item.pos)}</span>`;
+  }
+
+  function entryBadges(item) {
+    return articleBadge(item) + posBadge(item);
+  }
+
   function primaryDisplayField() {
     const fields = activeFields().filter(field => field.role !== 'gloss');
     return fields.find(field => field.role === 'native') || fields.find(field => field.role === 'native-alt') || fields[0] || null;
@@ -794,8 +876,19 @@
     elements.dialogTitle.textContent = item ? 'Edit entry' : 'Add entry';
     elements.dialogEyebrow.dataset.mode = item ? 'edit' : 'new';
     updateDialogIdPreview();
+    updateDialogPosPreview(item || {});
     elements.dialog.showModal();
     setTimeout(() => elements.dialogFieldGrid.querySelector('input')?.focus(), 0);
+  }
+
+  // Live preview of the article/POS badges an entry will show once saved,
+  // fed by the same article/pos values resolveJapaneseFields/
+  // resolveGermanFields compute -- either the item's already-stored values
+  // (opening the dialog) or a fresh derivation from the current field values
+  // (re-run after each blur autofill below).
+  function updateDialogPosPreview(data) {
+    if (!elements.dialogPosPreview) return;
+    elements.dialogPosPreview.innerHTML = entryBadges({type: 'word', article: data.article, pos: data.pos});
   }
 
   function renderDialogFieldGrid(values = {}) {
@@ -1073,28 +1166,164 @@
     return sortMatchesByLength(results);
   }
 
+  // Pure german/article/pos resolution shared by two callers: the live
+  // blur-triggered preview below (DOM-based, best-effort) and
+  // applyDerivedFields at save time, mirroring the split already used for
+  // resolveJapaneseFields. This also fixes a latent race the article-only
+  // version had: verb 5-form expansion used to happen only in the blur
+  // handler, never guaranteed to have finished before a fast click on Save.
+  async function resolveGermanFields(data) {
+    const rawWord = (data.german || '').trim();
+    if (!rawWord) {
+      data.article = '';
+      return data;
+    }
+
+    if (rawWord.includes('/')) {
+      // Already an expanded verb conjugation set -- this app's only source
+      // of slash-joined German text -- so confirm via the verb dictionary
+      // instead of falling into deriveGermanArticle's plural-guess fallback
+      // below (meant for genuine noun plurals like "Haus / Häuser"), which
+      // would otherwise misclassify it as a noun.
+      const verbDictionary = await ensureGermanVerbDictionary();
+      const infinitive = rawWord.split('/')[0].trim();
+      if (verbDictionary && lookupGermanVerb(verbDictionary, infinitive)) {
+        data.article = '';
+        data.pos = 'verb';
+        return data;
+      }
+    }
+
+    await ensureGermanGenderDictionary();
+    const article = deriveGermanArticle(rawWord);
+    data.article = article;
+    if (article) {
+      data.pos = 'noun';
+    } else {
+      const verbDictionary = await ensureGermanVerbDictionary();
+      const verb = verbDictionary ? lookupGermanVerb(verbDictionary, rawWord) : null;
+      if (verb) {
+        data.german = verb.german;
+        if (!(data.english || '').trim()) data.english = verb.english;
+        data.pos = 'verb';
+        return data;
+      }
+
+      const adjectiveDictionary = await ensureGermanAdjectiveDictionary();
+      if (adjectiveDictionary && lookupGermanAdjective(adjectiveDictionary, rawWord)) {
+        data.pos = 'adjective';
+      }
+    }
+
+    // Filling in an English gloss is a nice-to-have that applies to any
+    // non-verb word (nouns, adjectives, or anything unrecognized) -- matches
+    // the German-English dictionary lookup the old blur-only version of this
+    // logic always ran when the verb dictionary didn't match.
+    if (!(data.english || '').trim()) {
+      const englishDictionary = await ensureGermanEnglishDictionary();
+      const gloss = lookupGermanEnglish(englishDictionary, rawWord);
+      if (gloss) data.english = gloss;
+    }
+    return data;
+  }
+
   async function autoFillGermanDialogFields() {
     const grid = elements.dialogFieldGrid;
     const germanInput = grid.querySelector('[data-field="german"]');
     const englishInput = grid.querySelector('[data-field="english"]');
     const word = germanInput?.value.trim();
-    if (!word) return;
-
-    const verbDictionary = await ensureGermanVerbDictionary();
-    if (!elements.dialog.open) return;
-    const verb = verbDictionary ? lookupGermanVerb(verbDictionary, word) : null;
-    if (verb) {
-      germanInput.value = verb.german;
-      if (englishInput) englishInput.value = verb.english;
+    if (!word) {
+      updateDialogPosPreview({});
       return;
     }
 
-    if (englishInput && !englishInput.value.trim()) {
-      const dictionary = await ensureGermanEnglishDictionary();
-      if (!elements.dialog.open) return;
-      const gloss = lookupGermanEnglish(dictionary, word);
-      if (gloss) englishInput.value = gloss;
+    const data = {german: word, english: englishInput?.value.trim() || ''};
+    await resolveGermanFields(data);
+    if (!elements.dialog.open) return;
+
+    if (germanInput && data.german) germanInput.value = data.german;
+    if (englishInput && data.english) englishInput.value = data.english;
+    updateDialogPosPreview(data);
+  }
+
+  // Pure kanji/kana/romaji/english resolution shared by two callers: the
+  // live blur-triggered preview below (DOM-based, best-effort) and
+  // applyDerivedFields at save time. Save time is the one that actually has
+  // to be correct -- a blur handler is async and racy against a fast click
+  // on Save, so saving can't rely on the preview having finished first; it
+  // re-derives the same result itself, awaited, right before the entry is
+  // written.
+  async function resolveJapaneseFields(data) {
+    const rawKanji = (data.kanji || '').trim();
+    const rawKana = (data.kana || '').trim();
+    if (!rawKanji && !rawKana) return data;
+    // A field already holding an expanded form-set (or any slash-joined
+    // value) is left alone -- re-running dictionary-form reduction and
+    // conjugation on "止まる / 止まります / ..." would parse it as one long
+    // garbled word instead of the four separate forms it actually is.
+    // expandJapaneseVerbForms is the only thing that ever produces a
+    // slash-joined kanji/kana, so seeing one already means "verb".
+    if (rawKanji.includes('/') || rawKana.includes('/')) {
+      if (!data.pos) data.pos = 'verb';
+      return data;
     }
+
+    const analyzer = await ensureTokenizerAnalyzer();
+    const dictionary = await ensureEnglishDictionary();
+
+    let kanji = rawKanji;
+    let kana = rawKana;
+
+    if (analyzer) {
+      // Typing an already-conjugated form (e.g. とまります) reduces to the
+      // dictionary form first, same as the OCR duplicate-detection path, so
+      // verb expansion below always starts from a clean base form.
+      const dictionaryForm = await dictionaryFormOf(analyzer, dictionary, kanji || kana);
+      if (dictionaryForm) kanji = dictionaryForm;
+      if (!kana || dictionaryForm) kana = (await readingFor(analyzer, kanji)) || kana;
+
+      const verbForms = await expandJapaneseVerbForms(analyzer, kanji, kana);
+      if (verbForms) {
+        data.kanji = verbForms.kanji;
+        data.kana = verbForms.kana;
+        if (!data.romaji) data.romaji = verbForms.romaji;
+        if (!data.english) {
+          const gloss = lookupEnglish(dictionary, kanji, kana);
+          if (gloss) data.english = gloss;
+        }
+        data.pos = 'verb';
+        return data;
+      }
+    }
+
+    if (kanji) data.kanji = kanji;
+    if (kana) data.kana = kana;
+    if (kana && !data.romaji) data.romaji = kanaToRomaji(kana);
+    if (!data.english) {
+      const gloss = lookupEnglish(dictionary, kanji, kana);
+      if (gloss) data.english = gloss;
+    }
+    if (analyzer && kanji) {
+      const pos = await japanesePartOfSpeech(analyzer, kanji);
+      if (pos) data.pos = pos;
+    }
+    return data;
+  }
+
+  const JAPANESE_POS_LABELS = {名詞: 'noun', 動詞: 'verb', 形容詞: 'adjective', 副詞: 'adverb'};
+
+  // Non-verb POS badge detection: nouns/adjectives/adverbs don't get their
+  // own conjugation-set treatment the way verbs do above, so a single
+  // tokenizer parse of the settled kanji is enough to classify them.
+  async function japanesePartOfSpeech(analyzer, kanji) {
+    let tokens;
+    try {
+      tokens = await analyzer.parse(kanji);
+    } catch (error) {
+      return null;
+    }
+    const [token] = tokens;
+    return (token && JAPANESE_POS_LABELS[token.pos]) || null;
   }
 
   async function autoFillJapaneseDialogFields() {
@@ -1103,29 +1332,21 @@
     const kanaInput = grid.querySelector('[data-field="kana"]');
     const romajiInput = grid.querySelector('[data-field="romaji"]');
     const englishInput = grid.querySelector('[data-field="english"]');
-    const kanji = kanjiInput?.value.trim() || '';
-    let kana = kanaInput?.value.trim() || '';
-    if (!kanji && !kana) return;
+    const data = {
+      kanji: kanjiInput?.value.trim() || '',
+      kana: kanaInput?.value.trim() || '',
+      romaji: romajiInput?.value.trim() || '',
+      english: englishInput?.value.trim() || '',
+    };
 
-    if (kanji && !kana) {
-      const analyzer = await ensureTokenizerAnalyzer();
-      if (!elements.dialog.open) return;
-      if (analyzer) {
-        kana = await readingFor(analyzer, kanji);
-        if (kana && kanaInput) kanaInput.value = kana;
-      }
-    }
+    await resolveJapaneseFields(data);
+    if (!elements.dialog.open) return;
 
-    if (kana && romajiInput && !romajiInput.value.trim()) {
-      romajiInput.value = kanaToRomaji(kana);
-    }
-
-    if (englishInput && !englishInput.value.trim()) {
-      const dictionary = await ensureEnglishDictionary();
-      if (!elements.dialog.open) return;
-      const gloss = lookupEnglish(dictionary, kanji, kana);
-      if (gloss) englishInput.value = gloss;
-    }
+    if (kanjiInput && data.kanji) kanjiInput.value = data.kanji;
+    if (kanaInput && data.kana) kanaInput.value = data.kana;
+    if (romajiInput && data.romaji) romajiInput.value = data.romaji;
+    if (englishInput && data.english) englishInput.value = data.english;
+    updateDialogPosPreview(data);
   }
 
   async function readDialogFields() {
@@ -1139,8 +1360,10 @@
 
   async function applyDerivedFields(data) {
     if (state.language === 'de' && 'german' in data) {
-      await ensureGermanGenderDictionary();
-      data.article = deriveGermanArticle(data.german);
+      await resolveGermanFields(data);
+    }
+    if (state.language === 'ja' && ('kanji' in data || 'kana' in data)) {
+      await resolveJapaneseFields(data);
     }
   }
 
@@ -1511,12 +1734,12 @@
     const byRole = role => fields.find(field => field.role === role);
     const primaryField = primaryDisplayField();
     if (!primaryField) return '<div class="card-primary">—</div>';
-    const primaryValue = item[primaryField.key] || '—';
-    const badge = articleBadge(item);
+    const primaryValue = displayForm(item[primaryField.key]) || '—';
+    const badge = entryBadges(item);
     const restFields = [byRole('native-alt'), byRole('secondary')].filter(field => field && field !== primaryField);
     const lines = restFields
       .map((field, index) => {
-        const value = item[field.key];
+        const value = displayForm(item[field.key]);
         if (!value || value === primaryValue) return '';
         return `<div class="${index === 0 ? 'card-secondary' : 'card-tertiary'}">${escapeHtml(value)}</div>`;
       })
@@ -1562,10 +1785,10 @@
     const primaryField = primaryDisplayField();
     elements.reviewList.innerHTML = unknown.length
       ? unknown.map(item => {
-          const primaryValue = primaryField ? item[primaryField.key] : '';
+          const primaryValue = primaryField ? displayForm(item[primaryField.key]) : '';
           const restText = fields
             .filter(field => field !== primaryField)
-            .map(field => item[field.key])
+            .map(field => displayForm(item[field.key]))
             .filter(Boolean)
             .join(' · ');
           return `
@@ -1575,7 +1798,7 @@
               <button class="row-action hard-toggle${item.hard ? ' is-active' : ''}" type="button" data-action="toggle-hard" data-type="${item.type}" data-id="${item.id}" title="${item.hard ? 'Unmark hard' : 'Mark hard'}" aria-label="${item.hard ? 'Unmark' : 'Mark'} ${item.type} ${item.id} as hard">${item.hard ? '★' : '☆'}</button>
             </span>
             <span>${escapeHtml(item.english)}</span>
-            <span class="review-japanese">${escapeHtml(primaryValue)}${restText ? `<small>${escapeHtml(restText)}</small>` : ''}</span>
+            <span class="review-japanese">${entryBadges(item)}${escapeHtml(primaryValue)}${restText ? `<small>${escapeHtml(restText)}</small>` : ''}</span>
           </div>
         `;
         }).join('')
@@ -1759,8 +1982,6 @@
   // Filling in kana/romaji/word readings is a nice-to-have on top of OCR, not a
   // requirement, so every step here is designed to fail quietly (leaving fields
   // blank as before) rather than ever interrupt a scan.
-  let tokenizerAnalyzerPromise = null;
-
   function ensureTokenizerAnalyzer() {
     if (!tokenizerAnalyzerPromise) {
       tokenizerAnalyzerPromise = prepareTokenizerAnalyzer().catch(error => {
@@ -1815,8 +2036,6 @@
 
   // Filling in English glosses is a nice-to-have on top of word suggestions,
   // not a requirement, so it's designed to fail quietly like the tokenizer.
-  let englishDictionaryPromise = null;
-
   function ensureEnglishDictionary() {
     if (!englishDictionaryPromise) {
       englishDictionaryPromise = prepareEnglishDictionary().catch(error => {
@@ -1909,6 +2128,42 @@
     return infinitive ? dictionary.verbs[infinitive] || null : null;
   }
 
+  // Backs the adjective part-of-speech badge only (see resolveGermanFields)
+  // -- unlike the verb dictionary, there's no conjugation set to expand into,
+  // so this is a plain lemma membership check. Fails quietly like the other
+  // German dictionaries if the file isn't loaded yet.
+  function ensureGermanAdjectiveDictionary() {
+    if (!germanAdjectiveDictionaryPromise) {
+      germanAdjectiveDictionaryPromise = prepareGermanAdjectiveDictionary().catch(error => {
+        console.warn('German adjective dictionary unavailable, adjective badges will be left blank:', error);
+        return null;
+      });
+    }
+    return germanAdjectiveDictionaryPromise;
+  }
+
+  async function prepareGermanAdjectiveDictionary() {
+    const response = await fetch('./api/german-adjective-status', {cache: 'no-store'});
+    const status = await response.json().catch(() => ({}));
+    if (!response.ok || !status.ready) throw new Error(status.message || 'German adjective dictionary is not available.');
+
+    const dictResponse = await fetch('./vendor/dict/german-adjective-lookup.json.gz', {cache: 'no-store'});
+    if (!dictResponse.ok) throw new Error(`Could not load the German adjective dictionary (HTTP ${dictResponse.status}).`);
+    const lemmas = await dictResponse.json();
+    return new Set(lemmas);
+  }
+
+  // German adjectives aren't capitalized, but an accidental capital (e.g. a
+  // sentence-initial adjective typed as its own entry) shouldn't hide a
+  // match, so a lowercase-first-letter fallback is tried same as the other
+  // German lookups.
+  function lookupGermanAdjective(dictionary, word) {
+    if (!dictionary || !word) return false;
+    if (dictionary.has(word)) return true;
+    const lower = word.charAt(0).toLowerCase() + word.slice(1);
+    return dictionary.has(lower);
+  }
+
   function katakanaToHiragana(text) {
     return text.replace(/[ァ-ヶ]/g, char => String.fromCharCode(char.charCodeAt(0) - 0x60));
   }
@@ -1926,10 +2181,289 @@
 
   const TOKENIZER_WORD_POS = new Set(['名詞', '動詞', '形容詞', '副詞']);
 
+  // Auxiliary/particle/punctuation POS tags that can trail a content word
+  // without changing which word it fundamentally is -- e.g. 止まります
+  // tokenizes as [動詞 止まり, 助動詞 ます], and both that and the bare stem
+  // とまり should collapse to the same 止まる base form.
+  const TOKENIZER_INFLECTION_POS = new Set(['助動詞', '助詞', '記号']);
+
+  // Collapses an OCR'd word (optionally already conjugated/politeness-marked,
+  // e.g. 止まります or the bare stem とまり) to its dictionary/citation form
+  // 止まる via the tokenizer's morphological analysis, so a word only ever
+  // seen in an inflected form doesn't get proposed -- often kanji-less -- as
+  // if it were a separate word. Only fires when the text is one content word
+  // plus (optionally) trailing inflection; genuine multi-word strings, where
+  // a second real content word follows the first, are left as-is.
+  // Kuromoji's own basic_form is frequently kana-only even for kanji-spelled
+  // verbs (とまり -> とまる, not 止まる), so the result is resolved through
+  // the JMdict kana->kanji cross-reference before being returned.
+  async function dictionaryFormOf(analyzer, dictionary, text) {
+    if (!text) return null;
+    let tokens;
+    try {
+      tokens = await analyzer.parse(text);
+    } catch (error) {
+      return null;
+    }
+    const [token] = tokens;
+    if (!token || !TOKENIZER_WORD_POS.has(token.pos)) return null;
+    if (!tokens.slice(1).every(t => TOKENIZER_INFLECTION_POS.has(t.pos))) return null;
+    if (!token.basic_form || token.basic_form === '*' || token.basic_form === token.surface_form) return null;
+    return (dictionary && dictionary.kanaToKanji[token.basic_form]) || token.basic_form;
+  }
+
+  // Japanese verb conjugation, unlike German's, is regular enough to compute
+  // directly from the dictionary form's ending -- godan/ichidan endings plus
+  // the tokenizer's verb-class tag cover almost every verb, with a small
+  // closed set of true irregulars (する, 来る, 行く, ある) handled by name/
+  // tag instead of a lookup table -- so this needs no precomputed dictionary
+  // file, unlike ensureGermanVerbDictionary().
+  const GODAN_TAILS = {
+    'う': {nai: 'わない', masu: 'います', ta: 'った'},
+    'く': {nai: 'かない', masu: 'きます', ta: 'いた'},
+    'ぐ': {nai: 'がない', masu: 'ぎます', ta: 'いだ'},
+    'す': {nai: 'さない', masu: 'します', ta: 'した'},
+    'つ': {nai: 'たない', masu: 'ちます', ta: 'った'},
+    'ぬ': {nai: 'なない', masu: 'にます', ta: 'んだ'},
+    'ぶ': {nai: 'ばない', masu: 'びます', ta: 'んだ'},
+    'む': {nai: 'まない', masu: 'みます', ta: 'んだ'},
+    'る': {nai: 'らない', masu: 'ります', ta: 'った'},
+  };
+
+  // Swaps a base word's final mora for one of the tails above. Kanji and
+  // kana forms move together because okurigana never splits a kanji
+  // mid-mora -- 止まる's kanji stem "止ま" and kana stem "とま" both come
+  // from stripping the same one trailing character.
+  function buildTailForms(base, stripLen, tails) {
+    const stem = base.slice(0, -stripLen);
+    return {dict: base, masu: stem + tails.masu, ta: stem + tails.ta, nai: stem + tails.nai};
+  }
+
+  // Returns {kanji: {dict,masu,ta,nai}, kana: {dict,masu,ta,nai}} for a verb
+  // in dictionary form, or null if kanjiBase/kanaBase isn't a verb at all.
+  // kanjiBase/kanaBase must already be a single word in dictionary form
+  // (run them through dictionaryFormOf first) -- a slash-joined multi-form
+  // string or a multi-word phrase is rejected outright rather than
+  // mis-parsed as one long word.
+  async function conjugateJapaneseVerb(analyzer, kanjiBase, kanaBase) {
+    if (!analyzer || !kanaBase || !kanjiBase) return null;
+    if (kanjiBase.includes('/') || kanaBase.includes('/')) return null;
+
+    // The light verb する (bare, or as a noun+する compound like 勉強する) is
+    // mistagged when parsed in isolation -- IPADIC resolves the bare
+    // 2-character string "する" to an unrelated godan homograph -- so it's
+    // matched by its kana ending instead of the tokenizer's conjugated_type.
+    if (kanaBase.endsWith('する')) {
+      const tails = {masu: 'します', ta: 'した', nai: 'しない'};
+      return {kanji: buildTailForms(kanjiBase, 2, tails), kana: buildTailForms(kanaBase, 2, tails)};
+    }
+
+    // 来る/くる ("to come") is Japanese's one kuru-irregular verb. Its kanji
+    // stays 来 across every form (native orthography never respells it) but
+    // its reading changes per form (く/き/き/こ), so kanji forms still come
+    // from a tail swap while kana forms are hardcoded outright.
+    if (kanaBase === 'くる') {
+      const kanaForms = {dict: 'くる', masu: 'きます', ta: 'きた', nai: 'こない'};
+      const hasKanji = kanjiBase !== kanaBase;
+      return {
+        kanji: hasKanji ? buildTailForms(kanjiBase, 1, {masu: 'ます', ta: 'た', nai: 'ない'}) : kanaForms,
+        kana: kanaForms,
+      };
+    }
+
+    // いる/居る ("to be/exist", animate) is mistagged as godan even with its
+    // kanji present -- unlike 書く/待つ/死ぬ, kanji context doesn't fix this
+    // one, IPADIC's 居る entry itself is tagged 五段・ラ行 even though modern
+    // conjugation (います/いた/いない, confirmed by parsing those in context)
+    // is ichidan -- so it's matched by name, same as する/来る above.
+    if (kanaBase === 'いる') {
+      const tails = {masu: 'ます', ta: 'た', nai: 'ない'};
+      return {kanji: buildTailForms(kanjiBase, 1, tails), kana: buildTailForms(kanaBase, 1, tails)};
+    }
+
+    // Verb-class detection parses the kanji form, not the kana-only reading:
+    // several common godan verbs (書く, 待つ, 死ぬ, ...) are homographs of an
+    // unrelated word/reading split when the tokenizer sees only hiragana
+    // (かく -> adverb "斯く", まつ -> noun "松", しぬ -> mis-split entirely),
+    // but resolve correctly once the kanji spelling disambiguates them.
+    let verbToken;
+    try {
+      verbToken = (await analyzer.parse(kanjiBase))[0];
+    } catch (error) {
+      return null;
+    }
+    if (!verbToken || verbToken.pos !== '動詞') return null;
+    const type = verbToken.conjugated_type || '';
+    const lastChar = kanaBase.slice(-1);
+
+    if (type.startsWith('一段')) {
+      const tails = {masu: 'ます', ta: 'た', nai: 'ない'};
+      return {kanji: buildTailForms(kanjiBase, 1, tails), kana: buildTailForms(kanaBase, 1, tails)};
+    }
+
+    if (type.startsWith('五段')) {
+      const tails = GODAN_TAILS[lastChar];
+      if (!tails) return null;
+      // 行く ("to go") is the sole godan verb whose past tense skips the
+      // regular い-row euphonic rule (行った, not *行いた). The tokenizer
+      // flags this with a "促音便" type tag instead of the regular "イ音便"
+      // tag -- including for -ていく/-て行く compounds -- so it's detected
+      // from the tag rather than a hardcoded word list.
+      const effectiveTails = lastChar === 'く' && type.includes('促音便') ? {...tails, ta: 'った'} : tails;
+      const forms = {
+        kanji: buildTailForms(kanjiBase, 1, effectiveTails),
+        kana: buildTailForms(kanaBase, 1, effectiveTails),
+      };
+      // ある ("to exist/have") has a suppletive negative -- plain ない, not
+      // the regular あらない -- a standard-grammar constant, not derivable
+      // from its conjugation class.
+      if (kanaBase === 'ある') {
+        forms.kanji.nai = 'ない';
+        forms.kana.nai = 'ない';
+      }
+      return forms;
+    }
+
+    return null;
+  }
+
+  // Expands a recognized verb into this app's form-set convention
+  // (dictionary / polite / past / negative), the Japanese analogue of
+  // ensureGermanVerbDictionary's 5-form expansion -- computed live instead
+  // of from a precomputed dictionary, since Japanese conjugation is regular.
+  // Returns null for anything that isn't a verb, leaving it untouched.
+  async function expandJapaneseVerbForms(analyzer, kanjiBase, kanaBase) {
+    const forms = await conjugateJapaneseVerb(analyzer, kanjiBase, kanaBase);
+    if (!forms) return null;
+    const kanaForms = [forms.kana.dict, forms.kana.masu, forms.kana.ta, forms.kana.nai];
+    return {
+      kanji: [forms.kanji.dict, forms.kanji.masu, forms.kanji.ta, forms.kanji.nai].join(' / '),
+      kana: kanaForms.join(' / '),
+      romaji: kanaForms.map(kanaToRomaji).join(' / '),
+    };
+  }
+
+  // One-time upgrade for verb entries saved to localStorage before this app
+  // started expanding Japanese verbs into a 4-form set. New installs get the
+  // expanded forms straight from the updated data/japanese-words.js seed
+  // file, but a browser that already seeded its collection from an older
+  // copy keeps whatever it saved -- there's no "pull latest seed data" path,
+  // only the one-way "sync to disk" export -- so this runs the same
+  // expansion against whatever's actually in state.collections. Mirrors
+  // scripts/migrate-japanese-verb-forms.js exactly, including its 4 by-id
+  // fixes for pre-existing data typos found while writing that script (see
+  // that file's comments for what each one corrects).
+  const JAPANESE_VERB_MIGRATION_FIXES = {
+    56: {kanji: '上がります'},
+    131: {kanji: 'いる', kana: 'いる', skipReduction: true},
+    159: {kana: 'かたづける'},
+    163: {kana: 'おきる'},
+  };
+
+  async function migrateJapaneseVerbForms() {
+    const analyzer = await ensureTokenizerAnalyzer();
+    if (!analyzer || state.language !== 'ja') return;
+    const dictionary = await ensureEnglishDictionary();
+    if (state.language !== 'ja') return;
+
+    let changed = false;
+    for (const item of collection('word')) {
+      if (!item.kanji || !item.kana) continue;
+      if (item.kanji.includes('/') || item.kana.includes('/')) continue;
+
+      const fix = JAPANESE_VERB_MIGRATION_FIXES[item.id];
+      let kanji = (fix && fix.kanji) || item.kanji;
+      let kana = (fix && fix.kana) || item.kana;
+
+      if (!(fix && fix.skipReduction)) {
+        const dictionaryForm = await dictionaryFormOf(analyzer, dictionary, kanji);
+        if (dictionaryForm && dictionaryForm !== kanji) {
+          kanji = dictionaryForm;
+          kana = (await readingFor(analyzer, kanji)) || kana;
+        }
+      }
+
+      const verbForms = await expandJapaneseVerbForms(analyzer, kanji, kana);
+      if (!verbForms) continue;
+
+      item.kanji = verbForms.kanji;
+      item.kana = verbForms.kana;
+      item.romaji = verbForms.romaji;
+      changed = true;
+    }
+
+    if (changed && state.language === 'ja') {
+      saveCollections();
+      render();
+    }
+  }
+
+  // One-time-per-item backfill of the pos/article badge for words saved
+  // before this app started deriving them. Unlike migrateJapaneseVerbForms
+  // above (which permanently rewrites kanji/kana content), pos is decorative
+  // metadata re-derivable at any time, so this only ever touches pos/article
+  // and never the item's actual kanji/kana/german text -- a pure runtime
+  // backfill, not baked into the seed files. Runs for whichever language is
+  // active (unlike the Japanese-only verb migration).
+  async function migratePartsOfSpeech() {
+    const language = state.language;
+    let changed = false;
+    for (const item of collection('word')) {
+      if (item.pos) continue;
+      try {
+        const data = language === 'ja'
+          ? {kanji: item.kanji, kana: item.kana}
+          : {german: item.german, english: item.english};
+        if (language === 'ja') await resolveJapaneseFields(data);
+        else await resolveGermanFields(data);
+        if (state.language !== language) return;
+
+        if (data.pos) {
+          item.pos = data.pos;
+          if (language === 'de' && data.article) item.article = data.article;
+          changed = true;
+        }
+      } catch (error) {
+        // One bad entry shouldn't stop the rest of the collection from
+        // getting a badge -- same fail-quietly precedent as the OCR helpers.
+        console.warn(`Could not derive part of speech for #${item.id}:`, error);
+      }
+    }
+    if (changed && state.language === language) {
+      saveCollections();
+      render();
+    }
+  }
+
+  // Reduces every word already in the collection to its dictionary form too,
+  // so a newly scanned conjugation of a verb/adjective you already have
+  // (e.g. とまり when 止まります is already saved) is recognized as the same
+  // word instead of proposed as a separate "new" one. Cached across a whole
+  // batch scan; saveCollections() clears the cache whenever it goes stale.
+  async function ensureJapaneseDictionaryFormIndex(analyzer, dictionary, config) {
+    if (!japaneseDictionaryFormIndexPromise) {
+      japaneseDictionaryFormIndexPromise = (async () => {
+        const index = new Set();
+        for (const item of collection('word')) {
+          for (const key of config.identityFields) {
+            const value = String(item[key] || '').trim();
+            if (!value) continue;
+            const base = (await dictionaryFormOf(analyzer, dictionary, value)) || value;
+            index.add(normalizeDuplicateText(base));
+          }
+        }
+        return index;
+      })();
+    }
+    return japaneseDictionaryFormIndexPromise;
+  }
+
   async function enrichWithTokenizer(result) {
     const analyzer = await ensureTokenizerAnalyzer();
     if (!analyzer) return;
     const dictionary = await ensureEnglishDictionary();
+    const config = languageConfig();
+    const existingDictionaryForms = config.id === 'ja' ? await ensureJapaneseDictionaryFormIndex(analyzer, dictionary, config) : null;
 
     let sentenceTokens = [];
     if (result.sentence.kanji) {
@@ -1949,14 +2483,33 @@
     }
 
     for (const word of result.words) {
-      if (word.kanji && !word.kana) {
-        const kana = await readingFor(analyzer, word.kanji);
-        if (kana) {
-          word.kana = kana;
-          word.romaji = kanaToRomaji(kana);
+      if (word.kanji) {
+        const dictionaryForm = await dictionaryFormOf(analyzer, dictionary, word.kanji);
+        if (dictionaryForm && dictionaryForm !== word.kanji) {
+          word.kanji = dictionaryForm;
+          word.kana = '';
         }
       }
+      if (word.kanji && !word.kana) {
+        const kana = await readingFor(analyzer, word.kanji);
+        if (kana) word.kana = kana;
+      }
       if (!word.english) word.english = lookupEnglish(dictionary, word.kanji, word.kana);
+      const verbForms = word.kanji && word.kana ? await expandJapaneseVerbForms(analyzer, word.kanji, word.kana) : null;
+      if (verbForms) {
+        word.kanji = verbForms.kanji;
+        word.kana = verbForms.kana;
+        word.romaji = verbForms.romaji;
+      } else if (word.kana) {
+        word.romaji = kanaToRomaji(word.kana);
+      }
+    }
+
+    if (existingDictionaryForms) {
+      result.words = result.words.filter(word => {
+        const key = normalizeDuplicateText(word.kanji || word.kana);
+        return !key || !existingDictionaryForms.has(key);
+      });
     }
 
     if (!sentenceTokens.length) return;
@@ -1966,19 +2519,22 @@
     for (const token of sentenceTokens) {
       if (result.words.length >= 6) break;
       if (!TOKENIZER_WORD_POS.has(token.pos)) continue;
-      const kanji = token.basic_form && token.basic_form !== '*' ? token.basic_form : token.surface_form;
+      const rawForm = token.basic_form && token.basic_form !== '*' ? token.basic_form : token.surface_form;
+      const kanji = (dictionary && dictionary.kanaToKanji[rawForm]) || rawForm;
       if (!kanji || (kanji.length <= 1 && !containsKanji(kanji))) continue;
       const key = normalizeDuplicateText(kanji);
-      if (!key || usedJapanese.has(key)) continue;
+      if (!key || usedJapanese.has(key) || (existingDictionaryForms && existingDictionaryForms.has(key))) continue;
       usedJapanese.add(key);
-      const kana = katakanaToHiragana(token.reading || '');
+      const rawKana = katakanaToHiragana(token.reading || '');
+      const kana = rawKana || (await readingFor(analyzer, kanji));
+      const verbForms = kana ? await expandJapaneseVerbForms(analyzer, kanji, kana) : null;
       result.words.push({
         id: makeDraftId('word'),
         selected: false,
         english: lookupEnglish(dictionary, kanji, kana),
-        romaji: kana ? kanaToRomaji(kana) : '',
-        kanji,
-        kana,
+        romaji: verbForms ? verbForms.romaji : (kana ? kanaToRomaji(kana) : ''),
+        kanji: verbForms ? verbForms.kanji : kanji,
+        kana: verbForms ? verbForms.kana : kana,
       });
     }
   }
