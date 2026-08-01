@@ -5,8 +5,7 @@ window.INITIAL_WORDS = [
     "english": "view",
     "romaji": "keshiki",
     "kanji": "景色",
-    "kana": "けしき",
-    "pos": "noun"
+    "kana": "けしき"
   },
   {
     "id": 2,
@@ -14,8 +13,7 @@ window.INITIAL_WORDS = [
     "english": "river",
     "romaji": "kawa",
     "kanji": "川",
-    "kana": "かわ",
-    "pos": "noun"
+    "kana": "かわ"
   },
   {
     "id": 3,
@@ -23,8 +21,7 @@ window.INITIAL_WORDS = [
     "english": "outdoors",
     "romaji": "soto",
     "kanji": "外",
-    "kana": "そと",
-    "pos": "noun"
+    "kana": "そと"
   },
   {
     "id": 4,
@@ -32,8 +29,7 @@ window.INITIAL_WORDS = [
     "english": "cool",
     "romaji": "suzushii",
     "kanji": "涼しい",
-    "kana": "すずしい",
-    "pos": "adjective"
+    "kana": "すずしい"
   },
   {
     "id": 5,
@@ -41,8 +37,7 @@ window.INITIAL_WORDS = [
     "english": "pay",
     "romaji": "harau / haraimasu / haratta / harawanai",
     "kanji": "払う / 払います / 払った / 払わない",
-    "kana": "はらう / はらいます / はらった / はらわない",
-    "pos": "verb"
+    "kana": "はらう / はらいます / はらった / はらわない"
   },
   {
     "id": 6,
@@ -50,8 +45,7 @@ window.INITIAL_WORDS = [
     "english": "grill",
     "romaji": "yaku / yakimasu / yaita / yakanai",
     "kanji": "焼く / 焼きます / 焼いた / 焼かない",
-    "kana": "やく / やきます / やいた / やかない",
-    "pos": "verb"
+    "kana": "やく / やきます / やいた / やかない"
   },
   {
     "id": 7,
@@ -59,8 +53,7 @@ window.INITIAL_WORDS = [
     "english": "raw",
     "romaji": "nama",
     "kanji": "生",
-    "kana": "なま",
-    "pos": "noun"
+    "kana": "なま"
   },
   {
     "id": 8,
@@ -68,8 +61,7 @@ window.INITIAL_WORDS = [
     "english": "soy sauce",
     "romaji": "shouyu",
     "kanji": "醤油",
-    "kana": "しょうゆ",
-    "pos": "noun"
+    "kana": "しょうゆ"
   },
   {
     "id": 9,
@@ -77,8 +69,7 @@ window.INITIAL_WORDS = [
     "english": "salt",
     "romaji": "shio",
     "kanji": "塩",
-    "kana": "しお",
-    "pos": "noun"
+    "kana": "しお"
   },
   {
     "id": 10,
@@ -86,8 +77,7 @@ window.INITIAL_WORDS = [
     "english": "pepper",
     "romaji": "koshou",
     "kanji": "胡椒",
-    "kana": "こしょう",
-    "pos": "noun"
+    "kana": "こしょう"
   },
   {
     "id": 11,
@@ -103,8 +93,7 @@ window.INITIAL_WORDS = [
     "english": "dark",
     "romaji": "kurai",
     "kanji": "暗い",
-    "kana": "くらい",
-    "pos": "adjective"
+    "kana": "くらい"
   },
   {
     "id": 13,
@@ -112,8 +101,7 @@ window.INITIAL_WORDS = [
     "english": "first day",
     "romaji": "tsuitachi",
     "kanji": "一日",
-    "kana": "ついたち",
-    "pos": "noun"
+    "kana": "ついたち"
   },
   {
     "id": 14,
@@ -121,8 +109,7 @@ window.INITIAL_WORDS = [
     "english": "when",
     "romaji": "itsu",
     "kanji": "いつ",
-    "kana": "いつ",
-    "pos": "noun"
+    "kana": "いつ"
   },
   {
     "id": 15,
@@ -130,8 +117,7 @@ window.INITIAL_WORDS = [
     "english": "popular",
     "romaji": "ninki",
     "kanji": "人気",
-    "kana": "にんき",
-    "pos": "noun"
+    "kana": "にんき"
   },
   {
     "id": 16,
@@ -139,8 +125,7 @@ window.INITIAL_WORDS = [
     "english": "corner (room)",
     "romaji": "sumi",
     "kanji": "隅",
-    "kana": "すみ",
-    "pos": "noun"
+    "kana": "すみ"
   },
   {
     "id": 17,
@@ -148,8 +133,7 @@ window.INITIAL_WORDS = [
     "english": "next to",
     "romaji": "tonari",
     "kanji": "隣",
-    "kana": "となり",
-    "pos": "noun"
+    "kana": "となり"
   },
   {
     "id": 18,
@@ -157,8 +141,7 @@ window.INITIAL_WORDS = [
     "english": "entrance",
     "romaji": "iriguchi",
     "kanji": "入口",
-    "kana": "いりぐち",
-    "pos": "noun"
+    "kana": "いりぐち"
   },
   {
     "id": 19,
@@ -166,8 +149,7 @@ window.INITIAL_WORDS = [
     "english": "stay",
     "romaji": "tomaru / tomarimasu / tomatta / tomaranai",
     "kanji": "泊まる / 泊まります / 泊まった / 泊まらない",
-    "kana": "とまる / とまります / とまった / とまらない",
-    "pos": "verb"
+    "kana": "とまる / とまります / とまった / とまらない"
   },
   {
     "id": 20,
@@ -175,8 +157,7 @@ window.INITIAL_WORDS = [
     "english": "look for",
     "romaji": "sagasu / sagashimasu / sagashita / sagasanai",
     "kanji": "探す / 探します / 探した / 探さない",
-    "kana": "さがす / さがします / さがした / さがさない",
-    "pos": "verb"
+    "kana": "さがす / さがします / さがした / さがさない"
   },
   {
     "id": 21,
@@ -184,8 +165,7 @@ window.INITIAL_WORDS = [
     "english": "reserve",
     "romaji": "yoyakushimasu",
     "kanji": "予約します",
-    "kana": "よやくします",
-    "pos": "noun"
+    "kana": "よやくします"
   },
   {
     "id": 22,
@@ -193,8 +173,7 @@ window.INITIAL_WORDS = [
     "english": "cashier",
     "romaji": "kaikeigakari",
     "kanji": "会計係",
-    "kana": "かいけいがかり",
-    "pos": "noun"
+    "kana": "かいけいがかり"
   },
   {
     "id": 23,
@@ -202,8 +181,7 @@ window.INITIAL_WORDS = [
     "english": "waiter",
     "romaji": "ueitaa",
     "kanji": "ウェイター",
-    "kana": "うぇいたー",
-    "pos": "noun"
+    "kana": "うぇいたー"
   },
   {
     "id": 24,
@@ -211,8 +189,7 @@ window.INITIAL_WORDS = [
     "english": "tomorrow",
     "romaji": "ashita",
     "kanji": "明日",
-    "kana": "あした",
-    "pos": "noun"
+    "kana": "あした"
   },
   {
     "id": 25,
@@ -220,8 +197,7 @@ window.INITIAL_WORDS = [
     "english": "today",
     "romaji": "kyou",
     "kanji": "今日",
-    "kana": "きょう",
-    "pos": "noun"
+    "kana": "きょう"
   },
   {
     "id": 26,
@@ -229,8 +205,7 @@ window.INITIAL_WORDS = [
     "english": "yesterday",
     "romaji": "kinou",
     "kanji": "昨日",
-    "kana": "きのう",
-    "pos": "noun"
+    "kana": "きのう"
   },
   {
     "id": 27,
@@ -238,8 +213,7 @@ window.INITIAL_WORDS = [
     "english": "next week",
     "romaji": "raishuu",
     "kanji": "来週",
-    "kana": "らいしゅう",
-    "pos": "noun"
+    "kana": "らいしゅう"
   },
   {
     "id": 28,
@@ -247,8 +221,7 @@ window.INITIAL_WORDS = [
     "english": "this week",
     "romaji": "konshuu",
     "kanji": "今週",
-    "kana": "こんしゅう",
-    "pos": "noun"
+    "kana": "こんしゅう"
   },
   {
     "id": 29,
@@ -256,8 +229,7 @@ window.INITIAL_WORDS = [
     "english": "last week",
     "romaji": "senshuu",
     "kanji": "先週",
-    "kana": "せんしゅう",
-    "pos": "noun"
+    "kana": "せんしゅう"
   },
   {
     "id": 30,
@@ -265,8 +237,7 @@ window.INITIAL_WORDS = [
     "english": "next month",
     "romaji": "raigetsu",
     "kanji": "来月",
-    "kana": "らいげつ",
-    "pos": "noun"
+    "kana": "らいげつ"
   },
   {
     "id": 31,
@@ -274,8 +245,7 @@ window.INITIAL_WORDS = [
     "english": "this month",
     "romaji": "kongetsu",
     "kanji": "今月",
-    "kana": "こんげつ",
-    "pos": "noun"
+    "kana": "こんげつ"
   },
   {
     "id": 32,
@@ -283,8 +253,7 @@ window.INITIAL_WORDS = [
     "english": "last month",
     "romaji": "sengetsu",
     "kanji": "先月",
-    "kana": "せんげつ",
-    "pos": "noun"
+    "kana": "せんげつ"
   },
   {
     "id": 33,
@@ -292,8 +261,7 @@ window.INITIAL_WORDS = [
     "english": "next year",
     "romaji": "rainen",
     "kanji": "来年",
-    "kana": "らいねん",
-    "pos": "noun"
+    "kana": "らいねん"
   },
   {
     "id": 34,
@@ -301,8 +269,7 @@ window.INITIAL_WORDS = [
     "english": "this year",
     "romaji": "kotoshi",
     "kanji": "今年",
-    "kana": "ことし",
-    "pos": "noun"
+    "kana": "ことし"
   },
   {
     "id": 35,
@@ -310,8 +277,7 @@ window.INITIAL_WORDS = [
     "english": "last year",
     "romaji": "kyonen",
     "kanji": "去年",
-    "kana": "きょねん",
-    "pos": "noun"
+    "kana": "きょねん"
   },
   {
     "id": 36,
@@ -319,8 +285,7 @@ window.INITIAL_WORDS = [
     "english": "a lot",
     "romaji": "ooi",
     "kanji": "多い",
-    "kana": "おおい",
-    "pos": "adjective"
+    "kana": "おおい"
   },
   {
     "id": 37,
@@ -328,8 +293,7 @@ window.INITIAL_WORDS = [
     "english": "light up",
     "romaji": "hikaru / hikarimasu / hikatta / hikaranai",
     "kanji": "光る / 光ります / 光った / 光らない",
-    "kana": "ひかる / ひかります / ひかった / ひからない",
-    "pos": "verb"
+    "kana": "ひかる / ひかります / ひかった / ひからない"
   },
   {
     "id": 38,
@@ -337,8 +301,7 @@ window.INITIAL_WORDS = [
     "english": "find",
     "romaji": "mitsukeru / mitsukemasu / mitsuketa / mitsukenai",
     "kanji": "見つける / 見つけます / 見つけた / 見つけない",
-    "kana": "みつける / みつけます / みつけた / みつけない",
-    "pos": "verb"
+    "kana": "みつける / みつけます / みつけた / みつけない"
   },
   {
     "id": 39,
@@ -346,8 +309,7 @@ window.INITIAL_WORDS = [
     "english": "ten thousand",
     "romaji": "ichiman",
     "kanji": "一万",
-    "kana": "いちまん",
-    "pos": "noun"
+    "kana": "いちまん"
   },
   {
     "id": 40,
@@ -355,8 +317,7 @@ window.INITIAL_WORDS = [
     "english": "lightweight",
     "romaji": "karui",
     "kanji": "軽い",
-    "kana": "かるい",
-    "pos": "adjective"
+    "kana": "かるい"
   },
   {
     "id": 41,
@@ -364,8 +325,7 @@ window.INITIAL_WORDS = [
     "english": "cross",
     "romaji": "wataru / watarimasu / watatta / wataranai",
     "kanji": "渡る / 渡ります / 渡った / 渡らない",
-    "kana": "わたる / わたります / わたった / わたらない",
-    "pos": "verb"
+    "kana": "わたる / わたります / わたった / わたらない"
   },
   {
     "id": 42,
@@ -373,8 +333,7 @@ window.INITIAL_WORDS = [
     "english": "walk",
     "romaji": "aruku / arukimasu / aruita / arukanai",
     "kanji": "歩く / 歩きます / 歩いた / 歩かない",
-    "kana": "あるく / あるきます / あるいた / あるかない",
-    "pos": "verb"
+    "kana": "あるく / あるきます / あるいた / あるかない"
   },
   {
     "id": 43,
@@ -382,8 +341,7 @@ window.INITIAL_WORDS = [
     "english": "street",
     "romaji": "michi",
     "kanji": "道",
-    "kana": "みち",
-    "pos": "noun"
+    "kana": "みち"
   },
   {
     "id": 44,
@@ -391,8 +349,7 @@ window.INITIAL_WORDS = [
     "english": "summer",
     "romaji": "natsu",
     "kanji": "夏",
-    "kana": "なつ",
-    "pos": "noun"
+    "kana": "なつ"
   },
   {
     "id": 45,
@@ -400,8 +357,7 @@ window.INITIAL_WORDS = [
     "english": "use",
     "romaji": "tsukau / tsukaimasu / tsukatta / tsukawanai",
     "kanji": "使う / 使います / 使った / 使わない",
-    "kana": "つかう / つかいます / つかった / つかわない",
-    "pos": "verb"
+    "kana": "つかう / つかいます / つかった / つかわない"
   },
   {
     "id": 46,
@@ -409,8 +365,7 @@ window.INITIAL_WORDS = [
     "english": "make",
     "romaji": "tsukuru / tsukurimasu / tsukutta / tsukuranai",
     "kanji": "作る / 作ります / 作った / 作らない",
-    "kana": "つくる / つくります / つくった / つくらない",
-    "pos": "verb"
+    "kana": "つくる / つくります / つくった / つくらない"
   },
   {
     "id": 47,
@@ -418,8 +373,7 @@ window.INITIAL_WORDS = [
     "english": "not hot",
     "romaji": "atsukunai",
     "kanji": "暑くない",
-    "kana": "あつくない",
-    "pos": "adjective"
+    "kana": "あつくない"
   },
   {
     "id": 48,
@@ -427,8 +381,7 @@ window.INITIAL_WORDS = [
     "english": "night",
     "romaji": "yoru",
     "kanji": "夜",
-    "kana": "よる",
-    "pos": "noun"
+    "kana": "よる"
   },
   {
     "id": 49,
@@ -436,8 +389,7 @@ window.INITIAL_WORDS = [
     "english": "bloom",
     "romaji": "saku / sakimasu / saita / sakanai",
     "kanji": "咲く / 咲きます / 咲いた / 咲かない",
-    "kana": "さく / さきます / さいた / さかない",
-    "pos": "verb"
+    "kana": "さく / さきます / さいた / さかない"
   },
   {
     "id": 50,
@@ -445,8 +397,7 @@ window.INITIAL_WORDS = [
     "english": "city",
     "romaji": "machi",
     "kanji": "町",
-    "kana": "まち / toshi . 都市 . とし",
-    "pos": "verb"
+    "kana": "まち / toshi . 都市 . とし"
   },
   {
     "id": 51,
@@ -454,8 +405,7 @@ window.INITIAL_WORDS = [
     "english": "spring",
     "romaji": "haru",
     "kanji": "春",
-    "kana": "はる",
-    "pos": "noun"
+    "kana": "はる"
   },
   {
     "id": 52,
@@ -463,8 +413,7 @@ window.INITIAL_WORDS = [
     "english": "socks",
     "romaji": "kutsushita",
     "kanji": "靴下",
-    "kana": "くつした",
-    "pos": "noun"
+    "kana": "くつした"
   },
   {
     "id": 53,
@@ -472,8 +421,7 @@ window.INITIAL_WORDS = [
     "english": "shoes",
     "romaji": "kutsu",
     "kanji": "靴",
-    "kana": "くつ",
-    "pos": "noun"
+    "kana": "くつ"
   },
   {
     "id": 54,
@@ -481,8 +429,7 @@ window.INITIAL_WORDS = [
     "english": "feet",
     "romaji": "ashi",
     "kanji": "足",
-    "kana": "あし",
-    "pos": "noun"
+    "kana": "あし"
   },
   {
     "id": 55,
@@ -490,8 +437,7 @@ window.INITIAL_WORDS = [
     "english": "watermelon",
     "romaji": "suika",
     "kanji": "西瓜",
-    "kana": "すいか",
-    "pos": "noun"
+    "kana": "すいか"
   },
   {
     "id": 56,
@@ -499,8 +445,7 @@ window.INITIAL_WORDS = [
     "english": "go up",
     "romaji": "agaru / agarimasu / agatta / agaranai",
     "kanji": "上がる / 上がります / 上がった / 上がらない",
-    "kana": "あがる / あがります / あがった / あがらない",
-    "pos": "verb"
+    "kana": "あがる / あがります / あがった / あがらない"
   },
   {
     "id": 57,
@@ -508,8 +453,7 @@ window.INITIAL_WORDS = [
     "english": "cold (to touch)",
     "romaji": "tsumetai",
     "kanji": "冷たい",
-    "kana": "つめたい",
-    "pos": "adjective"
+    "kana": "つめたい"
   },
   {
     "id": 58,
@@ -517,8 +461,7 @@ window.INITIAL_WORDS = [
     "english": "hot (to touch)",
     "romaji": "atsui",
     "kanji": "熱い",
-    "kana": "あつい",
-    "pos": "adjective"
+    "kana": "あつい"
   },
   {
     "id": 59,
@@ -526,8 +469,7 @@ window.INITIAL_WORDS = [
     "english": "warm",
     "romaji": "atatakai",
     "kanji": "暖かい",
-    "kana": "あたたかい",
-    "pos": "adjective"
+    "kana": "あたたかい"
   },
   {
     "id": 60,
@@ -535,8 +477,7 @@ window.INITIAL_WORDS = [
     "english": "cold (weather)",
     "romaji": "samui",
     "kanji": "寒い",
-    "kana": "さむい",
-    "pos": "adjective"
+    "kana": "さむい"
   },
   {
     "id": 61,
@@ -544,8 +485,7 @@ window.INITIAL_WORDS = [
     "english": "hot (weather)",
     "romaji": "atsui",
     "kanji": "暑い",
-    "kana": "あつい",
-    "pos": "adjective"
+    "kana": "あつい"
   },
   {
     "id": 62,
@@ -553,8 +493,7 @@ window.INITIAL_WORDS = [
     "english": "around (time)",
     "romaji": "goro",
     "kanji": "頃",
-    "kana": "ごろ",
-    "pos": "noun"
+    "kana": "ごろ"
   },
   {
     "id": 63,
@@ -562,8 +501,7 @@ window.INITIAL_WORDS = [
     "english": "for about (time)",
     "romaji": "gurai",
     "kanji": "位",
-    "kana": "ぐらい",
-    "pos": "noun"
+    "kana": "ぐらい"
   },
   {
     "id": 64,
@@ -571,8 +509,7 @@ window.INITIAL_WORDS = [
     "english": "end",
     "romaji": "owaru / owarimasu / owatta / owaranai",
     "kanji": "終わる / 終わります / 終わった / 終わらない",
-    "kana": "おわる / おわります / おわった / おわらない",
-    "pos": "verb"
+    "kana": "おわる / おわります / おわった / おわらない"
   },
   {
     "id": 65,
@@ -580,8 +517,7 @@ window.INITIAL_WORDS = [
     "english": "start",
     "romaji": "hajimaru / hajimarimasu / hajimatta / hajimaranai",
     "kanji": "始まる / 始まります / 始まった / 始まらない",
-    "kana": "はじまる / はじまります / はじまった / はじまらない",
-    "pos": "verb"
+    "kana": "はじまる / はじまります / はじまった / はじまらない"
   },
   {
     "id": 66,
@@ -589,8 +525,7 @@ window.INITIAL_WORDS = [
     "english": "post (blog)",
     "romaji": "kiji",
     "kanji": "記事",
-    "kana": "きじ",
-    "pos": "noun"
+    "kana": "きじ"
   },
   {
     "id": 67,
@@ -598,8 +533,7 @@ window.INITIAL_WORDS = [
     "english": "game",
     "romaji": "shiai",
     "kanji": "試合",
-    "kana": "しあい",
-    "pos": "noun"
+    "kana": "しあい"
   },
   {
     "id": 68,
@@ -607,8 +541,7 @@ window.INITIAL_WORDS = [
     "english": "hot pot",
     "romaji": "nabe",
     "kanji": "鍋",
-    "kana": "なべ",
-    "pos": "noun"
+    "kana": "なべ"
   },
   {
     "id": 69,
@@ -616,8 +549,7 @@ window.INITIAL_WORDS = [
     "english": "already",
     "romaji": "mou",
     "kanji": "もう",
-    "kana": "もう",
-    "pos": "adverb"
+    "kana": "もう"
   },
   {
     "id": 70,
@@ -625,8 +557,7 @@ window.INITIAL_WORDS = [
     "english": "homework",
     "romaji": "shukudai",
     "kanji": "宿題",
-    "kana": "しゅくだい",
-    "pos": "noun"
+    "kana": "しゅくだい"
   },
   {
     "id": 71,
@@ -634,8 +565,7 @@ window.INITIAL_WORDS = [
     "english": "subway",
     "romaji": "chikatetsu",
     "kanji": "地下鉄",
-    "kana": "ちかてつ",
-    "pos": "noun"
+    "kana": "ちかてつ"
   },
   {
     "id": 72,
@@ -643,8 +573,7 @@ window.INITIAL_WORDS = [
     "english": "not far",
     "romaji": "tookunai",
     "kanji": "遠くない",
-    "kana": "とおくない",
-    "pos": "adjective"
+    "kana": "とおくない"
   },
   {
     "id": 73,
@@ -652,8 +581,7 @@ window.INITIAL_WORDS = [
     "english": "take(time)",
     "romaji": "kakaru / kakarimasu / kakatta / kakaranai",
     "kanji": "掛かる / 掛かります / 掛かった / 掛からない",
-    "kana": "かかる / かかります / かかった / かからない",
-    "pos": "verb"
+    "kana": "かかる / かかります / かかった / かからない"
   },
   {
     "id": 74,
@@ -661,8 +589,7 @@ window.INITIAL_WORDS = [
     "english": "evening",
     "romaji": "yuugata",
     "kanji": "夕方",
-    "kana": "ゆうがた",
-    "pos": "noun"
+    "kana": "ゆうがた"
   },
   {
     "id": 75,
@@ -670,8 +597,7 @@ window.INITIAL_WORDS = [
     "english": "after (time)",
     "romaji": "ato",
     "kanji": "後",
-    "kana": "あと",
-    "pos": "noun"
+    "kana": "あと"
   },
   {
     "id": 76,
@@ -679,8 +605,7 @@ window.INITIAL_WORDS = [
     "english": "before (time)",
     "romaji": "mae",
     "kanji": "前",
-    "kana": "まえ",
-    "pos": "noun"
+    "kana": "まえ"
   },
   {
     "id": 77,
@@ -688,8 +613,7 @@ window.INITIAL_WORDS = [
     "english": "invite",
     "romaji": "yobu / yobimasu / yonda / yobanai",
     "kanji": "呼ぶ / 呼びます / 呼んだ / 呼ばない",
-    "kana": "よぶ / よびます / よんだ / よばない",
-    "pos": "verb"
+    "kana": "よぶ / よびます / よんだ / よばない"
   },
   {
     "id": 78,
@@ -697,8 +621,7 @@ window.INITIAL_WORDS = [
     "english": "hideous",
     "romaji": "dasai",
     "kanji": "ダサい",
-    "kana": "ださい",
-    "pos": "adjective"
+    "kana": "ださい"
   },
   {
     "id": 79,
@@ -706,8 +629,7 @@ window.INITIAL_WORDS = [
     "english": "sister (younger)",
     "romaji": "imouto",
     "kanji": "妹",
-    "kana": "いもうと",
-    "pos": "noun"
+    "kana": "いもうと"
   },
   {
     "id": 80,
@@ -723,8 +645,7 @@ window.INITIAL_WORDS = [
     "english": "sister (older, plain)",
     "romaji": "ane",
     "kanji": "姉",
-    "kana": "あね",
-    "pos": "noun"
+    "kana": "あね"
   },
   {
     "id": 82,
@@ -732,8 +653,7 @@ window.INITIAL_WORDS = [
     "english": "brother (younger)",
     "romaji": "otouto",
     "kanji": "弟",
-    "kana": "おとうと",
-    "pos": "noun"
+    "kana": "おとうと"
   },
   {
     "id": 83,
@@ -749,8 +669,7 @@ window.INITIAL_WORDS = [
     "english": "brother (older, plain)",
     "romaji": "ani",
     "kanji": "兄",
-    "kana": "あに",
-    "pos": "noun"
+    "kana": "あに"
   },
   {
     "id": 85,
@@ -758,8 +677,7 @@ window.INITIAL_WORDS = [
     "english": "stay",
     "romaji": "tomaru / tomarimasu / tomatta / tomaranai",
     "kanji": "泊まる / 泊まります / 泊まった / 泊まらない",
-    "kana": "とまる / とまります / とまった / とまらない",
-    "pos": "verb"
+    "kana": "とまる / とまります / とまった / とまらない"
   },
   {
     "id": 86,
@@ -767,8 +685,7 @@ window.INITIAL_WORDS = [
     "english": "beach",
     "romaji": "umi",
     "kanji": "海",
-    "kana": "うみ",
-    "pos": "noun"
+    "kana": "うみ"
   },
   {
     "id": 87,
@@ -776,8 +693,7 @@ window.INITIAL_WORDS = [
     "english": "high school",
     "romaji": "koukou",
     "kanji": "高校",
-    "kana": "こうこう",
-    "pos": "noun"
+    "kana": "こうこう"
   },
   {
     "id": 88,
@@ -785,8 +701,7 @@ window.INITIAL_WORDS = [
     "english": "graduate school",
     "romaji": "sotsugyoshimasu",
     "kanji": "卒業します",
-    "kana": "そつぎょうします",
-    "pos": "noun"
+    "kana": "そつぎょうします"
   },
   {
     "id": 89,
@@ -794,8 +709,7 @@ window.INITIAL_WORDS = [
     "english": "popular (person)",
     "romaji": "ninki",
     "kanji": "人気",
-    "kana": "にんき",
-    "pos": "noun"
+    "kana": "にんき"
   },
   {
     "id": 90,
@@ -803,8 +717,7 @@ window.INITIAL_WORDS = [
     "english": "search for",
     "romaji": "sagasu / sagashimasu / sagashita / sagasanai",
     "kanji": "探す / 探します / 探した / 探さない",
-    "kana": "さがす / さがします / さがした / さがさない",
-    "pos": "verb"
+    "kana": "さがす / さがします / さがした / さがさない"
   },
   {
     "id": 91,
@@ -812,8 +725,7 @@ window.INITIAL_WORDS = [
     "english": "stuff to do",
     "romaji": "youji",
     "kanji": "用事",
-    "kana": "ようじ",
-    "pos": "noun"
+    "kana": "ようじ"
   },
   {
     "id": 92,
@@ -821,8 +733,7 @@ window.INITIAL_WORDS = [
     "english": "go down",
     "romaji": "oriru / orimasu / orita / orinai",
     "kanji": "降りる / 降ります / 降りた / 降りない",
-    "kana": "おりる / おります / おりた / おりない",
-    "pos": "verb"
+    "kana": "おりる / おります / おりた / おりない"
   },
   {
     "id": 93,
@@ -830,8 +741,7 @@ window.INITIAL_WORDS = [
     "english": "turn on",
     "romaji": "tsukeru / tsukemasu / tsuketa / tsukenai",
     "kanji": "漬ける / 漬けます / 漬けた / 漬けない",
-    "kana": "つける / つけます / つけた / つけない",
-    "pos": "verb"
+    "kana": "つける / つけます / つけた / つけない"
   },
   {
     "id": 94,
@@ -839,8 +749,7 @@ window.INITIAL_WORDS = [
     "english": "turn off",
     "romaji": "kesu / keshimasu / keshita / kesanai",
     "kanji": "消す / 消します / 消した / 消さない",
-    "kana": "けす / けします / けした / けさない",
-    "pos": "verb"
+    "kana": "けす / けします / けした / けさない"
   },
   {
     "id": 95,
@@ -848,8 +757,7 @@ window.INITIAL_WORDS = [
     "english": "turning(age)",
     "romaji": "naru / narimasu / natta / naranai",
     "kanji": "成る / 成ります / 成った / 成らない",
-    "kana": "なる / なります / なった / ならない",
-    "pos": "verb"
+    "kana": "なる / なります / なった / ならない"
   },
   {
     "id": 96,
@@ -857,8 +765,7 @@ window.INITIAL_WORDS = [
     "english": "closes at (time)",
     "romaji": "shimaru / shimarimasu / shimatta / shimaranai",
     "kanji": "閉まる / 閉まります / 閉まった / 閉まらない",
-    "kana": "しまる / しまります / しまった / しまらない",
-    "pos": "verb"
+    "kana": "しまる / しまります / しまった / しまらない"
   },
   {
     "id": 97,
@@ -866,8 +773,7 @@ window.INITIAL_WORDS = [
     "english": "go home",
     "romaji": "kaeru / kaerimasu / kaetta / kaeranai",
     "kanji": "帰る / 帰ります / 帰った / 帰らない",
-    "kana": "かえる / かえります / かえった / かえらない",
-    "pos": "verb"
+    "kana": "かえる / かえります / かえった / かえらない"
   },
   {
     "id": 98,
@@ -875,8 +781,7 @@ window.INITIAL_WORDS = [
     "english": "bike",
     "romaji": "jitensha",
     "kanji": "自転車",
-    "kana": "じてんしゃ",
-    "pos": "noun"
+    "kana": "じてんしゃ"
   },
   {
     "id": 99,
@@ -884,8 +789,7 @@ window.INITIAL_WORDS = [
     "english": "tidy up",
     "romaji": "katazukeru / katazukemasu / katazuketa / katazukenai",
     "kanji": "片付ける / 片付けます / 片付けた / 片付けない",
-    "kana": "かたづける / かたづけます / かたづけた / かたづけない",
-    "pos": "verb"
+    "kana": "かたづける / かたづけます / かたづけた / かたづけない"
   },
   {
     "id": 100,
@@ -893,8 +797,7 @@ window.INITIAL_WORDS = [
     "english": "in a bit",
     "romaji": "sorosoro",
     "kanji": "そろそろ",
-    "kana": "そろそろ",
-    "pos": "adverb"
+    "kana": "そろそろ"
   },
   {
     "id": 101,
@@ -902,8 +805,7 @@ window.INITIAL_WORDS = [
     "english": "chair",
     "romaji": "isu",
     "kanji": "椅子",
-    "kana": "いす",
-    "pos": "noun"
+    "kana": "いす"
   },
   {
     "id": 102,
@@ -911,8 +813,7 @@ window.INITIAL_WORDS = [
     "english": "subway",
     "romaji": "chikatetsu",
     "kanji": "地下鉄",
-    "kana": "ちかてつ",
-    "pos": "noun"
+    "kana": "ちかてつ"
   },
   {
     "id": 103,
@@ -920,8 +821,7 @@ window.INITIAL_WORDS = [
     "english": "recently",
     "romaji": "saikin",
     "kanji": "最近",
-    "kana": "さいきん",
-    "pos": "noun"
+    "kana": "さいきん"
   },
   {
     "id": 104,
@@ -929,8 +829,7 @@ window.INITIAL_WORDS = [
     "english": "very",
     "romaji": "amari",
     "kanji": "あまり",
-    "kana": "あまり",
-    "pos": "adverb"
+    "kana": "あまり"
   },
   {
     "id": 105,
@@ -938,8 +837,7 @@ window.INITIAL_WORDS = [
     "english": "wear",
     "romaji": "kiru / kimasu / kita / kinai",
     "kanji": "着る / 着ます / 着た / 着ない",
-    "kana": "きる / きます / きた / きない",
-    "pos": "verb"
+    "kana": "きる / きます / きた / きない"
   },
   {
     "id": 106,
@@ -947,8 +845,7 @@ window.INITIAL_WORDS = [
     "english": "run",
     "romaji": "hashiru / hashirimasu / hashitta / hashiranai",
     "kanji": "走る / 走ります / 走った / 走らない",
-    "kana": "はしる / はしります / はしった / はしらない",
-    "pos": "verb"
+    "kana": "はしる / はしります / はしった / はしらない"
   },
   {
     "id": 107,
@@ -956,8 +853,7 @@ window.INITIAL_WORDS = [
     "english": "cleaning",
     "romaji": "souji",
     "kanji": "掃除",
-    "kana": "そうじ",
-    "pos": "noun"
+    "kana": "そうじ"
   },
   {
     "id": 108,
@@ -965,8 +861,7 @@ window.INITIAL_WORDS = [
     "english": "read",
     "romaji": "yomu / yomimasu / yonda / yomanai",
     "kanji": "読む / 読みます / 読んだ / 読まない",
-    "kana": "よむ / よみます / よんだ / よまない",
-    "pos": "verb"
+    "kana": "よむ / よみます / よんだ / よまない"
   },
   {
     "id": 109,
@@ -974,8 +869,7 @@ window.INITIAL_WORDS = [
     "english": "novel",
     "romaji": "shousetsu",
     "kanji": "小説",
-    "kana": "しょうせつ",
-    "pos": "noun"
+    "kana": "しょうせつ"
   },
   {
     "id": 110,
@@ -983,8 +877,7 @@ window.INITIAL_WORDS = [
     "english": "later",
     "romaji": "ato de",
     "kanji": "後で",
-    "kana": "あとで",
-    "pos": "adverb"
+    "kana": "あとで"
   },
   {
     "id": 111,
@@ -992,8 +885,7 @@ window.INITIAL_WORDS = [
     "english": "chores",
     "romaji": "kaji",
     "kanji": "家事",
-    "kana": "かじ",
-    "pos": "noun"
+    "kana": "かじ"
   },
   {
     "id": 112,
@@ -1001,8 +893,7 @@ window.INITIAL_WORDS = [
     "english": "co-worker",
     "romaji": "douryou",
     "kanji": "同僚",
-    "kana": "どうりょう",
-    "pos": "noun"
+    "kana": "どうりょう"
   },
   {
     "id": 113,
@@ -1010,8 +901,7 @@ window.INITIAL_WORDS = [
     "english": "oversleep",
     "romaji": "nebou shimasu",
     "kanji": "寝坊します",
-    "kana": "ねぼうします",
-    "pos": "noun"
+    "kana": "ねぼうします"
   },
   {
     "id": 114,
@@ -1019,8 +909,7 @@ window.INITIAL_WORDS = [
     "english": "relax / take it easy",
     "romaji": "yukkuri shimasu",
     "kanji": "ゆっくりします",
-    "kana": "ゆっくりします",
-    "pos": "adverb"
+    "kana": "ゆっくりします"
   },
   {
     "id": 115,
@@ -1028,8 +917,7 @@ window.INITIAL_WORDS = [
     "english": "relax",
     "romaji": "kutsurogu / kutsurogimasu / kutsuroida / kutsuroganai",
     "kanji": "寛ぐ / 寛ぎます / 寛いだ / 寛がない",
-    "kana": "くつろぐ / くつろぎます / くつろいだ / くつろがない",
-    "pos": "verb"
+    "kana": "くつろぐ / くつろぎます / くつろいだ / くつろがない"
   },
   {
     "id": 116,
@@ -1045,8 +933,7 @@ window.INITIAL_WORDS = [
     "english": "became dry",
     "romaji": "kawaku / kawakimasu / kawaita / kawakanai",
     "kanji": "渇く / 渇きます / 渇いた / 渇かない",
-    "kana": "かわく / かわきます / かわいた / かわかない",
-    "pos": "verb"
+    "kana": "かわく / かわきます / かわいた / かわかない"
   },
   {
     "id": 118,
@@ -1054,8 +941,7 @@ window.INITIAL_WORDS = [
     "english": "became empty/opened",
     "romaji": "suku / sukimasu / suita / sukanai",
     "kanji": "空く / 空きます / 空いた / 空かない",
-    "kana": "すく / すきます / すいた / すかない",
-    "pos": "verb"
+    "kana": "すく / すきます / すいた / すかない"
   },
   {
     "id": 119,
@@ -1063,8 +949,7 @@ window.INITIAL_WORDS = [
     "english": "throat",
     "romaji": "Nodo",
     "kanji": "喉",
-    "kana": "のど",
-    "pos": "noun"
+    "kana": "のど"
   },
   {
     "id": 120,
@@ -1072,8 +957,7 @@ window.INITIAL_WORDS = [
     "english": "stomach",
     "romaji": "Onaka",
     "kanji": "お腹",
-    "kana": "おなか",
-    "pos": "noun"
+    "kana": "おなか"
   },
   {
     "id": 121,
@@ -1081,8 +965,7 @@ window.INITIAL_WORDS = [
     "english": "line up",
     "romaji": "narabu / narabimasu / naranda / narabanai",
     "kanji": "並ぶ / 並びます / 並んだ / 並ばない",
-    "kana": "ならぶ / ならびます / ならんだ / ならばない",
-    "pos": "verb"
+    "kana": "ならぶ / ならびます / ならんだ / ならばない"
   },
   {
     "id": 122,
@@ -1090,8 +973,7 @@ window.INITIAL_WORDS = [
     "english": "wait",
     "romaji": "matsu / machimasu / matta / matanai",
     "kanji": "待つ / 待ちます / 待った / 待たない",
-    "kana": "まつ / まちます / まった / またない",
-    "pos": "verb"
+    "kana": "まつ / まちます / まった / またない"
   },
   {
     "id": 123,
@@ -1099,8 +981,7 @@ window.INITIAL_WORDS = [
     "english": "waiter/salesperson",
     "romaji": "teninsan",
     "kanji": "店員さん",
-    "kana": "てんいんさん",
-    "pos": "noun"
+    "kana": "てんいんさん"
   },
   {
     "id": 124,
@@ -1108,8 +989,7 @@ window.INITIAL_WORDS = [
     "english": "store",
     "romaji": "mise",
     "kanji": "店",
-    "kana": "みせ",
-    "pos": "noun"
+    "kana": "みせ"
   },
   {
     "id": 125,
@@ -1117,8 +997,7 @@ window.INITIAL_WORDS = [
     "english": "next time",
     "romaji": "kondo",
     "kanji": "今度",
-    "kana": "こんど",
-    "pos": "noun"
+    "kana": "こんど"
   },
   {
     "id": 126,
@@ -1126,8 +1005,7 @@ window.INITIAL_WORDS = [
     "english": "first time",
     "romaji": "hajimete",
     "kanji": "初めて",
-    "kana": "はじめて",
-    "pos": "adverb"
+    "kana": "はじめて"
   },
   {
     "id": 127,
@@ -1135,8 +1013,7 @@ window.INITIAL_WORDS = [
     "english": "be late / be delayed",
     "romaji": "okureru / okuremasu / okureta / okurenai",
     "kanji": "遅れる / 遅れます / 遅れた / 遅れない",
-    "kana": "おくれる / おくれます / おくれた / おくれない",
-    "pos": "verb"
+    "kana": "おくれる / おくれます / おくれた / おくれない"
   },
   {
     "id": 128,
@@ -1144,8 +1021,7 @@ window.INITIAL_WORDS = [
     "english": "hurry",
     "romaji": "isogu / isogimasu / isoida / isoganai",
     "kanji": "急ぐ / 急ぎます / 急いだ / 急がない",
-    "kana": "いそぐ / いそぎます / いそいだ / いそがない",
-    "pos": "verb"
+    "kana": "いそぐ / いそぎます / いそいだ / いそがない"
   },
   {
     "id": 129,
@@ -1153,8 +1029,7 @@ window.INITIAL_WORDS = [
     "english": "west exit",
     "romaji": "nishiguchi",
     "kanji": "西口",
-    "kana": "にしぐち",
-    "pos": "noun"
+    "kana": "にしぐち"
   },
   {
     "id": 130,
@@ -1162,8 +1037,7 @@ window.INITIAL_WORDS = [
     "english": "we / us",
     "romaji": "watashitachi",
     "kanji": "私たち",
-    "kana": "わたしたち",
-    "pos": "noun"
+    "kana": "わたしたち"
   },
   {
     "id": 131,
@@ -1171,8 +1045,7 @@ window.INITIAL_WORDS = [
     "english": "not here / not there / does not exist",
     "romaji": "iru / imasu / ita / inai",
     "kanji": "いる / います / いた / いない",
-    "kana": "いる / います / いた / いない",
-    "pos": "verb"
+    "kana": "いる / います / いた / いない"
   },
   {
     "id": 132,
@@ -1180,8 +1053,7 @@ window.INITIAL_WORDS = [
     "english": "send / send a message",
     "romaji": "okuru / okurimasu / okutta / okuranai",
     "kanji": "送る / 送ります / 送った / 送らない",
-    "kana": "おくる / おくります / おくった / おくらない",
-    "pos": "verb"
+    "kana": "おくる / おくります / おくった / おくらない"
   },
   {
     "id": 133,
@@ -1189,8 +1061,7 @@ window.INITIAL_WORDS = [
     "english": "in a bit / soon / about time",
     "romaji": "sorosoro",
     "kanji": "そろそろ",
-    "kana": "そろそろ",
-    "pos": "adverb"
+    "kana": "そろそろ"
   },
   {
     "id": 134,
@@ -1198,8 +1069,7 @@ window.INITIAL_WORDS = [
     "english": "arrive",
     "romaji": "tsuku / tsukimasu / tsuita / tsukanai",
     "kanji": "着く / 着きます / 着いた / 着かない",
-    "kana": "つく / つきます / ついた / つかない",
-    "pos": "verb"
+    "kana": "つく / つきます / ついた / つかない"
   },
   {
     "id": 135,
@@ -1207,8 +1077,7 @@ window.INITIAL_WORDS = [
     "english": "leave / go out",
     "romaji": "deru / demasu / deta / denai",
     "kanji": "出る / 出ます / 出た / 出ない",
-    "kana": "でる / でます / でた / でない",
-    "pos": "verb"
+    "kana": "でる / でます / でた / でない"
   },
   {
     "id": 136,
@@ -1216,8 +1085,7 @@ window.INITIAL_WORDS = [
     "english": "slow / late",
     "romaji": "osoi",
     "kanji": "遅い",
-    "kana": "おそい",
-    "pos": "adjective"
+    "kana": "おそい"
   },
   {
     "id": 137,
@@ -1225,8 +1093,7 @@ window.INITIAL_WORDS = [
     "english": "from now / starting now",
     "romaji": "imakara",
     "kanji": "今から",
-    "kana": "いまから",
-    "pos": "noun"
+    "kana": "いまから"
   },
   {
     "id": 138,
@@ -1234,8 +1101,7 @@ window.INITIAL_WORDS = [
     "english": "stall / food stall",
     "romaji": "yatai",
     "kanji": "屋台",
-    "kana": "やたい",
-    "pos": "noun"
+    "kana": "やたい"
   },
   {
     "id": 139,
@@ -1243,8 +1109,7 @@ window.INITIAL_WORDS = [
     "english": "finally",
     "romaji": "yatto",
     "kanji": "やっと",
-    "kana": "やっと",
-    "pos": "adverb"
+    "kana": "やっと"
   },
   {
     "id": 140,
@@ -1252,8 +1117,7 @@ window.INITIAL_WORDS = [
     "english": "stop",
     "romaji": "tomaru / tomarimasu / tomatta / tomaranai",
     "kanji": "止まる / 止まります / 止まった / 止まらない",
-    "kana": "とまる / とまります / とまった / とまらない",
-    "pos": "verb"
+    "kana": "とまる / とまります / とまった / とまらない"
   },
   {
     "id": 141,
@@ -1261,8 +1125,7 @@ window.INITIAL_WORDS = [
     "english": "switch / transfer trains",
     "romaji": "norikaeru / norikaemasu / norikaeta / norikaenai",
     "kanji": "乗り換える / 乗り換えます / 乗り換えた / 乗り換えない",
-    "kana": "のりかえる / のりかえます / のりかえた / のりかえない",
-    "pos": "verb"
+    "kana": "のりかえる / のりかえます / のりかえた / のりかえない"
   },
   {
     "id": 142,
@@ -1270,8 +1133,7 @@ window.INITIAL_WORDS = [
     "english": "forget",
     "romaji": "wasureru / wasuremasu / wasureta / wasurenai",
     "kanji": "忘れる / 忘れます / 忘れた / 忘れない",
-    "kana": "わすれる / わすれます / わすれた / わすれない",
-    "pos": "verb"
+    "kana": "わすれる / わすれます / わすれた / わすれない"
   },
   {
     "id": 143,
@@ -1279,8 +1141,7 @@ window.INITIAL_WORDS = [
     "english": "one week / one week long",
     "romaji": "isshuukan",
     "kanji": "一週間",
-    "kana": "いっしゅうかん",
-    "pos": "noun"
+    "kana": "いっしゅうかん"
   },
   {
     "id": 144,
@@ -1288,8 +1149,7 @@ window.INITIAL_WORDS = [
     "english": "grandparents",
     "romaji": "sofubo",
     "kanji": "祖父母",
-    "kana": "そふぼ",
-    "pos": "noun"
+    "kana": "そふぼ"
   },
   {
     "id": 145,
@@ -1297,8 +1157,7 @@ window.INITIAL_WORDS = [
     "english": "overseas",
     "romaji": "kaigai",
     "kanji": "海外",
-    "kana": "かいがい",
-    "pos": "noun"
+    "kana": "かいがい"
   },
   {
     "id": 146,
@@ -1306,8 +1165,7 @@ window.INITIAL_WORDS = [
     "english": "swimsuit",
     "romaji": "mizugi",
     "kanji": "水着",
-    "kana": "みずぎ",
-    "pos": "noun"
+    "kana": "みずぎ"
   },
   {
     "id": 147,
@@ -1315,8 +1173,7 @@ window.INITIAL_WORDS = [
     "english": "port",
     "romaji": "minato",
     "kanji": "港",
-    "kana": "みなと",
-    "pos": "noun"
+    "kana": "みなと"
   },
   {
     "id": 148,
@@ -1324,8 +1181,7 @@ window.INITIAL_WORDS = [
     "english": "one more / another one",
     "romaji": "mou hitotsu",
     "kanji": "もう一つ",
-    "kana": "もうひとつ",
-    "pos": "adverb"
+    "kana": "もうひとつ"
   },
   {
     "id": 149,
@@ -1333,8 +1189,7 @@ window.INITIAL_WORDS = [
     "english": "accident",
     "romaji": "jiko",
     "kanji": "事故",
-    "kana": "じこ",
-    "pos": "noun"
+    "kana": "じこ"
   },
   {
     "id": 150,
@@ -1342,8 +1197,7 @@ window.INITIAL_WORDS = [
     "english": "bridge",
     "romaji": "hashi",
     "kanji": "橋",
-    "kana": "はし",
-    "pos": "noun"
+    "kana": "はし"
   },
   {
     "id": 151,
@@ -1357,8 +1211,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260402-111701.Duolingo.png",
       "importedAt": "2026-07-23T12:24:08.045Z",
       "ocrConfidence": 91
-    },
-    "pos": "verb"
+    }
   },
   {
     "id": 152,
@@ -1372,8 +1225,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260402-111729.Duolingo.png",
       "importedAt": "2026-07-23T12:26:53.036Z",
       "ocrConfidence": 88
-    },
-    "pos": "noun"
+    }
   },
   {
     "id": 153,
@@ -1387,8 +1239,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260402-111729.Duolingo.png",
       "importedAt": "2026-07-23T12:26:53.036Z",
       "ocrConfidence": 88
-    },
-    "pos": "verb"
+    }
   },
   {
     "id": 154,
@@ -1402,8 +1253,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260407-082214.Duolingo.png",
       "importedAt": "2026-07-26T08:04:18.386Z",
       "ocrConfidence": 87
-    },
-    "pos": "noun"
+    }
   },
   {
     "id": 155,
@@ -1417,8 +1267,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260411-090251_Duolingo.png",
       "importedAt": "2026-07-26T08:04:18.386Z",
       "ocrConfidence": 83
-    },
-    "pos": "noun"
+    }
   },
   {
     "id": 156,
@@ -1432,8 +1281,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260411-090651_Duolingo.png",
       "importedAt": "2026-07-26T08:04:18.386Z",
       "ocrConfidence": 90
-    },
-    "pos": "noun"
+    }
   },
   {
     "id": 157,
@@ -1447,8 +1295,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260411-090651_Duolingo.png",
       "importedAt": "2026-07-26T08:04:18.386Z",
       "ocrConfidence": 90
-    },
-    "pos": "noun"
+    }
   },
   {
     "id": 158,
@@ -1462,8 +1309,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260411-090657_Duolingo.png",
       "importedAt": "2026-07-26T08:04:18.386Z",
       "ocrConfidence": 86
-    },
-    "pos": "verb"
+    }
   },
   {
     "id": 159,
@@ -1477,8 +1323,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260412-203116_Duolingo.png",
       "importedAt": "2026-07-26T08:04:18.386Z",
       "ocrConfidence": 75
-    },
-    "pos": "verb"
+    }
   },
   {
     "id": 160,
@@ -1492,8 +1337,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260412-203347_Duolingo.png",
       "importedAt": "2026-07-26T08:04:18.386Z",
       "ocrConfidence": 81
-    },
-    "pos": "verb"
+    }
   },
   {
     "id": 161,
@@ -1507,8 +1351,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260415-074613_Duolingo.png",
       "importedAt": "2026-07-26T08:04:18.386Z",
       "ocrConfidence": 90
-    },
-    "pos": "noun"
+    }
   },
   {
     "id": 162,
@@ -1522,8 +1365,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260415-074613_Duolingo.png",
       "importedAt": "2026-07-26T08:04:18.386Z",
       "ocrConfidence": 90
-    },
-    "pos": "adverb"
+    }
   },
   {
     "id": 163,
@@ -1537,8 +1379,7 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260415-074613_Duolingo.png",
       "importedAt": "2026-07-26T08:04:18.386Z",
       "ocrConfidence": 90
-    },
-    "pos": "verb"
+    }
   },
   {
     "id": 164,
@@ -1546,8 +1387,7 @@ window.INITIAL_WORDS = [
     "english": "flesh; meat",
     "romaji": "niku",
     "kanji": "肉",
-    "kana": "にく",
-    "pos": "noun"
+    "kana": "にく"
   },
   {
     "id": 165,
@@ -1555,8 +1395,7 @@ window.INITIAL_WORDS = [
     "english": "to buy",
     "romaji": "kau / kaimasu / katta / kawanai",
     "kanji": "買う / 買います / 買った / 買わない",
-    "kana": "かう / かいます / かった / かわない",
-    "pos": "verb"
+    "kana": "かう / かいます / かった / かわない"
   },
   {
     "id": 166,
@@ -1570,7 +1409,230 @@ window.INITIAL_WORDS = [
       "filename": "Screenshot_20260402-111751.Duolingo.png",
       "importedAt": "2026-07-28T16:11:27.506Z",
       "ocrConfidence": 90
-    },
-    "pos": "noun"
+    }
+  },
+  {
+    "id": 167,
+    "type": "word",
+    "english": "sleepy",
+    "romaji": "nemui",
+    "kanji": "眠い",
+    "kana": "ねむい",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260415-074622_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 168,
+    "type": "word",
+    "english": "sleep",
+    "romaji": "neru / nemasu / neta / nenai",
+    "kanji": "寝る / 寝ます / 寝た / 寝ない",
+    "kana": "ねる / ねます / ねた / ねない",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260421-063827_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 169,
+    "type": "word",
+    "english": "banana",
+    "romaji": "banana",
+    "kanji": "バナナ",
+    "kana": "ばなな",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260422-134038_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 170,
+    "type": "word",
+    "english": "cancel",
+    "romaji": "kyanseru suru / kyanseru shimasu / kyanseru shita / kyanseru shinai",
+    "kanji": "キャンセルする / キャンセルします / キャンセルした / キャンセルしない",
+    "kana": "きゃんせるする / きゃんせるします / きゃんせるした / きゃんせるしない",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260423-111240_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 171,
+    "type": "word",
+    "english": "plan; schedule",
+    "romaji": "yotei",
+    "kanji": "予定",
+    "kana": "よてい",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260506-104051_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 172,
+    "type": "word",
+    "english": "everyone",
+    "romaji": "minna",
+    "kanji": "みんな",
+    "kana": "みんな",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260506-104131_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 173,
+    "type": "word",
+    "english": "ride; take (transport)",
+    "romaji": "noru / norimasu / notta / noranai",
+    "kanji": "乗る / 乗ります / 乗った / 乗らない",
+    "kana": "のる / のります / のった / のらない",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260507-112636_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 174,
+    "type": "word",
+    "english": "inside; middle",
+    "romaji": "naka",
+    "kanji": "中",
+    "kana": "なか",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260508-102852_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 175,
+    "type": "word",
+    "english": "message",
+    "romaji": "messeeji",
+    "kanji": "メッセージ",
+    "kana": "めっせーじ",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-083247_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 176,
+    "type": "word",
+    "english": "go around; tour",
+    "romaji": "mawaru / mawarimasu / mawatta / mawaranai",
+    "kanji": "回る / 回ります / 回った / 回らない",
+    "kana": "まわる / まわります / まわった / まわらない",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260603-080234_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 177,
+    "type": "word",
+    "english": "ship",
+    "romaji": "fune",
+    "kanji": "船",
+    "kana": "ふね",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260603-080330_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 178,
+    "type": "word",
+    "english": "rice; meal",
+    "romaji": "gohan",
+    "kanji": "ご飯",
+    "kana": "ごはん",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260604-082552_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 179,
+    "type": "word",
+    "english": "all-you-can-eat",
+    "romaji": "tabehoudai",
+    "kanji": "食べ放題",
+    "kana": "たべほうだい",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260604-082644_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 180,
+    "type": "word",
+    "english": "how many days",
+    "romaji": "nannichikan",
+    "kanji": "何日間",
+    "kana": "なんにちかん",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260606-094210_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 181,
+    "type": "word",
+    "english": "trip; travel",
+    "romaji": "ryokou",
+    "kanji": "旅行",
+    "kana": "りょこう",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260617-195223_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
+  },
+  {
+    "id": 182,
+    "type": "word",
+    "english": "pond",
+    "romaji": "ike",
+    "kanji": "池",
+    "kana": "いけ",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260622-092052_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   }
 ];
