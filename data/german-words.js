@@ -260,13 +260,7 @@ window.INITIAL_WORDS_DE = [
     "type": "word",
     "english": "talk / I talk / he talks / you talk / we talk",
     "german": "reden / ich rede / er redet / du redest / wir reden",
-    "article": "plural",
-    "source": {
-      "kind": "duolingo-screenshot",
-      "filename": "Screenshot_20250416-143258.png",
-      "importedAt": "2026-07-26T09:13:04.535Z",
-      "ocrConfidence": 69
-    }
+    "article": "plural"
   },
   {
     "id": 43,
