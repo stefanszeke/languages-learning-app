@@ -1352,6 +1352,12 @@ window.INITIAL_WORDS = [
     "romaji": "sagashi",
     "kanji": "さがす",
     "kana": "さがし",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111701.Duolingo.png",
+      "importedAt": "2026-07-23T12:24:08.045Z",
+      "ocrConfidence": 91
+    },
     "pos": "verb"
   },
   {
@@ -1361,6 +1367,12 @@ window.INITIAL_WORDS = [
     "romaji": "inaka",
     "kanji": "いなか",
     "kana": "いなか",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111729.Duolingo.png",
+      "importedAt": "2026-07-23T12:26:53.036Z",
+      "ocrConfidence": 88
+    },
     "pos": "noun"
   },
   {
@@ -1370,6 +1382,12 @@ window.INITIAL_WORDS = [
     "romaji": "hikkoshi",
     "kanji": "ひっこす",
     "kana": "ひっこし",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111729.Duolingo.png",
+      "importedAt": "2026-07-23T12:26:53.036Z",
+      "ocrConfidence": 88
+    },
     "pos": "verb"
   },
   {
@@ -1379,6 +1397,12 @@ window.INITIAL_WORDS = [
     "romaji": "matsuri",
     "kanji": "まつり",
     "kana": "まつり",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260407-082214.Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 87
+    },
     "pos": "noun"
   },
   {
@@ -1388,6 +1412,12 @@ window.INITIAL_WORDS = [
     "romaji": "kippu",
     "kanji": "きっぷ",
     "kana": "きっぷ",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090251_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 83
+    },
     "pos": "noun"
   },
   {
@@ -1397,6 +1427,12 @@ window.INITIAL_WORDS = [
     "romaji": "chika",
     "kanji": "ちか",
     "kana": "ちか",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090651_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 90
+    },
     "pos": "noun"
   },
   {
@@ -1406,6 +1442,12 @@ window.INITIAL_WORDS = [
     "romaji": "tetsu",
     "kanji": "てつ",
     "kana": "てつ",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090651_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 90
+    },
     "pos": "noun"
   },
   {
@@ -1415,6 +1457,12 @@ window.INITIAL_WORDS = [
     "romaji": "kakari",
     "kanji": "かかる",
     "kana": "かかり",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090657_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 86
+    },
     "pos": "verb"
   },
   {
@@ -1424,6 +1472,12 @@ window.INITIAL_WORDS = [
     "romaji": "katazukeru / katazukemasu / katazuketa / katazukenai",
     "kanji": "かたづける / かたづけます / かたづけた / かたづけない",
     "kana": "かたづける / かたづけます / かたづけた / かたづけない",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260412-203116_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 75
+    },
     "pos": "verb"
   },
   {
@@ -1433,6 +1487,12 @@ window.INITIAL_WORDS = [
     "romaji": "kaeri",
     "kanji": "帰る",
     "kana": "かえり",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260412-203347_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 81
+    },
     "pos": "verb"
   },
   {
@@ -1442,6 +1502,12 @@ window.INITIAL_WORDS = [
     "romaji": "shimbun",
     "kanji": "新聞",
     "kana": "しんぶん",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260415-074613_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 90
+    },
     "pos": "noun"
   },
   {
@@ -1451,6 +1517,12 @@ window.INITIAL_WORDS = [
     "romaji": "mada",
     "kanji": "まだ",
     "kana": "まだ",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260415-074613_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 90
+    },
     "pos": "adverb"
   },
   {
@@ -1460,6 +1532,12 @@ window.INITIAL_WORDS = [
     "romaji": "okiru / okimasu / okita / okinai",
     "kanji": "おきる / おきます / おきた / おきない",
     "kana": "おきる / おきます / おきた / おきない",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260415-074613_Duolingo.png",
+      "importedAt": "2026-07-26T08:04:18.386Z",
+      "ocrConfidence": 90
+    },
     "pos": "verb"
   },
   {
@@ -1487,6 +1565,12 @@ window.INITIAL_WORDS = [
     "romaji": "mafuraa",
     "kanji": "マフラー",
     "kana": "まふらー",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111751.Duolingo.png",
+      "importedAt": "2026-07-28T16:11:27.506Z",
+      "ocrConfidence": 90
+    },
     "pos": "noun"
   },
   {
@@ -1496,6 +1580,12 @@ window.INITIAL_WORDS = [
     "romaji": "nemui",
     "kanji": "眠い",
     "kana": "ねむい",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260415-074622_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "adjective"
   },
   {
@@ -1505,6 +1595,12 @@ window.INITIAL_WORDS = [
     "romaji": "neru / nemasu / neta / nenai",
     "kanji": "寝る / 寝ます / 寝た / 寝ない",
     "kana": "ねる / ねます / ねた / ねない",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260421-063827_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "verb"
   },
   {
@@ -1514,6 +1610,12 @@ window.INITIAL_WORDS = [
     "romaji": "banana",
     "kanji": "バナナ",
     "kana": "ばなな",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260422-134038_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "noun"
   },
   {
@@ -1523,6 +1625,12 @@ window.INITIAL_WORDS = [
     "romaji": "kyanseru suru / kyanseru shimasu / kyanseru shita / kyanseru shinai",
     "kanji": "キャンセルする / キャンセルします / キャンセルした / キャンセルしない",
     "kana": "きゃんせるする / きゃんせるします / きゃんせるした / きゃんせるしない",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260423-111240_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "verb"
   },
   {
@@ -1532,6 +1640,12 @@ window.INITIAL_WORDS = [
     "romaji": "yotei",
     "kanji": "予定",
     "kana": "よてい",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260506-104051_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "noun"
   },
   {
@@ -1541,6 +1655,12 @@ window.INITIAL_WORDS = [
     "romaji": "minna",
     "kanji": "みんな",
     "kana": "みんな",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260506-104131_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "noun"
   },
   {
@@ -1550,6 +1670,12 @@ window.INITIAL_WORDS = [
     "romaji": "noru / norimasu / notta / noranai",
     "kanji": "乗る / 乗ります / 乗った / 乗らない",
     "kana": "のる / のります / のった / のらない",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260507-112636_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "verb"
   },
   {
@@ -1559,6 +1685,12 @@ window.INITIAL_WORDS = [
     "romaji": "naka",
     "kanji": "中",
     "kana": "なか",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260508-102852_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "noun"
   },
   {
@@ -1568,6 +1700,12 @@ window.INITIAL_WORDS = [
     "romaji": "messeeji",
     "kanji": "メッセージ",
     "kana": "めっせーじ",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-083247_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "noun"
   },
   {
@@ -1577,6 +1715,12 @@ window.INITIAL_WORDS = [
     "romaji": "mawaru / mawarimasu / mawatta / mawaranai",
     "kanji": "回る / 回ります / 回った / 回らない",
     "kana": "まわる / まわります / まわった / まわらない",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260603-080234_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "verb"
   },
   {
@@ -1586,6 +1730,12 @@ window.INITIAL_WORDS = [
     "romaji": "fune",
     "kanji": "船",
     "kana": "ふね",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260603-080330_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "noun"
   },
   {
@@ -1595,6 +1745,12 @@ window.INITIAL_WORDS = [
     "romaji": "gohan",
     "kanji": "ご飯",
     "kana": "ごはん",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260604-082552_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "noun" 
   },
   {
@@ -1604,6 +1760,12 @@ window.INITIAL_WORDS = [
     "romaji": "tabehoudai / tabehoudamasu / tabehoudata / tabehoudanai",
     "kanji": "食べ放題 / 食べ放ます / 食べ放た / 食べ放ない",
     "kana": "たべほうだい / たべほうだます / たべほうだた / たべほうだない",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260604-082644_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "verb"
   },
   {
@@ -1613,6 +1775,12 @@ window.INITIAL_WORDS = [
     "romaji": "nannichikan",
     "kanji": "何日間",
     "kana": "なんにちかん",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260606-094210_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "noun"
   },
   {
@@ -1622,6 +1790,12 @@ window.INITIAL_WORDS = [
     "romaji": "ryokou",
     "kanji": "旅行",
     "kana": "りょこう",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260617-195223_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "noun"
   },
   {
@@ -1631,6 +1805,12 @@ window.INITIAL_WORDS = [
     "romaji": "ike",
     "kanji": "池",
     "kana": "いけ",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260622-092052_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    },
     "pos": "noun"
   },
   {
