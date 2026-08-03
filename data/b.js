@@ -357,7 +357,13 @@ window.INITIAL_SENTENCES = [
     "english": "We should search for that popular speaker.",
     "romaji": "sono ninki no supiikaa wo sagashimashou。",
     "kanji": "そのにんきのスピーカーをさがしましょう。",
-    "kana": "そのにんきのスピーカーをさがしましょう。"
+    "kana": "そのにんきのスピーカーをさがしましょう。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111701.Duolingo.png",
+      "importedAt": "2026-07-23T12:24:09.410Z",
+      "ocrConfidence": 91
+    }
   },
   {
     "id": 46,
@@ -365,7 +371,13 @@ window.INITIAL_SENTENCES = [
     "english": "I moved to the countryside.",
     "romaji": "inaka ni hikkoshimashita",
     "kanji": "いなかにひっこしました",
-    "kana": "いなかにひっこしました"
+    "kana": "いなかにひっこしました",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111729.Duolingo.png",
+      "importedAt": "2026-07-23T12:26:54.308Z",
+      "ocrConfidence": 88
+    }
   },
   {
     "id": 47,
@@ -373,7 +385,13 @@ window.INITIAL_SENTENCES = [
     "english": "There was a train accident",
     "romaji": "denshanojikogaarimashita",
     "kanji": "電車のじこがありました",
-    "kana": "でんしゃのじこがありました"
+    "kana": "でんしゃのじこがありました",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260701-111233_Duolingo.png",
+      "importedAt": "2026-07-26T07:52:30.575Z",
+      "ocrConfidence": 75
+    }
   },
   {
     "id": 48,
@@ -381,7 +399,13 @@ window.INITIAL_SENTENCES = [
     "english": "We should come here next year too",
     "romaji": "rainemmokokonikimashou!",
     "kanji": "来年もここに来ましょう!",
-    "kana": "らいねんもここにきましょう!"
+    "kana": "らいねんもここにきましょう!",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260623-073716_Duolingo.png",
+      "importedAt": "2026-07-26T07:53:18.277Z",
+      "ocrConfidence": 77
+    }
   },
   {
     "id": 49,
@@ -389,7 +413,13 @@ window.INITIAL_SENTENCES = [
     "english": "From what time is the festival",
     "romaji": "omatsurihananjikaradesuka",
     "kanji": "おまつりは何時からですか",
-    "kana": "おまつりはなんじからですか"
+    "kana": "おまつりはなんじからですか",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260407-082214.Duolingo.png",
+      "importedAt": "2026-07-26T08:06:49.141Z",
+      "ocrConfidence": 87
+    }
   },
   {
     "id": 50,
@@ -397,7 +427,13 @@ window.INITIAL_SENTENCES = [
     "english": "Did you already buy the train ticket",
     "romaji": "moudenshanokippuwokaimashitaka。",
     "kanji": "もうでんしゃのきっぷを買いましたか。",
-    "kana": "もうでんしゃのきっぷをかいましたか。"
+    "kana": "もうでんしゃのきっぷをかいましたか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090251_Duolingo.png",
+      "importedAt": "2026-07-26T08:06:49.141Z",
+      "ocrConfidence": 83
+    }
   },
   {
     "id": 51,
@@ -405,7 +441,13 @@ window.INITIAL_SENTENCES = [
     "english": "lt takes about one hour to go to the party by subway.",
     "romaji": "paatiimadechikatetsudeichijikanguraikakarimasu。",
     "kanji": "パーティーまでちかてつで一時間ぐらいかかります。",
-    "kana": "ぱーてぃーまでちかてつでいちじかんぐらいかかります。"
+    "kana": "ぱーてぃーまでちかてつでいちじかんぐらいかかります。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090657_Duolingo.png",
+      "importedAt": "2026-07-26T08:06:49.141Z",
+      "ocrConfidence": 86
+    }
   },
   {
     "id": 52,
@@ -413,7 +455,13 @@ window.INITIAL_SENTENCES = [
     "english": "It takes about twenty minutes by bike to Ken's house",
     "romaji": "kensannoiemadejitenshade=juufunguraikakarimasu。",
     "kanji": "けんさんの家までじてんしゃで=十分ぐらいかかります。",
-    "kana": "けんさんのいえまでじてんしゃで=じゅうふんぐらいかかります。"
+    "kana": "けんさんのいえまでじてんしゃで=じゅうふんぐらいかかります。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260411-090705_Duolingo.png",
+      "importedAt": "2026-07-26T08:06:49.141Z",
+      "ocrConfidence": 91
+    }
   },
   {
     "id": 53,
@@ -421,7 +469,13 @@ window.INITIAL_SENTENCES = [
     "english": "I'm going to tidy UP the table",
     "romaji": "teeburuwokatazukemasu。",
     "kanji": "テーブルをかたづけます。",
-    "kana": "テーブルをかたづけます。"
+    "kana": "テーブルをかたづけます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260412-203116_Duolingo.png",
+      "importedAt": "2026-07-26T08:06:49.141Z",
+      "ocrConfidence": 75
+    }
   },
   {
     "id": 54,
@@ -429,7 +483,13 @@ window.INITIAL_SENTENCES = [
     "english": "I want to buy a cute scarf next time.",
     "romaji": "kondokawaiimafuraakaitaidesu。",
     "kanji": "こんどかわいいマフラー買いたいです。",
-    "kana": "こんどかわいいまふらーかいたいです。"
+    "kana": "こんどかわいいまふらーかいたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260402-111751.Duolingo.png",
+      "importedAt": "2026-07-28T16:11:28.372Z",
+      "ocrConfidence": 90
+    }
   },
   {
     "id": 55,
@@ -437,7 +497,13 @@ window.INITIAL_SENTENCES = [
     "english": "I am sleepy.",
     "romaji": "nemui desu",
     "kanji": "眠いです。",
-    "kana": "ねむいです。"
+    "kana": "ねむいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260415-074622_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 56,
@@ -445,7 +511,13 @@ window.INITIAL_SENTENCES = [
     "english": "I want to sleep a lot today.",
     "romaji": "kyou wa takusan netai desu",
     "kanji": "今日はたくさん寝たいです。",
-    "kana": "きょうはたくさんねたいです。"
+    "kana": "きょうはたくさんねたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260421-063756_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 57,
@@ -453,7 +525,13 @@ window.INITIAL_SENTENCES = [
     "english": "I want to sleep until evening.",
     "romaji": "yuugata made netai desu",
     "kanji": "夕方まで寝たいです。",
-    "kana": "ゆうがたまでねたいです。"
+    "kana": "ゆうがたまでねたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260421-063827_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 58,
@@ -461,7 +539,13 @@ window.INITIAL_SENTENCES = [
     "english": "I want to sleep.",
     "romaji": "netai desu",
     "kanji": "寝たいです。",
-    "kana": "ねたいです。"
+    "kana": "ねたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260421-063916_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 59,
@@ -469,7 +553,13 @@ window.INITIAL_SENTENCES = [
     "english": "I want to relax in my room.",
     "romaji": "heya de yukkuri shitai desu",
     "kanji": "部屋でゆっくりしたいです。",
-    "kana": "へやでゆっくりしたいです。"
+    "kana": "へやでゆっくりしたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260422-133851_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 60,
@@ -477,7 +567,13 @@ window.INITIAL_SENTENCES = [
     "english": "I overslept again.",
     "romaji": "mata nebou shimashita",
     "kanji": "また寝坊しました。",
-    "kana": "またねぼうしました。"
+    "kana": "またねぼうしました。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260423-111210_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 61,
@@ -485,7 +581,13 @@ window.INITIAL_SENTENCES = [
     "english": "I am going to cancel the date.",
     "romaji": "deeto wo kyanseru shimasu",
     "kanji": "デートをキャンセルします。",
-    "kana": "でーとをきゃんせるします。"
+    "kana": "でーとをきゃんせるします。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260423-111240_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 62,
@@ -493,7 +595,13 @@ window.INITIAL_SENTENCES = [
     "english": "I do not want to meet with my coworkers.",
     "romaji": "douryou to aitakunai desu",
     "kanji": "同僚と会いたくないです。",
-    "kana": "どうりょうとあいたくないです。"
+    "kana": "どうりょうとあいたくないです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260423-112838_System UI.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 63,
@@ -501,7 +609,13 @@ window.INITIAL_SENTENCES = [
     "english": "I want to listen to my favorite music.",
     "romaji": "suki na ongaku ga kikitai desu",
     "kanji": "好きな音楽が聞きたいです。",
-    "kana": "すきなおんがくがききたいです。"
+    "kana": "すきなおんがくがききたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260423-112852_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 64,
@@ -509,7 +623,13 @@ window.INITIAL_SENTENCES = [
     "english": "I want to stay in a quiet room.",
     "romaji": "shizuka na heya ni itai desu",
     "kanji": "静かな部屋にいたいです。",
-    "kana": "しずかなへやにいたいです。"
+    "kana": "しずかなへやにいたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260423-112913_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 65,
@@ -517,7 +637,13 @@ window.INITIAL_SENTENCES = [
     "english": "I want to stay home a little longer.",
     "romaji": "mou sukoshi uchi ni itai desu",
     "kanji": "もう少しうちにいたいです。",
-    "kana": "もうすこしうちにいたいです。"
+    "kana": "もうすこしうちにいたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260423-113026_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 66,
@@ -525,7 +651,13 @@ window.INITIAL_SENTENCES = [
     "english": "I will do the chores later.",
     "romaji": "ato de kaji wo shimasu",
     "kanji": "後で家事をします。",
-    "kana": "あとでかじをします。"
+    "kana": "あとでかじをします。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260424-085332_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 67,
@@ -533,7 +665,13 @@ window.INITIAL_SENTENCES = [
     "english": "I am going to read a novel in my room.",
     "romaji": "heya de shousetsu wo yomimasu",
     "kanji": "部屋で小説を読みます。",
-    "kana": "へやでしょうせつをよみます。"
+    "kana": "へやでしょうせつをよみます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260424-085354_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 68,
@@ -541,7 +679,13 @@ window.INITIAL_SENTENCES = [
     "english": "I do not want to clean.",
     "romaji": "souji wa shitakunai desu",
     "kanji": "掃除はしたくないです。",
-    "kana": "そうじはしたくないです。"
+    "kana": "そうじはしたくないです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260424-085440_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 69,
@@ -549,7 +693,13 @@ window.INITIAL_SENTENCES = [
     "english": "It is cold outside the futon now.",
     "romaji": "ima futon no soto wa samui desu",
     "kanji": "今、布団の外は寒いです。",
-    "kana": "いま、ふとんのそとはさむいです。"
+    "kana": "いま、ふとんのそとはさむいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260427-103725_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 70,
@@ -557,7 +707,13 @@ window.INITIAL_SENTENCES = [
     "english": "I still do not want to get out of bed.",
     "romaji": "mada beddo kara detakunai desu",
     "kanji": "まだベッドから出たくないです。",
-    "kana": "まだべっどからでたくないです。"
+    "kana": "まだべっどからでたくないです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260427-103813_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 71,
@@ -565,7 +721,13 @@ window.INITIAL_SENTENCES = [
     "english": "Okay then, until what time do you want to sleep?",
     "romaji": "jaa nanji made netai desu ka",
     "kanji": "じゃあ、何時まで寝たいですか。",
-    "kana": "じゃあ、なんじまでねたいですか。"
+    "kana": "じゃあ、なんじまでねたいですか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260427-103841_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 72,
@@ -573,7 +735,13 @@ window.INITIAL_SENTENCES = [
     "english": "I do not want to get out of bed until tomorrow.",
     "romaji": "ashita made beddo kara detakunai desu",
     "kanji": "明日までベッドから出たくないです。",
-    "kana": "あしたまでべっどからでたくないです。"
+    "kana": "あしたまでべっどからでたくないです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260427-104021_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 73,
@@ -581,7 +749,13 @@ window.INITIAL_SENTENCES = [
     "english": "Yes, I will wash the dishes later.",
     "romaji": "hai ato de osara wo araimasu",
     "kanji": "はい、後でお皿を洗います。",
-    "kana": "はい、あとでおさらをあらいます。"
+    "kana": "はい、あとでおさらをあらいます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260429-113134_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 74,
@@ -589,7 +763,13 @@ window.INITIAL_SENTENCES = [
     "english": "I do not want to do chores now.",
     "romaji": "ima kaji wa shitakunai desu",
     "kanji": "今、家事はしたくないです。",
-    "kana": "いま、かじはしたくないです。"
+    "kana": "いま、かじはしたくないです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260429-113147_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 75,
@@ -597,7 +777,13 @@ window.INITIAL_SENTENCES = [
     "english": "It is raining today.",
     "romaji": "kyou wa ame desu",
     "kanji": "今日は雨です。",
-    "kana": "きょうはあめです。"
+    "kana": "きょうはあめです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260429-113214_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 76,
@@ -605,7 +791,13 @@ window.INITIAL_SENTENCES = [
     "english": "I do not want to go out.",
     "romaji": "dekaketakunai desu",
     "kanji": "出かけたくないです。",
-    "kana": "でかけたくないです。"
+    "kana": "でかけたくないです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260429-113214_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 77,
@@ -613,7 +805,13 @@ window.INITIAL_SENTENCES = [
     "english": "I want to read a novel.",
     "romaji": "shousetsu ga yomitai desu",
     "kanji": "小説が読みたいです。",
-    "kana": "しょうせつがよみたいです。"
+    "kana": "しょうせつがよみたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260429-113214_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 78,
@@ -621,7 +819,13 @@ window.INITIAL_SENTENCES = [
     "english": "I saw an elephant for the first time at a Tokyo zoo.",
     "romaji": "toukyou no doubutsuen de hajimete zou wo mimashita",
     "kanji": "東京の動物園で初めて象を見ました。",
-    "kana": "とうきょうのどうぶつえんではじめてぞうをみました。"
+    "kana": "とうきょうのどうぶつえんではじめてぞうをみました。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260430-113403_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 79,
@@ -629,7 +833,13 @@ window.INITIAL_SENTENCES = [
     "english": "I bought a lot at that store.",
     "romaji": "ano mise de takusan kaimashita",
     "kanji": "あの店でたくさん買いました。",
-    "kana": "あのみせでたくさんかいました。"
+    "kana": "あのみせでたくさんかいました。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260430-113524_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 80,
@@ -637,7 +847,13 @@ window.INITIAL_SENTENCES = [
     "english": "Let us go together next time.",
     "romaji": "kondo issho ni ikimashou",
     "kanji": "今度いっしょに行きましょう。",
-    "kana": "こんどいっしょにいきましょう。"
+    "kana": "こんどいっしょにいきましょう。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260430-113524_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 81,
@@ -645,7 +861,13 @@ window.INITIAL_SENTENCES = [
     "english": "After this, let us line up at the north exit.",
     "romaji": "kono ato kitaguchi ni narabimashou",
     "kanji": "この後、北口に並びましょう。",
-    "kana": "このあと、きたぐちにならびましょう。"
+    "kana": "このあと、きたぐちにならびましょう。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260501-125837_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 82,
@@ -653,7 +875,13 @@ window.INITIAL_SENTENCES = [
     "english": "Where is the salesperson?",
     "romaji": "tenin-san wa doko desu ka",
     "kanji": "店員さんはどこですか。",
-    "kana": "てんいんさんはどこですか。"
+    "kana": "てんいんさんはどこですか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260501-125850_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 83,
@@ -661,7 +889,13 @@ window.INITIAL_SENTENCES = [
     "english": "I will wait for the train with my mother.",
     "romaji": "haha to densha wo machimasu",
     "kanji": "母と電車を待ちます。",
-    "kana": "ははとでんしゃをまちます。"
+    "kana": "ははとでんしゃをまちます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260501-125953_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 84,
@@ -669,7 +903,13 @@ window.INITIAL_SENTENCES = [
     "english": "Let us line up in front of the south exit.",
     "romaji": "minamiguchi no mae ni narabimashou",
     "kanji": "南口の前に並びましょう。",
-    "kana": "みなみぐちのまえにならびましょう。"
+    "kana": "みなみぐちのまえにならびましょう。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260501-130036_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 85,
@@ -677,7 +917,13 @@ window.INITIAL_SENTENCES = [
     "english": "I will probably do the laundry later.",
     "romaji": "tabun ato de sentaku wo shimasu",
     "kanji": "たぶん後で洗濯をします。",
-    "kana": "たぶんあとでせんたくをします。"
+    "kana": "たぶんあとでせんたくをします。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260504-111828_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 86,
@@ -685,7 +931,13 @@ window.INITIAL_SENTENCES = [
     "english": "Today is a day off.",
     "romaji": "kyou wa yasumi desu",
     "kanji": "今日は休みです。",
-    "kana": "きょうはやすみです。"
+    "kana": "きょうはやすみです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260505-090436_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 87,
@@ -693,7 +945,13 @@ window.INITIAL_SENTENCES = [
     "english": "I still do not want to get up.",
     "romaji": "mada okitakunai desu",
     "kanji": "まだ起きたくないです。",
-    "kana": "まだおきたくないです。"
+    "kana": "まだおきたくないです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260505-090436_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 88,
@@ -701,7 +959,13 @@ window.INITIAL_SENTENCES = [
     "english": "I want to relax at home.",
     "romaji": "ie de yukkuri shitai desu",
     "kanji": "家でゆっくりしたいです。",
-    "kana": "いえでゆっくりしたいです。"
+    "kana": "いえでゆっくりしたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260505-090436_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 89,
@@ -709,7 +973,13 @@ window.INITIAL_SENTENCES = [
     "english": "Do you have plans?",
     "romaji": "yotei wa arimasu ka",
     "kanji": "予定はありますか。",
-    "kana": "よていはありますか。"
+    "kana": "よていはありますか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260506-104051_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 90,
@@ -717,7 +987,13 @@ window.INITIAL_SENTENCES = [
     "english": "Do you have plans on February first?",
     "romaji": "nigatsu tsuitachi ni yotei wa arimasu ka",
     "kanji": "二月一日に予定はありますか。",
-    "kana": "にがつついたちによていはありますか。"
+    "kana": "にがつついたちによていはありますか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260506-104113_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 91,
@@ -725,7 +1001,13 @@ window.INITIAL_SENTENCES = [
     "english": "When is everyone free?",
     "romaji": "minna wa itsu hima desu ka",
     "kanji": "みんなはいつ暇ですか。",
-    "kana": "みんなはいつひまですか。"
+    "kana": "みんなはいつひまですか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260506-104131_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 92,
@@ -733,7 +1015,13 @@ window.INITIAL_SENTENCES = [
     "english": "Where in the station do you want to meet?",
     "romaji": "eki no doko de aitai desu ka",
     "kanji": "駅のどこで会いたいですか。",
-    "kana": "えきのどこであいたいですか。"
+    "kana": "えきのどこであいたいですか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260506-104155_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 93,
@@ -741,7 +1029,13 @@ window.INITIAL_SENTENCES = [
     "english": "What does everyone want to eat?",
     "romaji": "minna wa nani ga tabetai desu ka",
     "kanji": "みんなは何が食べたいですか。",
-    "kana": "みんなはなにがたべたいですか。"
+    "kana": "みんなはなにがたべたいですか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260506-104422_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 94,
@@ -749,7 +1043,13 @@ window.INITIAL_SENTENCES = [
     "english": "Where are you?",
     "romaji": "doko ni imasu ka",
     "kanji": "どこにいますか。",
-    "kana": "どこにいますか。"
+    "kana": "どこにいますか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260507-112240_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 95,
@@ -757,7 +1057,13 @@ window.INITIAL_SENTENCES = [
     "english": "I will leave the house at two thirty.",
     "romaji": "niji han ni ie wo demasu",
     "kanji": "二時半に家を出ます。",
-    "kana": "にじはんにいえをでます。"
+    "kana": "にじはんにいえをでます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260507-112423_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 96,
@@ -765,7 +1071,13 @@ window.INITIAL_SENTENCES = [
     "english": "I am leaving now.",
     "romaji": "ima kara demasu",
     "kanji": "今から出ます。",
-    "kana": "いまからでます。"
+    "kana": "いまからでます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260507-112432_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 97,
@@ -773,7 +1085,13 @@ window.INITIAL_SENTENCES = [
     "english": "Yes, I am walking to the station now.",
     "romaji": "hai ima kara eki made arukimasu",
     "kanji": "はい、今から駅まで歩きます。",
-    "kana": "はい、いまからえきまであるきます。"
+    "kana": "はい、いまからえきまであるきます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260507-112456_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 98,
@@ -781,7 +1099,13 @@ window.INITIAL_SENTENCES = [
     "english": "Did you already leave the house?",
     "romaji": "mou ie wo demashita ka",
     "kanji": "もう家を出ましたか。",
-    "kana": "もういえをでましたか。"
+    "kana": "もういえをでましたか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260507-112535_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 99,
@@ -789,7 +1113,13 @@ window.INITIAL_SENTENCES = [
     "english": "I am getting on the bus now.",
     "romaji": "ima kara basu ni norimasu",
     "kanji": "今からバスに乗ります。",
-    "kana": "いまからばすにのります。"
+    "kana": "いまからばすにのります。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260507-112636_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 100,
@@ -797,7 +1127,13 @@ window.INITIAL_SENTENCES = [
     "english": "I will arrive soon.",
     "romaji": "mou sugu tsukimasu",
     "kanji": "もうすぐ着きます。",
-    "kana": "もうすぐつきます。"
+    "kana": "もうすぐつきます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260508-102746_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 101,
@@ -805,7 +1141,13 @@ window.INITIAL_SENTENCES = [
     "english": "I will arrive in Shinjuku soon.",
     "romaji": "mou sugu Shinjuku ni tsukimasu",
     "kanji": "もうすぐ新宿に着きます。",
-    "kana": "もうすぐしんじゅくにつきます。"
+    "kana": "もうすぐしんじゅくにつきます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260508-102826_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 102,
@@ -813,7 +1155,13 @@ window.INITIAL_SENTENCES = [
     "english": "I am inside the subway.",
     "romaji": "chikatetsu no naka ni imasu",
     "kanji": "地下鉄の中にいます。",
-    "kana": "ちかてつのなかにいます。"
+    "kana": "ちかてつのなかにいます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260508-102852_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 103,
@@ -821,7 +1169,13 @@ window.INITIAL_SENTENCES = [
     "english": "The bus is slow again, isn't it?",
     "romaji": "basu wa mata osoi desu ne",
     "kanji": "バスはまた遅いですね。",
-    "kana": "ばすはまたおそいですね。"
+    "kana": "ばすはまたおそいですね。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260508-102908_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 104,
@@ -829,7 +1183,13 @@ window.INITIAL_SENTENCES = [
     "english": "Is Alex at the station?",
     "romaji": "Arekkusu-san wa eki ni imasu ka",
     "kanji": "アレックスさんは駅にいますか。",
-    "kana": "あれっくすさんはえきにいますか。"
+    "kana": "あれっくすさんはえきにいますか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260508-102947_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 105,
@@ -837,7 +1197,13 @@ window.INITIAL_SENTENCES = [
     "english": "I will arrive in a bit.",
     "romaji": "sorosoro tsukimasu",
     "kanji": "そろそろ着きます。",
-    "kana": "そろそろつきます。"
+    "kana": "そろそろつきます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260508-102959_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 106,
@@ -845,7 +1211,13 @@ window.INITIAL_SENTENCES = [
     "english": "Kai is not here yet.",
     "romaji": "Kai-san wa mada imasen",
     "kanji": "カイさんはまだいません。",
-    "kana": "かいさんはまだいません。"
+    "kana": "かいさんはまだいません。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-083210_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 107,
@@ -853,7 +1225,13 @@ window.INITIAL_SENTENCES = [
     "english": "Um, Hana and the others are not here yet.",
     "romaji": "eeto Hana-san-tachi wa mada imasen",
     "kanji": "ええと、ハナさんたちはまだいません。",
-    "kana": "ええと、はなさんたちはまだいません。"
+    "kana": "ええと、はなさんたちはまだいません。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-083233_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 108,
@@ -861,7 +1239,13 @@ window.INITIAL_SENTENCES = [
     "english": "I will send a message.",
     "romaji": "messeeji wo okurimasu",
     "kanji": "メッセージを送ります。",
-    "kana": "めっせーじをおくります。"
+    "kana": "めっせーじをおくります。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-083247_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 109,
@@ -869,7 +1253,13 @@ window.INITIAL_SENTENCES = [
     "english": "We are inside the station.",
     "romaji": "watashitachi wa eki no naka ni imasu",
     "kanji": "私たちは駅の中にいます。",
-    "kana": "わたしたちはえきのなかにいます。"
+    "kana": "わたしたちはえきのなかにいます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-083309_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 110,
@@ -877,7 +1267,13 @@ window.INITIAL_SENTENCES = [
     "english": "We are already near the department store!",
     "romaji": "watashitachi wa mou depaato no chikaku ni imasu",
     "kanji": "私たちはもうデパートの近くにいます！",
-    "kana": "わたしたちはもうでぱーとのちかくにいます！"
+    "kana": "わたしたちはもうでぱーとのちかくにいます！",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-083430_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 111,
@@ -885,7 +1281,13 @@ window.INITIAL_SENTENCES = [
     "english": "I am at the west exit.",
     "romaji": "watashi wa nishiguchi ni imasu",
     "kanji": "私は西口にいます。",
-    "kana": "わたしはにしぐちにいます。"
+    "kana": "わたしはにしぐちにいます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-092634_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 112,
@@ -893,7 +1295,13 @@ window.INITIAL_SENTENCES = [
     "english": "Sorry, I will be late.",
     "romaji": "sumimasen okuremasu",
     "kanji": "すみません、遅れます。",
-    "kana": "すみません、おくれます。"
+    "kana": "すみません、おくれます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-092737_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 113,
@@ -901,7 +1309,13 @@ window.INITIAL_SENTENCES = [
     "english": "Let us hurry to the store.",
     "romaji": "mise made isogimashou",
     "kanji": "店まで急ぎましょう。",
-    "kana": "みせまでいそぎましょう。"
+    "kana": "みせまでいそぎましょう。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-092813_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 114,
@@ -909,7 +1323,13 @@ window.INITIAL_SENTENCES = [
     "english": "Alex, let us hurry.",
     "romaji": "Arekkusu-san isogimashou",
     "kanji": "アレックスさん、急ぎましょう。",
-    "kana": "あれっくすさん、いそぎましょう。"
+    "kana": "あれっくすさん、いそぎましょう。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-093031_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 115,
@@ -917,7 +1337,13 @@ window.INITIAL_SENTENCES = [
     "english": "Oh, I will be five minutes late!",
     "romaji": "a gofun okuremasu",
     "kanji": "あ、五分遅れます！",
-    "kana": "あ、ごふんおくれます！"
+    "kana": "あ、ごふんおくれます！",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260509-093234_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 116,
@@ -925,7 +1351,13 @@ window.INITIAL_SENTENCES = [
     "english": "Let us walk from the electronics store to Hana's house.",
     "romaji": "denkiya kara Hana-san no ie made arukimashou",
     "kanji": "電気屋からハナさんの家まで歩きましょう。",
-    "kana": "でんきやからはなさんのいえまであるきましょう。"
+    "kana": "でんきやからはなさんのいえまであるきましょう。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260510-095956_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 117,
@@ -933,7 +1365,13 @@ window.INITIAL_SENTENCES = [
     "english": "I will make sure to take the three o’clock bus!",
     "romaji": "chanto sanji no basu ni norimasu",
     "kanji": "ちゃんと三時のバスに乗ります！",
-    "kana": "ちゃんとさんじのばすにのります！"
+    "kana": "ちゃんとさんじのばすにのります！",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260517-181126_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 118,
@@ -941,7 +1379,13 @@ window.INITIAL_SENTENCES = [
     "english": "What kind of ship was it?",
     "romaji": "donna fune deshita ka",
     "kanji": "どんな船でしたか。",
-    "kana": "どんなふねでしたか。"
+    "kana": "どんなふねでしたか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260603-080109_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 119,
@@ -949,7 +1393,13 @@ window.INITIAL_SENTENCES = [
     "english": "The ship's spa was free.",
     "romaji": "fune no supa wa muryou deshita",
     "kanji": "船のスパは無料でした。",
-    "kana": "ふねのすぱはむりょうでした。"
+    "kana": "ふねのすぱはむりょうでした。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260603-080221_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 120,
@@ -957,7 +1407,13 @@ window.INITIAL_SENTENCES = [
     "english": "Where did you travel around?",
     "romaji": "doko wo mawarimashita ka",
     "kanji": "どこを回りましたか。",
-    "kana": "どこをまわりましたか。"
+    "kana": "どこをまわりましたか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260603-080234_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 121,
@@ -965,7 +1421,13 @@ window.INITIAL_SENTENCES = [
     "english": "There was a pool on the ship.",
     "romaji": "fune ni puuru ga arimashita",
     "kanji": "船にプールがありました。",
-    "kana": "ふねにぷーるがありました。"
+    "kana": "ふねにぷーるがありました。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260603-080254_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 122,
@@ -973,7 +1435,13 @@ window.INITIAL_SENTENCES = [
     "english": "I went around the islands of Hokkaido.",
     "romaji": "Hokkaidou no shima wo mawarimashita",
     "kanji": "北海道の島を回りました。",
-    "kana": "ほっかいどうのしまをまわりました。"
+    "kana": "ほっかいどうのしまをまわりました。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260603-080311_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 123,
@@ -981,7 +1449,13 @@ window.INITIAL_SENTENCES = [
     "english": "There was a movie theater on the ship!",
     "romaji": "fune ni eigakan ga arimashita",
     "kanji": "船に映画館がありました！",
-    "kana": "ふねにえいがかんがありました！"
+    "kana": "ふねにえいがかんがありました！",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260603-080330_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 124,
@@ -989,7 +1463,13 @@ window.INITIAL_SENTENCES = [
     "english": "What kind of meals were there?",
     "romaji": "donna gohan ga arimashita ka",
     "kanji": "どんなご飯がありましたか。",
-    "kana": "どんなごはんがありましたか。"
+    "kana": "どんなごはんがありましたか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260604-082552_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 125,
@@ -997,7 +1477,13 @@ window.INITIAL_SENTENCES = [
     "english": "It was all-you-can-eat.",
     "romaji": "tabehoudai deshita",
     "kanji": "食べ放題でした。",
-    "kana": "たべほうだいでした。"
+    "kana": "たべほうだいでした。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260604-082644_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 126,
@@ -1005,7 +1491,13 @@ window.INITIAL_SENTENCES = [
     "english": "How many days was the tour?",
     "romaji": "tsuaa wa nannichikan deshita ka",
     "kanji": "ツアーは何日間でしたか。",
-    "kana": "つあーはなんにちかんでしたか。"
+    "kana": "つあーはなんにちかんでしたか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260606-094210_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 127,
@@ -1013,7 +1505,13 @@ window.INITIAL_SENTENCES = [
     "english": "Spring break will be one week long.",
     "romaji": "haruyasumi wa isshuukan desu",
     "kanji": "春休みは一週間です。",
-    "kana": "はるやすみはいっしゅうかんです。"
+    "kana": "はるやすみはいっしゅうかんです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260606-103432_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 128,
@@ -1021,7 +1519,13 @@ window.INITIAL_SENTENCES = [
     "english": "Next time, I want to go overseas with my grandparents.",
     "romaji": "kondo wa sofubo to kaigai ni ikitai desu",
     "kanji": "今度は祖父母と海外に行きたいです。",
-    "kana": "こんどはそふぼとかいがいにいきたいです。"
+    "kana": "こんどはそふぼとかいがいにいきたいです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260606-103717_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 129,
@@ -1029,7 +1533,13 @@ window.INITIAL_SENTENCES = [
     "english": "I am going on a one-week cruise trip.",
     "romaji": "isshuukan no kuruuzu ryokou ni ikimasu",
     "kanji": "一週間のクルーズ旅行に行きます。",
-    "kana": "いっしゅうかんのくるーずりょこうにいきます。"
+    "kana": "いっしゅうかんのくるーずりょこうにいきます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260607-115151_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 130,
@@ -1037,7 +1547,13 @@ window.INITIAL_SENTENCES = [
     "english": "I went around all sorts of towns.",
     "romaji": "iroiro na machi wo mawarimashita",
     "kanji": "いろいろな町を回りました。",
-    "kana": "いろいろなまちをまわりました。"
+    "kana": "いろいろなまちをまわりました。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260609-064208_System UI.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 131,
@@ -1045,7 +1561,13 @@ window.INITIAL_SENTENCES = [
     "english": "I swam quite a bit in the pool.",
     "romaji": "puuru de kekkou oyogimashita",
     "kanji": "プールでけっこう泳ぎました。",
-    "kana": "ぷーるでけっこうおよぎました。"
+    "kana": "ぷーるでけっこうおよぎました。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260609-114131_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 132,
@@ -1053,7 +1575,13 @@ window.INITIAL_SENTENCES = [
     "english": "I slept quite a bit on the ship.",
     "romaji": "fune de kekkou nemashita",
     "kanji": "船でけっこう寝ました。",
-    "kana": "ふねでけっこうねました。"
+    "kana": "ふねでけっこうねました。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260609-114350_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 133,
@@ -1061,7 +1589,13 @@ window.INITIAL_SENTENCES = [
     "english": "There is a port in Fukuoka.",
     "romaji": "Fukuoka ni minato ga arimasu",
     "kanji": "福岡に港があります。",
-    "kana": "ふくおかにみなとがあります。"
+    "kana": "ふくおかにみなとがあります。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260615-191047_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 134,
@@ -1069,7 +1603,13 @@ window.INITIAL_SENTENCES = [
     "english": "I wore a new swimsuit.",
     "romaji": "atarashii mizugi wo kimashita",
     "kanji": "新しい水着を着ました。",
-    "kana": "あたらしいみずぎをきました。"
+    "kana": "あたらしいみずぎをきました。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260615-191336_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 135,
@@ -1077,7 +1617,13 @@ window.INITIAL_SENTENCES = [
     "english": "Last month was summer break.",
     "romaji": "sengetsu wa natsuyasumi deshita",
     "kanji": "先月は夏休みでした。",
-    "kana": "せんげつはなつやすみでした。"
+    "kana": "せんげつはなつやすみでした。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260615-191349_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 136,
@@ -1085,7 +1631,13 @@ window.INITIAL_SENTENCES = [
     "english": "Next time, I will travel with my grandparents.",
     "romaji": "kondo wa sofubo to ryokou shimasu",
     "kanji": "今度は祖父母と旅行します。",
-    "kana": "こんどはそふぼとりょこうします。"
+    "kana": "こんどはそふぼとりょこうします。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260617-195223_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 137,
@@ -1093,7 +1645,13 @@ window.INITIAL_SENTENCES = [
     "english": "Next time, I will go to Malaysia with my grandparents!",
     "romaji": "kondo wa sofubo to Mareeshia ni ikimasu",
     "kanji": "今度は祖父母とマレーシアに行きます！",
-    "kana": "こんどはそふぼとまれーしあにいきます！"
+    "kana": "こんどはそふぼとまれーしあにいきます！",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260617-195330_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 138,
@@ -1101,7 +1659,13 @@ window.INITIAL_SENTENCES = [
     "english": "The next trip will be one week long.",
     "romaji": "tsugi no ryokou wa isshuukan desu",
     "kanji": "次の旅行は一週間です。",
-    "kana": "つぎのりょこうはいっしゅうかんです。"
+    "kana": "つぎのりょこうはいっしゅうかんです。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260617-195439_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 139,
@@ -1109,7 +1673,13 @@ window.INITIAL_SENTENCES = [
     "english": "I forgot the snacks!",
     "romaji": "okashi wo wasuremashita",
     "kanji": "お菓子を忘れました！",
-    "kana": "おかしをわすれました！"
+    "kana": "おかしをわすれました！",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260619-115444_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 140,
@@ -1117,7 +1687,13 @@ window.INITIAL_SENTENCES = [
     "english": "Yes, we are switching to a train now.",
     "romaji": "hai ima kara densha ni norikaemasu",
     "kanji": "はい、今から電車に乗り換えます。",
-    "kana": "はい、いまからでんしゃにのりかえます。"
+    "kana": "はい、いまからでんしゃにのりかえます。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260620-181937_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 141,
@@ -1125,7 +1701,13 @@ window.INITIAL_SENTENCES = [
     "english": "This train stops at Tokyo Station.",
     "romaji": "kono densha wa Toukyou-eki ni tomarimasu",
     "kanji": "この電車は東京駅に止まります。",
-    "kana": "このでんしゃはとうきょうえきにとまります。"
+    "kana": "このでんしゃはとうきょうえきにとまります。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260620-182020_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 142,
@@ -1133,7 +1715,13 @@ window.INITIAL_SENTENCES = [
     "english": "Let us switch to a bus.",
     "romaji": "basu ni norikaemashou",
     "kanji": "バスに乗り換えましょう。",
-    "kana": "ばすにのりかえましょう。"
+    "kana": "ばすにのりかえましょう。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260620-182121_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 143,
@@ -1141,7 +1729,13 @@ window.INITIAL_SENTENCES = [
     "english": "Does the bus stop near the park?",
     "romaji": "basu wa kouen no chikaku ni tomarimasu ka",
     "kanji": "バスは公園の近くに止まりますか。",
-    "kana": "ばすはこうえんのちかくにとまりますか。"
+    "kana": "ばすはこうえんのちかくにとまりますか。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260620-182157_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 144,
@@ -1149,7 +1743,13 @@ window.INITIAL_SENTENCES = [
     "english": "We finally arrived at the river.",
     "romaji": "yatto kawa ni tsukimashita",
     "kanji": "やっと川に着きました。",
-    "kana": "やっとかわにつきました。"
+    "kana": "やっとかわにつきました。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260622-092006_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 145,
@@ -1157,7 +1757,13 @@ window.INITIAL_SENTENCES = [
     "english": "One more donut, please.",
     "romaji": "doonatsu wo mou hitotsu kudasai",
     "kanji": "ドーナツをもう一つください。",
-    "kana": "どーなつをもうひとつください。"
+    "kana": "どーなつをもうひとつください。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260622-092024_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 146,
@@ -1165,7 +1771,13 @@ window.INITIAL_SENTENCES = [
     "english": "Let us look at the cherry blossoms next to the pond.",
     "romaji": "ike no tonari de sakura wo mimashou",
     "kanji": "池の隣で桜を見ましょう。",
-    "kana": "いけのとなりでさくらをみましょう。"
+    "kana": "いけのとなりでさくらをみましょう。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260622-092052_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 147,
@@ -1173,7 +1785,13 @@ window.INITIAL_SENTENCES = [
     "english": "Let us buy stir-fried noodles at this stall.",
     "romaji": "kono yatai de yakisoba wo kaimashou",
     "kanji": "この屋台で焼きそばを買いましょう。",
-    "kana": "このやたいでやきそばをかいましょう。"
+    "kana": "このやたいでやきそばをかいましょう。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260622-092139_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 148,
@@ -1181,7 +1799,13 @@ window.INITIAL_SENTENCES = [
     "english": "I am going home soon.",
     "romaji": "sorosoro uchi ni kaerimasu",
     "kanji": "そろそろうちに帰ります。",
-    "kana": "そろそろうちにかえります。"
+    "kana": "そろそろうちにかえります。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260623-073205_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   },
   {
     "id": 149,
@@ -1189,6 +1813,12 @@ window.INITIAL_SENTENCES = [
     "english": "The cherry blossoms next to the bridge are pretty, are they not?",
     "romaji": "hashi no tonari no sakura wa kirei desu ne",
     "kanji": "橋の隣の桜はきれいですね。",
-    "kana": "はしのとなりのさくらはきれいですね。"
+    "kana": "はしのとなりのさくらはきれいですね。",
+    "source": {
+      "kind": "duolingo-screenshot",
+      "filename": "Screenshot_20260702-131230_Duolingo.png",
+      "importedAt": "2026-08-01T10:35:00.000Z",
+      "ocrConfidence": 98
+    }
   }
 ];

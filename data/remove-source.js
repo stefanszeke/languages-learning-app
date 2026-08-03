@@ -1,7 +1,7 @@
 const fs = require("fs");
 
-const inputFile = "japanese-words.js";
-const backupFile = "japanese-words.backup.js";
+const inputFile = "japanese-sentences.js";
+const backupFile = "b.js";
 
 let content = fs.readFileSync(inputFile, "utf8");
 
