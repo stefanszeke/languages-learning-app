@@ -115,6 +115,16 @@
       results: [],
       scanning: false,
     },
+    kana: {
+      settings: null,
+      queue: [],
+      current: null,
+      correctValue: null,
+      options: [],
+      answered: false,
+      correctCount: 0,
+      results: [],
+    },
   };
 
   const elements = {
@@ -132,6 +142,7 @@
     brandMark: document.querySelector('#brandMark'),
     tabs: [...document.querySelectorAll('.tab')],
     importTab: document.querySelector('[data-view="import"]'),
+    kanaTab: document.querySelector('[data-view="kana"]'),
     coverControls: document.querySelector('#coverControls'),
     addButton: document.querySelector('#addButton'),
     tableHeadRow: document.querySelector('#tableHeadRow'),
@@ -216,6 +227,31 @@
     newWordsList: document.querySelector('#newWordsList'),
     refreshNewWordsButton: document.querySelector('#refreshNewWordsButton'),
     importWordsButton: document.querySelector('#importWordsButton'),
+    kanaView: document.querySelector('#kanaView'),
+    kanaSetup: document.querySelector('#kanaSetup'),
+    kanaSetupForm: document.querySelector('#kanaSetupForm'),
+    kanaMatchCount: document.querySelector('#kanaMatchCount'),
+    startKanaButton: document.querySelector('#startKanaButton'),
+    kanaSession: document.querySelector('#kanaSession'),
+    exitKanaButton: document.querySelector('#exitKanaButton'),
+    kanaProgressText: document.querySelector('#kanaProgressText'),
+    kanaScoreText: document.querySelector('#kanaScoreText'),
+    kanaProgressBar: document.querySelector('#kanaProgressBar'),
+    kanaPrompt: document.querySelector('#kanaPrompt'),
+    kanaOptionsReveal: document.querySelector('#kanaOptionsReveal'),
+    kanaOptionsGrid: document.querySelector('#kanaOptionsGrid'),
+    kanaFeedback: document.querySelector('#kanaFeedback'),
+    kanaContinueButton: document.querySelector('#kanaContinueButton'),
+    kanaSummary: document.querySelector('#kanaSummary'),
+    kanaScoreRing: document.querySelector('#kanaScoreRing'),
+    kanaScorePercent: document.querySelector('#kanaScorePercent'),
+    kanaSummaryTotal: document.querySelector('#kanaSummaryTotal'),
+    kanaSummaryCorrect: document.querySelector('#kanaSummaryCorrect'),
+    kanaSummaryMissed: document.querySelector('#kanaSummaryMissed'),
+    kanaMissedCountText: document.querySelector('#kanaMissedCountText'),
+    kanaMissedList: document.querySelector('#kanaMissedList'),
+    kanaBackToSetupButton: document.querySelector('#kanaBackToSetupButton'),
+    kanaRestartButton: document.querySelector('#kanaRestartButton'),
   };
 
   initTheme();
@@ -536,6 +572,16 @@
     elements.exitSessionButton.addEventListener('click', exitCardSession);
     elements.backToSetupButton.addEventListener('click', () => showCardStage('setup'));
     elements.restartSessionButton.addEventListener('click', restartCardSession);
+
+    elements.kanaSetupForm.addEventListener('submit', startKanaSessionFromForm);
+    elements.kanaSetupForm.addEventListener('input', updateKanaSetupDetails);
+    elements.kanaOptionsReveal.addEventListener('click', revealKanaOptions);
+    elements.kanaOptionsGrid.addEventListener('click', handleKanaOptionClick);
+    elements.kanaContinueButton.addEventListener('click', nextKanaQuestion);
+    elements.exitKanaButton.addEventListener('click', exitKanaSession);
+    elements.kanaBackToSetupButton.addEventListener('click', () => showKanaStage('setup'));
+    elements.kanaRestartButton.addEventListener('click', restartKanaSession);
+
     elements.reviewList.addEventListener('click', event => {
       const button = event.target.closest('[data-action="toggle-hard"]');
       if (!button) return;
@@ -580,7 +626,11 @@
       showToast('Screenshot import needs the local Node server (run npm start).');
       return;
     }
-    if (view === 'cards' || view === 'import') {
+    if (view === 'kana' && languageConfig().id !== 'ja') {
+      showToast('Kana practice is only available for Japanese.');
+      return;
+    }
+    if (view === 'cards' || view === 'import' || view === 'kana') {
       state.screen = view;
       if (view === 'cards') {
         const selectedType = elements.cardSetupForm.elements.cardType.value || state.view;
@@ -630,6 +680,7 @@
     `;
 
     elements.importTab.hidden = !config.supportsOcr || !state.localServerAvailable;
+    elements.kanaTab.hidden = config.id !== 'ja';
     elements.addButton.hidden = !state.localServerAvailable;
     elements.dictAttribution.innerHTML = config.id === 'de'
       ? `English glosses use the <a href="https://freedict.org/" target="_blank" rel="noopener">FreeDict deu-eng dictionary</a>, generated from the Ding dictionary (dict.tu-chemnitz.de), licensed GPLv3+/AGPLv3+.`
@@ -698,6 +749,7 @@
     elements.listToolbar.hidden = !listVisible;
     elements.listView.hidden = !listVisible;
     elements.cardsView.hidden = state.screen !== 'cards';
+    elements.kanaView.hidden = state.screen !== 'kana';
     elements.importView.hidden = state.screen !== 'import';
     renderCounts();
 
@@ -707,6 +759,8 @@
       renderTable();
     } else if (state.screen === 'cards') {
       updateCardSetupDetails();
+    } else if (state.screen === 'kana') {
+      updateKanaSetupDetails();
     } else {
       renderSelectedFiles();
       renderScanReviews();
@@ -1865,6 +1919,182 @@
     }
     if (state.card.revealed && event.key === '1') recordCardAnswer(false);
     if (state.card.revealed && event.key === '2') recordCardAnswer(true);
+  }
+
+  function kanaPool(script) {
+    return script === 'katakana' ? window.KATAKANA_CHART : window.HIRAGANA_CHART;
+  }
+
+  function kanaPromptValue(item, direction) {
+    return direction === 'kana-romaji' ? item.kana : item.romaji;
+  }
+
+  function kanaAnswerValue(item, direction) {
+    return direction === 'kana-romaji' ? item.romaji : item.kana;
+  }
+
+  function readKanaSetup() {
+    const form = elements.kanaSetupForm;
+    return {
+      script: form.elements.kanaScript.value === 'katakana' ? 'katakana' : 'hiragana',
+      direction: form.elements.kanaDirection.value === 'romaji-kana' ? 'romaji-kana' : 'kana-romaji',
+      mode: form.elements.kanaMode.value === 'endless' ? 'endless' : 'once',
+    };
+  }
+
+  function updateKanaSetupDetails() {
+    const script = elements.kanaSetupForm.elements.kanaScript.value === 'katakana' ? 'katakana' : 'hiragana';
+    elements.kanaMatchCount.textContent = `${kanaPool(script).length} characters`;
+  }
+
+  function startKanaSessionFromForm(event) {
+    event.preventDefault();
+    startKanaSession(readKanaSetup());
+  }
+
+  function startKanaSession(setup) {
+    state.kana = {
+      settings: setup,
+      queue: setup.mode === 'once' ? shuffle([...kanaPool(setup.script)]) : [],
+      current: null,
+      correctValue: null,
+      options: [],
+      answered: false,
+      correctCount: 0,
+      results: [],
+    };
+    showKanaStage('session');
+    nextKanaQuestion();
+  }
+
+  function showKanaStage(stage) {
+    elements.kanaSetup.hidden = stage !== 'setup';
+    elements.kanaSession.hidden = stage !== 'session';
+    elements.kanaSummary.hidden = stage !== 'summary';
+    if (stage === 'setup') updateKanaSetupDetails();
+  }
+
+  function nextKanaQuestion() {
+    const {settings} = state.kana;
+    let item;
+    if (settings.mode === 'once') {
+      if (!state.kana.queue.length) {
+        finishKanaSession();
+        return;
+      }
+      item = state.kana.queue.shift();
+    } else {
+      const pool = kanaPool(settings.script);
+      const previous = state.kana.current;
+      do {
+        item = pool[Math.floor(Math.random() * pool.length)];
+      } while (pool.length > 1 && previous && item.romaji === previous.romaji);
+    }
+
+    const pool = kanaPool(settings.script);
+    const correctValue = kanaAnswerValue(item, settings.direction);
+    const distractors = shuffle(pool.filter(candidate => candidate.romaji !== item.romaji))
+      .slice(0, 3)
+      .map(candidate => kanaAnswerValue(candidate, settings.direction));
+
+    state.kana.current = item;
+    state.kana.correctValue = correctValue;
+    state.kana.options = shuffle([correctValue, ...distractors]);
+    state.kana.answered = false;
+    renderKanaQuestion();
+  }
+
+  function renderKanaQuestion() {
+    const {settings} = state.kana;
+    const asked = state.kana.results.length + 1;
+    const wrongCount = state.kana.results.length - state.kana.correctCount;
+
+    if (settings.mode === 'once') {
+      const total = asked + state.kana.queue.length;
+      elements.kanaProgressText.textContent = `Question ${asked} of ${total}`;
+      elements.kanaProgressBar.style.width = `${(asked / total) * 100}%`;
+    } else {
+      elements.kanaProgressText.textContent = `Question ${asked}`;
+      elements.kanaProgressBar.style.width = '100%';
+    }
+    elements.kanaScoreText.textContent = `${state.kana.correctCount} correct · ${wrongCount} wrong`;
+
+    elements.kanaPrompt.textContent = kanaPromptValue(state.kana.current, settings.direction);
+    elements.kanaOptionsReveal.hidden = false;
+    elements.kanaOptionsGrid.hidden = true;
+    elements.kanaOptionsGrid.innerHTML = '';
+    elements.kanaFeedback.hidden = true;
+    elements.kanaFeedback.textContent = '';
+    elements.kanaFeedback.className = 'kana-feedback';
+    elements.kanaContinueButton.hidden = true;
+  }
+
+  function revealKanaOptions() {
+    elements.kanaOptionsReveal.hidden = true;
+    elements.kanaOptionsGrid.hidden = false;
+    elements.kanaOptionsGrid.innerHTML = state.kana.options
+      .map(value => `<button class="kana-option" type="button" data-value="${escapeHtml(value)}">${escapeHtml(value)}</button>`)
+      .join('');
+  }
+
+  function handleKanaOptionClick(event) {
+    if (state.kana.answered) return;
+    const button = event.target.closest('.kana-option');
+    if (!button) return;
+
+    const chosen = button.dataset.value;
+    const correct = chosen === state.kana.correctValue;
+    state.kana.answered = true;
+    if (correct) state.kana.correctCount += 1;
+    state.kana.results.push({item: state.kana.current, chosen, correct});
+
+    elements.kanaOptionsGrid.querySelectorAll('.kana-option').forEach(optionButton => {
+      optionButton.disabled = true;
+      if (optionButton.dataset.value === state.kana.correctValue) optionButton.classList.add('is-correct');
+      else if (optionButton === button) optionButton.classList.add('is-wrong');
+    });
+
+    elements.kanaFeedback.hidden = false;
+    elements.kanaFeedback.textContent = correct ? 'Correct!' : `Not quite — the answer is ${state.kana.correctValue}.`;
+    elements.kanaFeedback.className = `kana-feedback ${correct ? 'is-correct' : 'is-wrong'}`;
+    elements.kanaContinueButton.hidden = false;
+  }
+
+  function finishKanaSession() {
+    renderKanaSummary();
+    showKanaStage('summary');
+  }
+
+  function renderKanaSummary() {
+    const total = state.kana.results.length;
+    const correct = state.kana.correctCount;
+    const missed = state.kana.results.filter(result => !result.correct);
+    const percent = total ? Math.round((correct / total) * 100) : 0;
+
+    elements.kanaScorePercent.textContent = `${percent}%`;
+    elements.kanaScoreRing.style.setProperty('--score', `${percent * 3.6}deg`);
+    elements.kanaSummaryTotal.textContent = total;
+    elements.kanaSummaryCorrect.textContent = correct;
+    elements.kanaSummaryMissed.textContent = missed.length;
+    elements.kanaMissedCountText.textContent = `${missed.length} ${missed.length === 1 ? 'character' : 'characters'}`;
+    elements.kanaMissedList.innerHTML = missed.length
+      ? missed.map(result => `
+          <div class="kana-missed-item">
+            <span class="kana-missed-char">${escapeHtml(result.item.kana)} <span class="card-tertiary">${escapeHtml(result.item.romaji)}</span></span>
+            <span class="kana-missed-answer">You answered <strong class="kana-missed-wrong">${escapeHtml(result.chosen)}</strong> — correct: <strong>${escapeHtml(kanaAnswerValue(result.item, state.kana.settings.direction))}</strong></span>
+          </div>
+        `).join('')
+      : '<div class="review-empty">Excellent — you got every character right.</div>';
+  }
+
+  function exitKanaSession() {
+    if (state.kana.results.length) finishKanaSession();
+    else showKanaStage('setup');
+  }
+
+  function restartKanaSession() {
+    if (!state.kana.settings) return;
+    startKanaSession(state.kana.settings);
   }
 
   function setScreenshotFiles(files) {

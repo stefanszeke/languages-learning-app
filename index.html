@@ -35,6 +35,7 @@
           Sentences <span id="sentenceCount" class="count-pill">0</span>
         </button>
         <button class="tab cards-tab" type="button" data-view="cards">Study cards</button>
+        <button class="tab" type="button" data-view="kana">Kana practice</button>
         <button class="tab" type="button" data-view="import">Screenshot import</button>
       </nav>
 
@@ -202,6 +203,92 @@
       </div>
     </section>
 
+    <section class="cards-panel" id="kanaView" hidden>
+      <div class="cards-setup" id="kanaSetup">
+        <div class="cards-heading">
+          <span class="eyebrow">Kana practice</span>
+          <h2>Start a kana quiz</h2>
+          <p>Multiple-choice practice for hiragana and katakana.</p>
+        </div>
+
+        <form id="kanaSetupForm" class="card-setup-form">
+          <fieldset class="setup-group">
+            <legend>Script</legend>
+            <div class="choice-grid two-choice">
+              <label class="choice-card"><input type="radio" name="kanaScript" value="hiragana" checked><span>Hiragana</span></label>
+              <label class="choice-card"><input type="radio" name="kanaScript" value="katakana"><span>Katakana</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="setup-group">
+            <legend>Direction</legend>
+            <div class="choice-grid two-choice">
+              <label class="choice-card"><input type="radio" name="kanaDirection" value="kana-romaji" checked><span>Kana → Romaji</span></label>
+              <label class="choice-card"><input type="radio" name="kanaDirection" value="romaji-kana"><span>Romaji → Kana</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="setup-group">
+            <legend>Mode</legend>
+            <div class="choice-grid two-choice">
+              <label class="choice-card"><input type="radio" name="kanaMode" value="once" checked><span>Go through once</span></label>
+              <label class="choice-card"><input type="radio" name="kanaMode" value="endless"><span>Endless</span></label>
+            </div>
+          </fieldset>
+
+          <div class="setup-footer">
+            <span id="kanaMatchCount">46 characters</span>
+            <button class="primary-button" id="startKanaButton" type="submit">Start quiz</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card-session" id="kanaSession" hidden>
+        <div class="session-topbar">
+          <button class="text-button" id="exitKanaButton" type="button">← End session</button>
+          <div class="session-progress-copy">
+            <strong id="kanaProgressText">Question 1</strong>
+            <span id="kanaScoreText">0 correct · 0 wrong</span>
+          </div>
+        </div>
+        <div class="progress-track" aria-hidden="true"><div id="kanaProgressBar"></div></div>
+
+        <div class="kana-prompt" id="kanaPrompt"></div>
+
+        <button class="kana-reveal-box" id="kanaOptionsReveal" type="button">Tap to reveal choices</button>
+        <div class="kana-options-grid" id="kanaOptionsGrid" hidden></div>
+
+        <p class="kana-feedback" id="kanaFeedback" hidden></p>
+        <button class="primary-button kana-continue-button" id="kanaContinueButton" type="button" hidden>Continue →</button>
+      </div>
+
+      <div class="card-summary" id="kanaSummary" hidden>
+        <span class="eyebrow">Session complete</span>
+        <h2>Your kana results</h2>
+        <div class="summary-score-row">
+          <div class="score-ring" id="kanaScoreRing"><strong id="kanaScorePercent">0%</strong><span>correct</span></div>
+          <div class="summary-stats">
+            <div><strong id="kanaSummaryTotal">0</strong><span>Total</span></div>
+            <div><strong id="kanaSummaryCorrect">0</strong><span>Correct</span></div>
+            <div><strong id="kanaSummaryMissed">0</strong><span>Missed</span></div>
+          </div>
+        </div>
+
+        <div class="summary-review">
+          <div class="summary-review-heading">
+            <h3>Missed characters</h3>
+            <span id="kanaMissedCountText">0</span>
+          </div>
+          <div id="kanaMissedList" class="review-list"></div>
+        </div>
+
+        <div class="summary-actions">
+          <button class="secondary-button" id="kanaBackToSetupButton" type="button">Change setup</button>
+          <button class="primary-button" id="kanaRestartButton" type="button">Practice again</button>
+        </div>
+      </div>
+    </section>
+
     <section class="import-panel" id="importView" hidden>
       <div class="import-heading">
         <span class="eyebrow">Private local processing</span>
@@ -296,6 +383,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="data/kana.js"></script>
   <script src="data/japanese-words.js"></script>
   <script src="data/japanese-sentences.js"></script>
   <script src="data/german-words.js"></script>

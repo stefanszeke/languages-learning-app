@@ -481,6 +481,56 @@ td[data-script="native"] { font-size: .96rem; }
 .known-button { border: 1px solid color-mix(in srgb, var(--success) 50%, var(--line)); background: var(--success-soft); color: var(--success); }
 .keyboard-hint { margin: 9px 0 0; text-align: center; color: var(--muted); font-size: .7rem; }
 
+.kana-prompt {
+  margin: 26px 0;
+  padding: 40px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel-strong);
+  box-shadow: 0 18px 45px rgba(71,57,42,.10);
+  text-align: center;
+  font-size: clamp(2.6rem, 9vw, 4.5rem);
+  font-weight: 750;
+}
+.kana-reveal-box {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+}
+.kana-reveal-box:hover { border-color: var(--accent); color: var(--accent-strong); }
+.kana-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.kana-option {
+  padding: 18px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel-strong);
+  color: var(--text);
+  font-size: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.kana-option:hover:not(:disabled) { border-color: var(--accent); }
+.kana-option:disabled { cursor: default; }
+.kana-option.is-correct { border-color: var(--success); background: var(--success-soft); color: var(--success); }
+.kana-option.is-wrong { border-color: var(--danger); background: var(--danger-soft); color: var(--danger); }
+.kana-feedback { margin: 14px 0 0; text-align: center; font-weight: 800; }
+.kana-feedback.is-correct { color: var(--success); }
+.kana-feedback.is-wrong { color: var(--danger); }
+.kana-continue-button { display: block; margin: 14px auto 0; }
+.kana-missed-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 13px; border-bottom: 1px solid var(--line-soft); font-size: .88rem; }
+.kana-missed-item:last-child { border-bottom: 0; }
+.kana-missed-item .kana-missed-char { font-size: 1.3rem; font-weight: 750; }
+.kana-missed-item .kana-missed-answer { color: var(--muted); }
+.kana-missed-item .kana-missed-answer strong { color: var(--success); }
+.kana-missed-item .kana-missed-wrong { color: var(--danger) !important; }
+
 .card-summary { max-width: 850px; margin: 0 auto; text-align: center; }
 .summary-score-row { margin: 20px 0; display: flex; align-items: center; justify-content: center; gap: 28px; }
 .score-ring {
