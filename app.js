@@ -194,6 +194,7 @@
     cardSideLabel: document.querySelector('#cardSideLabel'),
     cardContent: document.querySelector('#cardContent'),
     cardRevealHint: document.querySelector('#cardRevealHint'),
+    cardRevealButton: document.querySelector('#cardRevealButton'),
     answerActions: document.querySelector('#answerActions'),
     unknownButton: document.querySelector('#unknownButton'),
     knownButton: document.querySelector('#knownButton'),
@@ -568,6 +569,8 @@
       else updateCardSetupDetails();
     });
     elements.studyCard.addEventListener('click', revealCurrentCard);
+    elements.cardRevealButton.addEventListener('click', revealCurrentCard);
+    elements.cardSession.addEventListener('click', handleCardAreaClick);
     elements.cardHardButton.addEventListener('click', toggleHardCurrentCard);
     elements.unknownButton.addEventListener('click', () => recordCardAnswer(false));
     elements.knownButton.addEventListener('click', () => recordCardAnswer(true));
@@ -578,7 +581,7 @@
     elements.kanaSetupForm.addEventListener('submit', startKanaSessionFromForm);
     elements.kanaSetupForm.addEventListener('input', updateKanaSetupDetails);
     elements.kanaOptionsGrid.addEventListener('click', handleKanaOptionClick);
-    elements.kanaInteractive.addEventListener('click', handleKanaAreaClick);
+    elements.kanaSession.addEventListener('click', handleKanaAreaClick);
     elements.exitKanaButton.addEventListener('click', exitKanaSession);
     elements.kanaBackToSetupButton.addEventListener('click', () => showKanaStage('setup'));
     elements.kanaRestartButton.addEventListener('click', restartKanaSession);
@@ -1772,9 +1775,16 @@
   }
 
   function showCardStage(stage) {
+    const sessionActive = stage === 'session';
     elements.cardsSetup.hidden = stage !== 'setup';
-    elements.cardSession.hidden = stage !== 'session';
+    elements.cardSession.hidden = !sessionActive;
     elements.cardSummary.hidden = stage !== 'summary';
+
+    // Match Kana practice: while studying, this view owns the whole viewport so
+    // mobile browser chrome/header height cannot create a second scroll area.
+    document.body.classList.toggle('study-card-session-active', sessionActive);
+    elements.cardsView.classList.toggle('is-session-active', sessionActive);
+
     if (stage === 'setup') updateCardSetupDetails();
   }
 
@@ -1795,14 +1805,19 @@
     elements.cardProgressBar.style.width = `${(currentNumber / total) * 100}%`;
     elements.cardSideLabel.textContent = state.card.revealed ? 'Answer revealed' : (direction === 'native-en' ? `${languageConfig().label} → English` : `English → ${languageConfig().label}`);
     elements.cardContent.innerHTML = cardContentTemplate(item, direction, state.card.revealed);
+    elements.cardRevealButton.hidden = state.card.revealed;
     elements.answerActions.hidden = !state.card.revealed;
-    elements.cardRevealHint.textContent = state.card.revealed ? 'Choose how well you knew it' : 'Click the card to reveal';
+    elements.cardRevealHint.textContent = state.card.revealed ? 'Choose below' : 'Tap anywhere to reveal';
     elements.studyCard.setAttribute('aria-label', state.card.revealed ? 'Answer revealed' : 'Reveal answer');
+    elements.cardSession.classList.toggle('is-sentence-card', item.type === 'sentence');
+    const contentLength = elements.cardContent.textContent.trim().length;
+    elements.cardSession.classList.toggle('is-long-card', contentLength > 90);
+    elements.cardSession.classList.toggle('is-very-long-card', contentLength > 170);
 
     const hard = Boolean(item.hard);
     elements.studyCard.classList.toggle('is-hard', hard);
     elements.cardHardButton.classList.toggle('is-active', hard);
-    elements.cardHardButton.textContent = hard ? '★' : '☆';
+    elements.cardHardButton.textContent = hard ? '★ Hard' : '☆ Hard';
     elements.cardHardButton.title = hard ? 'Unmark hard' : 'Mark hard';
     elements.cardHardButton.setAttribute('aria-label', hard ? 'Unmark this card as hard' : 'Mark this card as hard');
   }
@@ -1841,6 +1856,13 @@
     if (elements.cardSession.hidden || state.card.revealed) return;
     state.card.revealed = true;
     renderCurrentCard();
+  }
+
+
+  function handleCardAreaClick(event) {
+    if (elements.cardSession.hidden || state.card.revealed) return;
+    if (event.target.closest('#exitSessionButton, #cardHardButton, #cardRevealButton, #unknownButton, #knownButton')) return;
+    revealCurrentCard();
   }
 
   function recordCardAnswer(known) {
@@ -1907,8 +1929,12 @@
   }
 
   function exitCardSession() {
-    if (state.card.results.length && !confirm('End this session and discard its current progress?')) return;
-    showCardStage('setup');
+    if (state.card.results.length) {
+      renderCardSummary();
+      showCardStage('summary');
+    } else {
+      showCardStage('setup');
+    }
   }
 
   function handleCardKeyboard(event) {
@@ -1969,9 +1995,18 @@
   }
 
   function showKanaStage(stage) {
+    const sessionActive = stage === 'session';
+
     elements.kanaSetup.hidden = stage !== 'setup';
-    elements.kanaSession.hidden = stage !== 'session';
+    elements.kanaSession.hidden = !sessionActive;
     elements.kanaSummary.hidden = stage !== 'summary';
+
+    // The quiz itself becomes a true viewport-sized surface. This avoids the
+    // normal app header/tabs adding extra height above a 100vh card and makes
+    // bottom-of-screen thumb interaction predictable on mobile.
+    document.body.classList.toggle('kana-session-active', sessionActive);
+    elements.kanaView.classList.toggle('is-session-active', sessionActive);
+
     if (stage === 'setup') updateKanaSetupDetails();
   }
 
@@ -2025,6 +2060,7 @@
     elements.kanaOptionsGrid.hidden = true;
     elements.kanaOptionsGrid.innerHTML = '';
     elements.kanaOptionsGrid.classList.remove('is-locked');
+    elements.kanaInteractive.classList.remove('is-answered');
     elements.kanaControls.hidden = true;
     elements.kanaFeedback.textContent = '';
     elements.kanaFeedback.className = 'kana-feedback';
@@ -2058,10 +2094,16 @@
 
     elements.kanaFeedback.textContent = correct ? 'Correct!' : `Not quite — the answer is ${state.kana.correctValue}.`;
     elements.kanaFeedback.className = `kana-feedback ${correct ? 'is-correct' : 'is-wrong'}`;
+    elements.kanaInteractive.classList.add('is-answered');
     elements.kanaControls.hidden = false;
   }
 
-  function handleKanaAreaClick() {
+  function handleKanaAreaClick(event) {
+    // The whole quiz viewport is tappable, including the progress/top area.
+    // The exit button is the one exception; answer buttons stop propagation
+    // themselves on the answer-selecting tap.
+    if (event.target.closest('#exitKanaButton')) return;
+
     if (state.kana.answered) {
       nextKanaQuestion();
     } else if (elements.kanaOptionsGrid.hidden) {
