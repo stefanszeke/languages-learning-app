@@ -387,7 +387,7 @@ td[data-script="native"] { font-size: .96rem; }
 .empty-state h3 { margin: 0; }
 .empty-state p { margin: 4px 0 0; color: var(--muted); }
 
-.cards-panel { margin-top: 10px; border-radius: var(--radius); min-height: 520px; padding: 24px; }
+.cards-panel { margin-top: 10px; border-radius: var(--radius); min-height: 650px; padding: 24px; }
 .cards-setup { max-width: 850px; margin: 0 auto; }
 .cards-heading { text-align: center; margin-bottom: 20px; }
 .cards-heading h2, .card-summary h2 { margin: 3px 0 5px; font-size: 1.45rem; }
@@ -492,8 +492,12 @@ td[data-script="native"] { font-size: .96rem; }
   font-size: clamp(2.6rem, 9vw, 4.5rem);
   font-weight: 750;
 }
+.kana-interactive { cursor: pointer; }
+.kana-answer-area { display: flex; min-height: 290px; }
 .kana-reveal-box {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   padding: 16px;
   border: 1px dashed var(--line);
@@ -501,11 +505,11 @@ td[data-script="native"] { font-size: .96rem; }
   background: transparent;
   color: var(--muted);
   font-weight: 700;
-  cursor: pointer;
   text-align: center;
+  height: 380px;
 }
 .kana-reveal-box:hover { border-color: var(--accent); color: var(--accent-strong); }
-.kana-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.kana-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; height: 200px; }
 .kana-option {
   padding: 18px 12px;
   border: 1px solid var(--line);
@@ -515,15 +519,16 @@ td[data-script="native"] { font-size: .96rem; }
   font-size: 1.25rem;
   font-weight: 700;
   cursor: pointer;
+  height: 100px;
 }
-.kana-option:hover:not(:disabled) { border-color: var(--accent); }
-.kana-option:disabled { cursor: default; }
+.kana-options-grid:not(.is-locked) .kana-option:hover { border-color: var(--accent); }
+.kana-options-grid.is-locked .kana-option { cursor: default; }
 .kana-option.is-correct { border-color: var(--success); background: var(--success-soft); color: var(--success); }
 .kana-option.is-wrong { border-color: var(--danger); background: var(--danger-soft); color: var(--danger); }
 .kana-feedback { margin: 14px 0 0; text-align: center; font-weight: 800; }
 .kana-feedback.is-correct { color: var(--success); }
 .kana-feedback.is-wrong { color: var(--danger); }
-.kana-continue-button { display: block; margin: 14px auto 0; }
+.kana-continue-button { display: block; margin: 14px auto 0; pointer-events: none; }
 .kana-missed-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 13px; border-bottom: 1px solid var(--line-soft); font-size: .88rem; }
 .kana-missed-item:last-child { border-bottom: 0; }
 .kana-missed-item .kana-missed-char { font-size: 1.3rem; font-weight: 750; }

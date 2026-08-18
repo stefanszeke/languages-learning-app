@@ -253,13 +253,19 @@
         </div>
         <div class="progress-track" aria-hidden="true"><div id="kanaProgressBar"></div></div>
 
-        <div class="kana-prompt" id="kanaPrompt"></div>
+        <div class="kana-interactive" id="kanaInteractive">
+          <div class="kana-prompt" id="kanaPrompt"></div>
 
-        <button class="kana-reveal-box" id="kanaOptionsReveal" type="button">Tap to reveal choices</button>
-        <div class="kana-options-grid" id="kanaOptionsGrid" hidden></div>
+          <div class="kana-answer-area">
+            <div class="kana-reveal-box" id="kanaOptionsReveal">Tap to reveal choices</div>
+            <div class="kana-options-grid" id="kanaOptionsGrid" hidden></div>
+          </div>
 
-        <p class="kana-feedback" id="kanaFeedback" hidden></p>
-        <button class="primary-button kana-continue-button" id="kanaContinueButton" type="button" hidden>Continue →</button>
+          <div class="kana-controls" id="kanaControls" hidden>
+            <p class="kana-feedback" id="kanaFeedback"></p>
+            <button class="primary-button kana-continue-button" id="kanaContinueButton" type="button">Continue →</button>
+          </div>
+        </div>
       </div>
 
       <div class="card-summary" id="kanaSummary" hidden>

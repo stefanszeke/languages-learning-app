@@ -237,9 +237,11 @@
     kanaProgressText: document.querySelector('#kanaProgressText'),
     kanaScoreText: document.querySelector('#kanaScoreText'),
     kanaProgressBar: document.querySelector('#kanaProgressBar'),
+    kanaInteractive: document.querySelector('#kanaInteractive'),
     kanaPrompt: document.querySelector('#kanaPrompt'),
     kanaOptionsReveal: document.querySelector('#kanaOptionsReveal'),
     kanaOptionsGrid: document.querySelector('#kanaOptionsGrid'),
+    kanaControls: document.querySelector('#kanaControls'),
     kanaFeedback: document.querySelector('#kanaFeedback'),
     kanaContinueButton: document.querySelector('#kanaContinueButton'),
     kanaSummary: document.querySelector('#kanaSummary'),
@@ -575,9 +577,8 @@
 
     elements.kanaSetupForm.addEventListener('submit', startKanaSessionFromForm);
     elements.kanaSetupForm.addEventListener('input', updateKanaSetupDetails);
-    elements.kanaOptionsReveal.addEventListener('click', revealKanaOptions);
     elements.kanaOptionsGrid.addEventListener('click', handleKanaOptionClick);
-    elements.kanaContinueButton.addEventListener('click', nextKanaQuestion);
+    elements.kanaInteractive.addEventListener('click', handleKanaAreaClick);
     elements.exitKanaButton.addEventListener('click', exitKanaSession);
     elements.kanaBackToSetupButton.addEventListener('click', () => showKanaStage('setup'));
     elements.kanaRestartButton.addEventListener('click', restartKanaSession);
@@ -2023,10 +2024,10 @@
     elements.kanaOptionsReveal.hidden = false;
     elements.kanaOptionsGrid.hidden = true;
     elements.kanaOptionsGrid.innerHTML = '';
-    elements.kanaFeedback.hidden = true;
+    elements.kanaOptionsGrid.classList.remove('is-locked');
+    elements.kanaControls.hidden = true;
     elements.kanaFeedback.textContent = '';
     elements.kanaFeedback.className = 'kana-feedback';
-    elements.kanaContinueButton.hidden = true;
   }
 
   function revealKanaOptions() {
@@ -2041,6 +2042,7 @@
     if (state.kana.answered) return;
     const button = event.target.closest('.kana-option');
     if (!button) return;
+    event.stopPropagation();
 
     const chosen = button.dataset.value;
     const correct = chosen === state.kana.correctValue;
@@ -2048,16 +2050,23 @@
     if (correct) state.kana.correctCount += 1;
     state.kana.results.push({item: state.kana.current, chosen, correct});
 
+    elements.kanaOptionsGrid.classList.add('is-locked');
     elements.kanaOptionsGrid.querySelectorAll('.kana-option').forEach(optionButton => {
-      optionButton.disabled = true;
       if (optionButton.dataset.value === state.kana.correctValue) optionButton.classList.add('is-correct');
       else if (optionButton === button) optionButton.classList.add('is-wrong');
     });
 
-    elements.kanaFeedback.hidden = false;
     elements.kanaFeedback.textContent = correct ? 'Correct!' : `Not quite — the answer is ${state.kana.correctValue}.`;
     elements.kanaFeedback.className = `kana-feedback ${correct ? 'is-correct' : 'is-wrong'}`;
-    elements.kanaContinueButton.hidden = false;
+    elements.kanaControls.hidden = false;
+  }
+
+  function handleKanaAreaClick() {
+    if (state.kana.answered) {
+      nextKanaQuestion();
+    } else if (elements.kanaOptionsGrid.hidden) {
+      revealKanaOptions();
+    }
   }
 
   function finishKanaSession() {
