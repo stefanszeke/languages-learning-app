@@ -177,6 +177,8 @@
     exportWordsJsonButton: document.querySelector('#exportWordsJsonButton'),
     exportSentencesJsonButton: document.querySelector('#exportSentencesJsonButton'),
     dataPersistenceStatus: document.querySelector('#dataPersistenceStatus'),
+    serverStatusBadge: document.querySelector('#serverStatusBadge'),
+    ocrStatusBadge: document.querySelector('#ocrStatusBadge'),
     fileInput: document.querySelector('#fileInput'),
     dataMenuButton: document.querySelector('#dataMenuButton'),
     dataMenuList: document.querySelector('#dataMenuList'),
@@ -562,6 +564,7 @@
   }
 
   function updateDataPersistenceStatus() {
+    updateStatusBadges();
     if (!elements.dataPersistenceStatus) return;
 
     if (!state.localServerAvailable && state.diskSyncState === 'checking') {
@@ -581,6 +584,43 @@
       return;
     }
     elements.dataPersistenceStatus.innerHTML = '<strong>Local project · auto-save on</strong><span>Dictionary edits write directly to data/*.js. Commit and push when ready to publish.</span>';
+  }
+
+  function updateStatusBadges() {
+    if (elements.serverStatusBadge) {
+      const badge = elements.serverStatusBadge;
+      badge.classList.remove('is-on', 'is-checking');
+      if (state.diskSyncState === 'checking') {
+        badge.classList.add('is-checking');
+        badge.title = 'Checking for the local server…';
+      } else if (!state.localServerAvailable) {
+        badge.title = 'No local server — published mode. Words/sentences are read-only from data/*.js. Run npm start for local editing.';
+      } else if (state.diskSyncState === 'saving') {
+        badge.classList.add('is-on');
+        badge.title = 'Local server on — saving your change to data/*.js…';
+      } else if (state.diskSyncState === 'error') {
+        badge.title = 'Local server on, but the last save to data/*.js failed. See the toast for details.';
+      } else {
+        badge.classList.add('is-on');
+        badge.title = 'Local server on — edits auto-save to data/*.js.';
+      }
+    }
+
+    if (elements.ocrStatusBadge) {
+      const badge = elements.ocrStatusBadge;
+      badge.classList.remove('is-on', 'is-checking');
+      if (state.diskSyncState === 'checking') {
+        badge.classList.add('is-checking');
+        badge.title = 'Checking screenshot import availability…';
+      } else if (state.ocrReady) {
+        badge.classList.add('is-on');
+        badge.title = 'Screenshot import is ready.';
+      } else if (!state.localServerAvailable) {
+        badge.title = 'Screenshot import needs the local server. Run npm start.';
+      } else {
+        badge.title = 'OCR packages are not ready yet. Check the terminal running npm start.';
+      }
+    }
   }
 
   function bindEvents() {

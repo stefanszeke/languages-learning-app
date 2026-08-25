@@ -83,6 +83,33 @@ button { color: inherit; }
 .brand h1 { margin: 0; font-size: clamp(1.08rem, 2vw, 1.35rem); letter-spacing: -0.03em; }
 .brand p { margin: 0; color: var(--muted); font-size: 0.78rem; }
 .header-actions { display: flex; align-items: center; gap: 8px; }
+.status-badges { display: flex; align-items: center; gap: 6px; }
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: .66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  cursor: default;
+}
+.status-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .55;
+}
+.status-badge.is-on { color: var(--success); border-color: color-mix(in srgb, var(--success) 45%, var(--line)); background: var(--success-soft); }
+.status-badge.is-on::before { opacity: 1; }
+.status-badge.is-checking { opacity: .55; }
 .language-picker { display: flex; align-items: center; gap: 6px; }
 .language-flag {
   width: 33px;
