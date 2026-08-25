@@ -1190,5 +1190,677 @@ window.INITIAL_SENTENCES = [
     "romaji": "hashi no tonari no sakura wa kirei desu ne",
     "kanji": "橋の隣の桜はきれいですね。",
     "kana": "はしのとなりのさくらはきれいですね。"
+  },
+  {
+    "id": 150,
+    "type": "sentence",
+    "english": "It's the same bento every day.",
+    "romaji": "mainichi onaji bentou desu",
+    "kanji": "毎日同じ弁当です。",
+    "kana": "まいにちおなじべんとうです。"
+  },
+  {
+    "id": 151,
+    "type": "sentence",
+    "english": "The wallet is on that shelf.",
+    "romaji": "saifu wa ano tana no ue desu",
+    "kanji": "財布はあの棚の上です。",
+    "kana": "さいふはあのたなのうえです。"
+  },
+  {
+    "id": 152,
+    "type": "sentence",
+    "english": "The room wasn't stylish!",
+    "romaji": "heya wa oshare ja nakatta desu",
+    "kanji": "部屋はおしゃれじゃなかったです！",
+    "kana": "へやはおしゃれじゃなかったです！"
+  },
+  {
+    "id": 153,
+    "type": "sentence",
+    "english": "traditional inn staff",
+    "romaji": "ryokan no sutaffu",
+    "kanji": "旅館のスタッフ",
+    "kana": "りょかんのすたっふ"
+  },
+  {
+    "id": 154,
+    "type": "sentence",
+    "english": "The staff was very kind.",
+    "romaji": "sutaffu wa totemo shinsetsu deshita",
+    "kanji": "スタッフはとても親切でした。",
+    "kana": "すたっふはとてもしんせつでした。"
+  },
+  {
+    "id": 155,
+    "type": "sentence",
+    "english": "There was a fridge between the sofa and the shelf.",
+    "romaji": "sofa to tana no aida ni reizouko ga arimashita",
+    "kanji": "ソファと棚の間に冷蔵庫がありました。",
+    "kana": "そふぁとたなのあいだにれいぞうこがありました。"
+  },
+  {
+    "id": 156,
+    "type": "sentence",
+    "english": "It wasn't quiet at all.",
+    "romaji": "zenzen shizuka ja nakatta desu",
+    "kanji": "全然静かじゃなかったです。",
+    "kana": "ぜんぜんしずかじゃなかったです。"
+  },
+  {
+    "id": 157,
+    "type": "sentence",
+    "english": "The hotel room was not lovely at all.",
+    "romaji": "hoteru no heya wa zenzen suteki ja nakatta desu",
+    "kanji": "ホテルの部屋は全然素敵じゃなかったです。",
+    "kana": "ほてるのへやはぜんぜんすてきじゃなかったです。"
+  },
+  {
+    "id": 158,
+    "type": "sentence",
+    "english": "The room's curtains were dirty.",
+    "romaji": "heya no kaaten wa kitanakatta desu",
+    "kanji": "部屋のカーテンは汚かったです。",
+    "kana": "へやのかーてんはきたなかったです。"
+  },
+  {
+    "id": 159,
+    "type": "sentence",
+    "english": "The room's curtains were thin.",
+    "romaji": "heya no kaaten wa usukatta desu",
+    "kanji": "部屋のカーテンは薄かったです。",
+    "kana": "へやのかーてんはうすかったです。"
+  },
+  {
+    "id": 160,
+    "type": "sentence",
+    "english": "other guests",
+    "romaji": "hoka no okyakusan",
+    "kanji": "他のお客さん",
+    "kana": "ほかのおきゃくさん"
+  },
+  {
+    "id": 161,
+    "type": "sentence",
+    "english": "The pasta is on the top shelf.",
+    "romaji": "pasuta wa tana no ichiban ue desu",
+    "kanji": "パスタは棚の一番上です。",
+    "kana": "ぱすたはたなのいちばんうえです。"
+  },
+  {
+    "id": 162,
+    "type": "sentence",
+    "english": "The sauce is on the very bottom shelf.",
+    "romaji": "soosu wa tana no ichiban shita desu",
+    "kanji": "ソースは棚の一番下です。",
+    "kana": "そーすはたなのいちばんしたです。"
+  },
+  {
+    "id": 163,
+    "type": "sentence",
+    "english": "I forgot my shampoo.",
+    "romaji": "shanpuu wo wasuremashita",
+    "kanji": "シャンプーを忘れました。",
+    "kana": "しゃんぷーをわすれました。"
+  },
+  {
+    "id": 164,
+    "type": "sentence",
+    "english": "There was no shampoo in my bath.",
+    "romaji": "ofuro ni shanpuu wa arimasen deshita",
+    "kanji": "お風呂にシャンプーはありませんでした。",
+    "kana": "おふろにしゃんぷーはありませんでした。"
+  },
+  {
+    "id": 165,
+    "type": "sentence",
+    "english": "Do you always do judo?",
+    "romaji": "itsumo juudou wo shimasu ka",
+    "kanji": "いつも柔道をしますか。",
+    "kana": "いつもじゅうどうをしますか。"
+  },
+  {
+    "id": 166,
+    "type": "sentence",
+    "english": "Yes, next week I will participate in a judo competition.",
+    "romaji": "hai raishuu wa juudou no taikai ni demasu",
+    "kanji": "はい、来週は柔道の大会に出ます。",
+    "kana": "はい、らいしゅうはじゅうどうのたいかいにでます。"
+  },
+  {
+    "id": 167,
+    "type": "sentence",
+    "english": "There was trash behind the curtain.",
+    "romaji": "kaaten no ushiro ni gomi ga arimashita",
+    "kanji": "カーテンの後ろにゴミがありました。",
+    "kana": "かーてんのうしろにごみがありました。"
+  },
+  {
+    "id": 168,
+    "type": "sentence",
+    "english": "I'll write a review for sure.",
+    "romaji": "kanarazu rebyuu wo kakimasu",
+    "kanji": "必ずレビューを書きます。",
+    "kana": "かならずれびゅーをかきます。"
+  },
+  {
+    "id": 169,
+    "type": "sentence",
+    "english": "Next week I will participate in a karate competition!",
+    "romaji": "raishuu wa karate no taikai ni demasu",
+    "kanji": "来週は空手の大会に出ます！",
+    "kana": "らいしゅうはからてのたいかいにでます！"
+  },
+  {
+    "id": 170,
+    "type": "sentence",
+    "english": "The hotel's price is so-so, isn't it?",
+    "romaji": "hoteru no nedan wa maa maa desu ne",
+    "kanji": "ホテルの値段はまあまあですね。",
+    "kana": "ほてるのねだんはまあまあですね。"
+  },
+  {
+    "id": 171,
+    "type": "sentence",
+    "english": "The meat is immediately above the fish.",
+    "romaji": "niku wa sakana no sugu ue desu",
+    "kanji": "肉は魚のすぐ上です。",
+    "kana": "にくはさかなのすぐうえです。"
+  },
+  {
+    "id": 172,
+    "type": "sentence",
+    "english": "The meat is right next to the fish.",
+    "romaji": "niku wa sakana no sugu tonari desu",
+    "kanji": "肉は魚のすぐ隣です。",
+    "kana": "にくはさかなのすぐとなりです。"
+  },
+  {
+    "id": 173,
+    "type": "sentence",
+    "english": "Is the ticket price high?",
+    "romaji": "chiketto no nedan wa takai desu ka",
+    "kanji": "チケットの値段は高いですか。",
+    "kana": "ちけっとのねだんはたかいですか。"
+  },
+  {
+    "id": 174,
+    "type": "sentence",
+    "english": "I spoke with an Indonesian guest.",
+    "romaji": "indoneshia no okyakusan to hanashimashita",
+    "kanji": "インドネシアのお客さんと話しました。",
+    "kana": "いんどねしあのおきゃくさんとはなしました。"
+  },
+  {
+    "id": 175,
+    "type": "sentence",
+    "english": "I will certainly come again.",
+    "romaji": "mata kanarazu kimasu",
+    "kanji": "また必ず来ます。",
+    "kana": "またかならずきます。"
+  },
+  {
+    "id": 176,
+    "type": "sentence",
+    "english": "Did you take off your shoes?",
+    "romaji": "kutsu wo nugimashita ka",
+    "kanji": "靴を脱ぎましたか。",
+    "kana": "くつをぬぎましたか。"
+  },
+  {
+    "id": 177,
+    "type": "sentence",
+    "english": "I took off my shoes at the traditional inn's entrance.",
+    "romaji": "ryokan no iriguchi de kutsu wo nugimashita",
+    "kanji": "旅館の入口で靴を脱ぎました。",
+    "kana": "りょかんのいりぐちでくつをぬぎました。"
+  },
+  {
+    "id": 178,
+    "type": "sentence",
+    "english": "I will order later.",
+    "romaji": "ato de chuumon shimasu",
+    "kanji": "後で注文します。",
+    "kana": "あとでちゅうもんします。"
+  },
+  {
+    "id": 179,
+    "type": "sentence",
+    "english": "It was a splendid traditional inn.",
+    "romaji": "rippa na ryokan deshita",
+    "kanji": "立派な旅館でした。",
+    "kana": "りっぱなりょかんでした。"
+  },
+  {
+    "id": 180,
+    "type": "sentence",
+    "english": "I ordered vitamins online.",
+    "romaji": "netto de bitamin wo chuumon shimashita",
+    "kanji": "ネットでビタミンを注文しました。",
+    "kana": "ねっとでびたみんをちゅうもんしました。"
+  },
+  {
+    "id": 181,
+    "type": "sentence",
+    "english": "bitter juice",
+    "romaji": "nigai juusu",
+    "kanji": "苦いジュース",
+    "kana": "にがいじゅーす"
+  },
+  {
+    "id": 182,
+    "type": "sentence",
+    "english": "nicer computer",
+    "romaji": "motto ii pasokon",
+    "kanji": "もっといいパソコン",
+    "kana": "もっといいぱそこん"
+  },
+  {
+    "id": 183,
+    "type": "sentence",
+    "english": "I took a walk with my father.",
+    "romaji": "chichi to sanpo shimashita",
+    "kanji": "父と散歩しました。",
+    "kana": "ちちとさんぽしました。"
+  },
+  {
+    "id": 184,
+    "type": "sentence",
+    "english": "I eat nine pieces of fruit every day.",
+    "romaji": "mainichi kudamono wo kokonotsu tabemasu",
+    "kanji": "毎日果物を九つ食べます。",
+    "kana": "まいにちくだものをここのつたべます。"
+  },
+  {
+    "id": 185,
+    "type": "sentence",
+    "english": "We took a walk together every night.",
+    "romaji": "maiban issho ni sanpo shimashita",
+    "kanji": "毎晩一緒に散歩しました。",
+    "kana": "まいばんいっしょにさんぽしました。"
+  },
+  {
+    "id": 186,
+    "type": "sentence",
+    "english": "I will definitely reserve this room again.",
+    "romaji": "mata kanarazu kono heya wo yoyaku shimasu",
+    "kanji": "また必ずこの部屋を予約します。",
+    "kana": "またかならずこのへやをよやくします。"
+  },
+  {
+    "id": 187,
+    "type": "sentence",
+    "english": "Do you want to stay in the same village again?",
+    "romaji": "mata onaji mura ni tomaritai desu ka",
+    "kanji": "また同じ村に泊まりたいですか。",
+    "kana": "またおなじむらにとまりたいですか。"
+  },
+  {
+    "id": 188,
+    "type": "sentence",
+    "english": "Yes, I definitely want to stay in the same village next year!",
+    "romaji": "hai rainen mo kanarazu onaji mura ni tomaritai desu",
+    "kanji": "はい、来年も必ず同じ村に泊まりたいです！",
+    "kana": "はい、らいねんもかならずおなじむらにとまりたいです！"
+  },
+  {
+    "id": 189,
+    "type": "sentence",
+    "english": "awful breakfast",
+    "romaji": "mazui asagohan",
+    "kanji": "まずい朝ご飯",
+    "kana": "まずいあさごはん"
+  },
+  {
+    "id": 190,
+    "type": "sentence",
+    "english": "Do you eat fruit every day?",
+    "romaji": "mainichi kudamono wo tabemasu ka",
+    "kanji": "毎日果物を食べますか。",
+    "kana": "まいにちくだものをたべますか。"
+  },
+  {
+    "id": 191,
+    "type": "sentence",
+    "english": "I ate fresh fish.",
+    "romaji": "shinsen na sakana wo tabemashita",
+    "kanji": "新鮮な魚を食べました。",
+    "kana": "しんせんなさかなをたべました。"
+  },
+  {
+    "id": 192,
+    "type": "sentence",
+    "english": "The vegetables were fresh too.",
+    "romaji": "yasai mo shinsen deshita",
+    "kanji": "野菜も新鮮でした。",
+    "kana": "やさいもしんせんでした。"
+  },
+  {
+    "id": 193,
+    "type": "sentence",
+    "english": "Do you want to go to the same village again?",
+    "romaji": "mata onaji mura ni ikitai desu ka",
+    "kanji": "また同じ村に行きたいですか。",
+    "kana": "またおなじむらにいきたいですか。"
+  },
+  {
+    "id": 194,
+    "type": "sentence",
+    "english": "Yes, I definitely want to go again next year!",
+    "romaji": "hai rainen mo kanarazu ikitai desu",
+    "kanji": "はい、来年も必ず行きたいです！",
+    "kana": "はい、らいねんもかならずいきたいです！"
+  },
+  {
+    "id": 195,
+    "type": "sentence",
+    "english": "I eat lunch at the cafeteria.",
+    "romaji": "shokudou de ohirugohan wo tabemasu",
+    "kanji": "食堂でお昼ご飯を食べます。",
+    "kana": "しょくどうでおひるごはんをたべます。"
+  },
+  {
+    "id": 196,
+    "type": "sentence",
+    "english": "The chairs were sticky.",
+    "romaji": "isu wa betabeta deshita",
+    "kanji": "椅子はベタベタでした。",
+    "kana": "いすはべたべたでした。"
+  },
+  {
+    "id": 197,
+    "type": "sentence",
+    "english": "I'm going to borrow my friend's notebook.",
+    "romaji": "tomodachi no nooto wo karimasu",
+    "kanji": "友達のノートを借ります。",
+    "kana": "ともだちののーとをかります。"
+  },
+  {
+    "id": 198,
+    "type": "sentence",
+    "english": "Let's sit in the middle seat.",
+    "romaji": "mannaka no seki ni suwarimashou",
+    "kanji": "真ん中の席に座りましょう。",
+    "kana": "まんなかのせきにすわりましょう。"
+  },
+  {
+    "id": 199,
+    "type": "sentence",
+    "english": "We went to Daniel's house at one p.m.",
+    "romaji": "gogo ichiji ni danieru-san no ie ni ikimashita",
+    "kanji": "午後一時にダニエルさんの家に行きました。",
+    "kana": "ごごいちじにだにえるさんのいえにいきました。"
+  },
+  {
+    "id": 200,
+    "type": "sentence",
+    "english": "The CEO often gets angry.",
+    "romaji": "CEO wa yoku okorimasu",
+    "kanji": "CEOはよく怒ります。",
+    "kana": "CEOはよくおこります。"
+  },
+  {
+    "id": 201,
+    "type": "sentence",
+    "english": "I played tennis in the rain.",
+    "romaji": "ame no naka de tenisu wo shimashita",
+    "kanji": "雨の中でテニスをしました。",
+    "kana": "あめのなかでてにすをしました。"
+  },
+  {
+    "id": 202,
+    "type": "sentence",
+    "english": "The accessories are to the left of the shelf.",
+    "romaji": "akusesarii wa tana no hidari desu",
+    "kanji": "アクセサリーは棚の左です。",
+    "kana": "あくせさりーはたなのひだりです。"
+  },
+  {
+    "id": 203,
+    "type": "sentence",
+    "english": "Between the television and the shelf there was a picture.",
+    "romaji": "terebi to tana no aida ni e ga arimashita",
+    "kanji": "テレビと棚の間に絵がありました。",
+    "kana": "てれびとたなのあいだにえがありました。"
+  },
+  {
+    "id": 204,
+    "type": "sentence",
+    "english": "I'm going to borrow Naomi's notebook.",
+    "romaji": "naomi-san no nooto wo karimasu",
+    "kanji": "なおみさんのノートを借ります。",
+    "kana": "なおみさんののーとをかります。"
+  },
+  {
+    "id": 205,
+    "type": "sentence",
+    "english": "different company",
+    "romaji": "betsu no kaisha",
+    "kanji": "別の会社",
+    "kana": "べつのかいしゃ"
+  },
+  {
+    "id": 206,
+    "type": "sentence",
+    "english": "I have one older sister.",
+    "romaji": "ane ga hitori imasu",
+    "kanji": "姉が一人います。",
+    "kana": "あねがひとりいます。"
+  },
+  {
+    "id": 207,
+    "type": "sentence",
+    "english": "I'll exercise a little.",
+    "romaji": "sukoshi undou shimasu",
+    "kanji": "少し運動します。",
+    "kana": "すこしうんどうします。"
+  },
+  {
+    "id": 208,
+    "type": "sentence",
+    "english": "homemade cupcakes",
+    "romaji": "tezukuri no kappukeeki",
+    "kanji": "手作りのカップケーキ",
+    "kana": "てづくりのかっぷけーき"
+  },
+  {
+    "id": 209,
+    "type": "sentence",
+    "english": "It is not good.",
+    "romaji": "yoku nai desu",
+    "kanji": "よくないです。",
+    "kana": "よくないです。"
+  },
+  {
+    "id": 210,
+    "type": "sentence",
+    "english": "There are two dogs!",
+    "romaji": "inu ga nihiki imasu",
+    "kanji": "犬が二匹います！",
+    "kana": "いぬがにひきいます！"
+  },
+  {
+    "id": 211,
+    "type": "sentence",
+    "english": "How many rice balls do you usually make?",
+    "romaji": "itsumo onigiri wo ikutsu tsukurimasu ka",
+    "kanji": "いつもおにぎりをいくつ作りますか。",
+    "kana": "いつもおにぎりをいくつつくりますか。"
+  },
+  {
+    "id": 212,
+    "type": "sentence",
+    "english": "How many strawberries will you eat?",
+    "romaji": "ichigo wo ikutsu tabemasu ka",
+    "kanji": "いちごをいくつ食べますか。",
+    "kana": "いちごをいくつたべますか。"
+  },
+  {
+    "id": 213,
+    "type": "sentence",
+    "english": "He was an interesting husband.",
+    "romaji": "omoshiroi dannasan deshita",
+    "kanji": "面白い旦那さんでした。",
+    "kana": "おもしろいだんなさんでした。"
+  },
+  {
+    "id": 214,
+    "type": "sentence",
+    "english": "The living room furniture was really lovely.",
+    "romaji": "ribingu no kagu wa hontou ni suteki deshita",
+    "kanji": "リビングの家具は本当に素敵でした。",
+    "kana": "りびんぐのかぐはほんとうにすてきでした。"
+  },
+  {
+    "id": 215,
+    "type": "sentence",
+    "english": "The beef is in front of the pork.",
+    "romaji": "gyuuniku wa butaniku no sugu mae desu",
+    "kanji": "牛肉は豚肉のすぐ前です。",
+    "kana": "ぎゅうにくはぶたにくのすぐまえです。"
+  },
+  {
+    "id": 216,
+    "type": "sentence",
+    "english": "We have a lot of onions.",
+    "romaji": "tamanegi ga takusan arimasu",
+    "kanji": "玉ねぎがたくさんあります。",
+    "kana": "たまねぎがたくさんあります。"
+  },
+  {
+    "id": 217,
+    "type": "sentence",
+    "english": "I met Daniel's husband and child.",
+    "romaji": "danieru-san no dannasan to okosan ni aimashita",
+    "kanji": "ダニエルさんの旦那さんとお子さんに会いました。",
+    "kana": "だにえるさんのだんなさんとおこさんにあいました。"
+  },
+  {
+    "id": 218,
+    "type": "sentence",
+    "english": "I already borrowed Erika's notebook.",
+    "romaji": "mou erika-san no nooto wo karimashita",
+    "kanji": "もうエリカさんのノートを借りました。",
+    "kana": "もうえりかさんののーとをかりました。"
+  },
+  {
+    "id": 219,
+    "type": "sentence",
+    "english": "Where do you want to sit?",
+    "romaji": "doko ni suwaritai desu ka",
+    "kanji": "どこに座りたいですか。",
+    "kana": "どこにすわりたいですか。"
+  },
+  {
+    "id": 220,
+    "type": "sentence",
+    "english": "The party was from around two p.m.",
+    "romaji": "paatii wa gogo niji goro kara deshita",
+    "kanji": "パーティーは午後二時ごろからでした。",
+    "kana": "ぱーてぃーはごごにじごろからでした。"
+  },
+  {
+    "id": 221,
+    "type": "sentence",
+    "english": "I took off my coat in the entryway.",
+    "romaji": "genkan de kooto wo nugimashita",
+    "kanji": "玄関でコートを脱ぎました。",
+    "kana": "げんかんでこーとをぬぎました。"
+  },
+  {
+    "id": 222,
+    "type": "sentence",
+    "english": "How many protein bars do you eat every day?",
+    "romaji": "mainichi purotein baa wo ikutsu tabemasu ka",
+    "kanji": "毎日プロテインバーをいくつ食べますか。",
+    "kana": "まいにちぷろていんばーをいくつたべますか。"
+  },
+  {
+    "id": 223,
+    "type": "sentence",
+    "english": "Did you meet Erika's husband?",
+    "romaji": "erika-san no dannasan ni aimashita ka",
+    "kanji": "エリカさんの旦那さんに会いましたか。",
+    "kana": "えりかさんのだんなさんにあいましたか。"
+  },
+  {
+    "id": 224,
+    "type": "sentence",
+    "english": "The company isn't very good.",
+    "romaji": "kaisha wa amari yoku nai desu",
+    "kanji": "会社はあまりよくないです。",
+    "kana": "かいしゃはあまりよくないです。"
+  },
+  {
+    "id": 225,
+    "type": "sentence",
+    "english": "Erika, how is the company?",
+    "romaji": "erika-san kaisha wa dou desu ka",
+    "kanji": "エリカさん、会社はどうですか。",
+    "kana": "えりかさん、かいしゃはどうですか。"
+  },
+  {
+    "id": 226,
+    "type": "sentence",
+    "english": "I want to quit!",
+    "romaji": "yametai desu",
+    "kanji": "やめたいです！",
+    "kana": "やめたいです！"
+  },
+  {
+    "id": 227,
+    "type": "sentence",
+    "english": "We took off our shoes in the entrance.",
+    "romaji": "iriguchi de kutsu wo nugimashita",
+    "kanji": "入口で靴を脱ぎました。",
+    "kana": "いりぐちでくつをぬぎました。"
+  },
+  {
+    "id": 228,
+    "type": "sentence",
+    "english": "There were photos between the table and the window.",
+    "romaji": "teeburu to mado no aida ni shashin ga arimashita",
+    "kanji": "テーブルと窓の間に写真がありました。",
+    "kana": "てーぶるとまどのあいだにしゃしんがありました。"
+  },
+  {
+    "id": 229,
+    "type": "sentence",
+    "english": "My current company is not very good!",
+    "romaji": "ima no kaisha wa amari yoku nai desu",
+    "kanji": "今の会社はあまりよくないです！",
+    "kana": "いまのかいしゃはあまりよくないです！"
+  },
+  {
+    "id": 230,
+    "type": "sentence",
+    "english": "Okay, I'll introduce you to a different job.",
+    "romaji": "jaa betsu no shigoto wo shoukai shimasu",
+    "kanji": "じゃあ、別の仕事を紹介します。",
+    "kana": "じゃあ、べつのしごとをしょうかいします。"
+  },
+  {
+    "id": 231,
+    "type": "sentence",
+    "english": "The entryway was spacious.",
+    "romaji": "genkan wa hirokatta desu",
+    "kanji": "玄関は広かったです。",
+    "kana": "げんかんはひろかったです。"
+  },
+  {
+    "id": 232,
+    "type": "sentence",
+    "english": "I took off my shoes in the entryway.",
+    "romaji": "genkan de kutsu wo nugimashita",
+    "kanji": "玄関で靴を脱ぎました。",
+    "kana": "げんかんでくつをぬぎました。"
+  },
+  {
+    "id": 233,
+    "type": "sentence",
+    "english": "The socks are to the left of that shelf.",
+    "romaji": "kutsushita wa ano tana no hidari desu",
+    "kanji": "靴下はあの棚の左です。",
+    "kana": "くつしたはあのたなのひだりです。"
   }
 ];

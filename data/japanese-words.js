@@ -1595,7 +1595,7 @@ window.INITIAL_WORDS = [
     "romaji": "gohan",
     "kanji": "ご飯",
     "kana": "ごはん",
-    "pos": "noun" 
+    "pos": "noun"
   },
   {
     "id": 179,
@@ -1641,5 +1641,257 @@ window.INITIAL_WORDS = [
     "kana": "かく / かきます / かいた / かかない",
     "pos": "verb",
     "id": 183
+  },
+  {
+    "id": 184,
+    "type": "word",
+    "english": "every day",
+    "romaji": "mainichi",
+    "kanji": "毎日",
+    "kana": "まいにち",
+    "pos": "adverb"
+  },
+  {
+    "id": 185,
+    "type": "word",
+    "english": "on / above / top",
+    "romaji": "ue",
+    "kanji": "上",
+    "kana": "うえ",
+    "pos": "noun"
+  },
+  {
+    "id": 186,
+    "type": "word",
+    "english": "staff",
+    "romaji": "sutaffu",
+    "kanji": "スタッフ",
+    "kana": "すたっふ",
+    "pos": "noun"
+  },
+  {
+    "id": 187,
+    "type": "word",
+    "english": "curtain",
+    "romaji": "kaaten",
+    "kanji": "カーテン",
+    "kana": "かーてん",
+    "pos": "noun"
+  },
+  {
+    "id": 188,
+    "type": "word",
+    "english": "other",
+    "romaji": "hoka",
+    "kanji": "他",
+    "kana": "ほか",
+    "pos": "noun"
+  },
+  {
+    "id": 189,
+    "type": "word",
+    "english": "topmost / very top",
+    "romaji": "ichiban ue",
+    "kanji": "一番上",
+    "kana": "いちばんうえ",
+    "pos": "noun"
+  },
+  {
+    "id": 190,
+    "type": "word",
+    "english": "bottommost / very bottom",
+    "romaji": "ichiban shita",
+    "kanji": "一番下",
+    "kana": "いちばんした",
+    "pos": "noun"
+  },
+  {
+    "id": 191,
+    "type": "word",
+    "english": "shampoo",
+    "romaji": "shanpuu",
+    "kanji": "シャンプー",
+    "kana": "しゃんぷー",
+    "pos": "noun"
+  },
+  {
+    "id": 192,
+    "type": "word",
+    "english": "price",
+    "romaji": "nedan",
+    "kanji": "値段",
+    "kana": "ねだん",
+    "pos": "noun"
+  },
+  {
+    "id": 193,
+    "type": "word",
+    "english": "immediately / right next to",
+    "romaji": "sugu",
+    "kanji": "すぐ",
+    "kana": "すぐ",
+    "pos": "adverb"
+  },
+  {
+    "id": 194,
+    "type": "word",
+    "english": "certainly / without fail",
+    "romaji": "kanarazu",
+    "kanji": "必ず",
+    "kana": "かならず",
+    "pos": "adverb"
+  },
+  {
+    "id": 195,
+    "type": "word",
+    "english": "take off (clothes/shoes)",
+    "romaji": "nugu / nugimasu / nuida / nuganai",
+    "kanji": "脱ぐ / 脱ぎます / 脱いだ / 脱がない",
+    "kana": "ぬぐ / ぬぎます / ぬいだ / ぬがない",
+    "pos": "verb"
+  },
+  {
+    "id": 196,
+    "type": "word",
+    "english": "splendid / impressive",
+    "romaji": "rippa",
+    "kanji": "立派",
+    "kana": "りっぱ",
+    "pos": "adjective"
+  },
+  {
+    "id": 197,
+    "type": "word",
+    "english": "fruit",
+    "romaji": "kudamono",
+    "kanji": "果物",
+    "kana": "くだもの",
+    "pos": "noun"
+  },
+  {
+    "id": 198,
+    "type": "word",
+    "english": "bitter",
+    "romaji": "nigai",
+    "kanji": "苦い",
+    "kana": "にがい",
+    "pos": "adjective"
+  },
+  {
+    "id": 199,
+    "type": "word",
+    "english": "stuffed toy",
+    "romaji": "nuigurumi",
+    "kanji": "ぬいぐるみ",
+    "kana": "ぬいぐるみ",
+    "pos": "noun"
+  },
+  {
+    "id": 200,
+    "type": "word",
+    "english": "fever",
+    "romaji": "netsu",
+    "kanji": "熱",
+    "kana": "ねつ",
+    "pos": "noun"
+  },
+  {
+    "id": 201,
+    "type": "word",
+    "english": "sticky",
+    "romaji": "betabeta",
+    "kanji": "ベタベタ",
+    "kana": "べたべた",
+    "pos": "adjective"
+  },
+  {
+    "id": 202,
+    "type": "word",
+    "english": "borrow",
+    "romaji": "kariru / karimasu / karita / karinai",
+    "kanji": "借りる / 借ります / 借りた / 借りない",
+    "kana": "かりる / かります / かりた / かりない",
+    "pos": "verb"
+  },
+  {
+    "id": 203,
+    "type": "word",
+    "english": "afternoon / p.m.",
+    "romaji": "gogo",
+    "kanji": "午後",
+    "kana": "ごご",
+    "pos": "noun"
+  },
+  {
+    "id": 204,
+    "type": "word",
+    "english": "get angry",
+    "romaji": "okoru / okorimasu / okotta / okoranai",
+    "kanji": "怒る / 怒ります / 怒った / 怒らない",
+    "kana": "おこる / おこります / おこった / おこらない",
+    "pos": "verb"
+  },
+  {
+    "id": 205,
+    "type": "word",
+    "english": "husband",
+    "romaji": "dannasan",
+    "kanji": "旦那さん",
+    "kana": "だんなさん",
+    "pos": "noun"
+  },
+  {
+    "id": 206,
+    "type": "word",
+    "english": "onion",
+    "romaji": "tamanegi",
+    "kanji": "玉ねぎ",
+    "kana": "たまねぎ",
+    "pos": "noun"
+  },
+  {
+    "id": 207,
+    "type": "word",
+    "english": "different / another",
+    "romaji": "betsu",
+    "kanji": "別",
+    "kana": "べつ",
+    "pos": "noun"
+  },
+  {
+    "id": 208,
+    "type": "word",
+    "english": "a little",
+    "romaji": "sukoshi",
+    "kanji": "少し",
+    "kana": "すこし",
+    "pos": "adverb"
+  },
+  {
+    "id": 209,
+    "type": "word",
+    "english": "ask",
+    "romaji": "kiku / kikimasu / kiita / kikanai",
+    "kanji": "聞く / 聞きます / 聞いた / 聞かない",
+    "kana": "きく / ききます / きいた / きかない",
+    "pos": "verb"
+  },
+  {
+    "id": 210,
+    "type": "word",
+    "english": "how many",
+    "romaji": "ikutsu",
+    "kanji": "いくつ",
+    "kana": "いくつ",
+    "pos": "noun"
+  },
+  {
+    "id": 211,
+    "type": "word",
+    "english": "village",
+    "romaji": "mura",
+    "kanji": "村",
+    "kana": "むら",
+    "pos": "noun"
   }
 ];
