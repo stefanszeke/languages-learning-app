@@ -1893,5 +1893,32 @@ window.INITIAL_WORDS = [
     "kanji": "村",
     "kana": "むら",
     "pos": "noun"
+  },
+  {
+    "type": "word",
+    "english": "shelf; trellis",
+    "romaji": "tana",
+    "kanji": "棚",
+    "kana": "たな",
+    "pos": "noun",
+    "id": 212
+  },
+  {
+    "type": "word",
+    "english": "entrance",
+    "romaji": "genkan",
+    "kanji": "玄関",
+    "kana": "げんかん",
+    "pos": "noun",
+    "id": 213
+  },
+  {
+    "type": "word",
+    "english": "space (between); period of time (during, while); between (two parties or things); among (a group); relations (between); midpoint",
+    "romaji": "aida",
+    "kanji": "間",
+    "kana": "ま",
+    "pos": "noun",
+    "id": 214
   }
 ];

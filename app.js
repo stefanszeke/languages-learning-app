@@ -2368,7 +2368,7 @@
   async function getLocalOcrStatus() {
     try {
       const response = await fetch('./api/ocr-status', {cache: 'no-store'});
-      const payload = await response.json().catch(() => ({}));
+      const payload = await response.json();
       if (!response.ok) {
         return {
           serverAvailable: true,
