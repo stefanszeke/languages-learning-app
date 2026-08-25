@@ -5,7 +5,7 @@
   const THEME_KEY = 'japanese-study-theme';
   const LANGUAGE_KEY = 'study-language';
   const OCR_ASSET_ROOT = './vendor';
-  const RELOAD_PROJECT_DATA_KEY = 'lingo-reload-project-data-once';
+  const HARD_FLAGS_STORAGE_VERSION = 'hard-flags-v1';
   const DISK_SYNC_DELAY_MS = 250;
 
   let diskSyncTimer = null;
@@ -134,6 +134,15 @@
     },
   };
 
+  // Finish the one-time storage cleanup for languages that are not currently
+  // selected too, preserving only their hard markers before removing obsolete
+  // full dictionary copies from localStorage.
+  Object.values(LANGUAGES).forEach(config => {
+    if (config.id === state.language) return;
+    loadHardFlags(config);
+    cleanupLegacyDictionaryStorage(config);
+  });
+
   const elements = {
     listToolbar: document.querySelector('#listToolbar'),
     listView: document.querySelector('#listView'),
@@ -168,7 +177,6 @@
     exportWordsJsonButton: document.querySelector('#exportWordsJsonButton'),
     exportSentencesJsonButton: document.querySelector('#exportSentencesJsonButton'),
     dataPersistenceStatus: document.querySelector('#dataPersistenceStatus'),
-    reloadProjectDataButton: document.querySelector('#reloadProjectDataButton'),
     fileInput: document.querySelector('#fileInput'),
     dataMenuButton: document.querySelector('#dataMenuButton'),
     dataMenuList: document.querySelector('#dataMenuList'),
@@ -267,7 +275,6 @@
 
   initTheme();
   renderStructuralElements();
-  saveCollections();
   if (state.language === 'de') {
     ensureGermanGenderDictionary();
     ensureGermanEnglishDictionary();
@@ -293,32 +300,9 @@
     elements.serverNotice.hidden = status.ready;
     elements.importTab.hidden = !languageConfig().supportsOcr || !status.ready;
     elements.addButton.hidden = !status.serverAvailable;
-    if (!status.serverAvailable) {
-      reseedFromStaticData();
-    }
+    elements.importButton.hidden = !status.serverAvailable;
     updateDataPersistenceStatus();
     render();
-  }
-
-  // On static hosting (GitHub Pages, no local server) there's no way to sync
-  // manual edits back to the seed files, so bundled seed data is always the
-  // source of truth: rebuild the collections from it on every load, keeping
-  // only each entry's hard flag (matched by id) from what was stored locally.
-  function reseedFromStaticData() {
-    const config = languageConfig();
-    const hardIds = {word: new Set(), sentence: new Set()};
-    for (const type of ['word', 'sentence']) {
-      for (const item of state.collections[type]) {
-        if (item.hard) hardIds[type].add(item.id);
-      }
-    }
-    state.collections = seedCollections(config);
-    for (const type of ['word', 'sentence']) {
-      for (const item of state.collections[type]) {
-        if (hardIds[type].has(item.id)) item.hard = true;
-      }
-    }
-    saveCollections();
   }
 
   function clone(value) {
@@ -357,12 +341,16 @@
     return columns;
   }
 
-  function wordsKey(config) {
+  function legacyWordsKey(config) {
     return `${config.storagePrefix}-words-v2`;
   }
 
-  function sentencesKey(config) {
+  function legacySentencesKey(config) {
     return `${config.storagePrefix}-sentences-v2`;
+  }
+
+  function hardFlagsKey(config) {
+    return `${config.storagePrefix}-${HARD_FLAGS_STORAGE_VERSION}`;
   }
 
   function seedCollections(config) {
@@ -372,39 +360,16 @@
     };
   }
 
+  // Dictionary content always comes from data/*.js. localStorage is reserved
+  // for browser-only study state such as the "hard" marker. This avoids two
+  // competing copies of the vocabulary and makes the deployed GitHub Pages
+  // build reflect the repository files as soon as the page is refreshed.
   function loadCollections(config) {
-    const reloadProjectData = sessionStorage.getItem(RELOAD_PROJECT_DATA_KEY) === '1';
-    if (reloadProjectData) {
-      sessionStorage.removeItem(RELOAD_PROJECT_DATA_KEY);
-      return seedCollections(config);
-    }
-
-    const wordsSaved = readJsonStorage(wordsKey(config));
-    const sentencesSaved = readJsonStorage(sentencesKey(config));
-
-    if (Array.isArray(wordsSaved) || Array.isArray(sentencesSaved)) {
-      return {
-        word: normalizeCollection(Array.isArray(wordsSaved) ? wordsSaved : clone(config.seedWords() || []), 'word', config),
-        sentence: normalizeCollection(Array.isArray(sentencesSaved) ? sentencesSaved : clone(config.seedSentences() || []), 'sentence', config),
-      };
-    }
-
-    if (config.id === 'ja') {
-      const legacy = readJsonStorage(LEGACY_STORAGE_KEY);
-      if (Array.isArray(legacy)) {
-        const ordered = legacy
-          .map((item, index) => ({...item, _legacyOrder: parseNumericId(item.id) || index + 1}))
-          .sort((a, b) => a._legacyOrder - b._legacyOrder);
-        const words = ordered.filter(item => item.type !== 'sentence').map((item, index) => ({...item, id: index + 1}));
-        const sentences = ordered.filter(item => item.type === 'sentence').map((item, index) => ({...item, id: index + 1}));
-        return {
-          word: normalizeCollection(words, 'word', config),
-          sentence: normalizeCollection(sentences, 'sentence', config),
-        };
-      }
-    }
-
-    return seedCollections(config);
+    const collections = seedCollections(config);
+    const hardFlags = loadHardFlags(config);
+    applyHardFlags(collections, hardFlags);
+    cleanupLegacyDictionaryStorage(config);
+    return collections;
   }
 
   function readJsonStorage(key) {
@@ -416,6 +381,76 @@
       console.warn(`Could not read ${key}:`, error);
       return null;
     }
+  }
+
+  function loadHardFlags(config) {
+    const saved = readJsonStorage(hardFlagsKey(config));
+    if (saved && typeof saved === 'object') {
+      return {
+        word: new Set(Array.isArray(saved.word) ? saved.word.map(Number).filter(Number.isSafeInteger) : []),
+        sentence: new Set(Array.isArray(saved.sentence) ? saved.sentence.map(Number).filter(Number.isSafeInteger) : []),
+      };
+    }
+
+    // Preserve only study markers from older versions that stored complete
+    // dictionary copies in localStorage. The dictionary text itself is not
+    // migrated: data/*.js is now deliberately the only source of truth.
+    const migrated = {word: new Set(), sentence: new Set()};
+    const oldWords = readJsonStorage(legacyWordsKey(config));
+    const oldSentences = readJsonStorage(legacySentencesKey(config));
+    for (const item of Array.isArray(oldWords) ? oldWords : []) {
+      if (item.hard && parseNumericId(item.id)) migrated.word.add(parseNumericId(item.id));
+    }
+    for (const item of Array.isArray(oldSentences) ? oldSentences : []) {
+      if (item.hard && parseNumericId(item.id)) migrated.sentence.add(parseNumericId(item.id));
+    }
+
+    if (config.id === 'ja') {
+      const legacy = readJsonStorage(LEGACY_STORAGE_KEY);
+      if (Array.isArray(legacy)) {
+        const ordered = legacy
+          .map((item, index) => ({...item, _legacyOrder: parseNumericId(item.id) || index + 1}))
+          .sort((a, b) => a._legacyOrder - b._legacyOrder);
+        ordered.filter(item => item.type !== 'sentence').forEach((item, index) => {
+          if (item.hard) migrated.word.add(index + 1);
+        });
+        ordered.filter(item => item.type === 'sentence').forEach((item, index) => {
+          if (item.hard) migrated.sentence.add(index + 1);
+        });
+      }
+    }
+
+    if (migrated.word.size || migrated.sentence.size) {
+      localStorage.setItem(hardFlagsKey(config), JSON.stringify({
+        word: [...migrated.word].sort((a, b) => a - b),
+        sentence: [...migrated.sentence].sort((a, b) => a - b),
+      }));
+    }
+    return migrated;
+  }
+
+  function applyHardFlags(collections, hardFlags) {
+    for (const type of ['word', 'sentence']) {
+      const ids = hardFlags[type] || new Set();
+      for (const item of collections[type]) {
+        if (ids.has(item.id)) item.hard = true;
+      }
+    }
+  }
+
+  function saveHardFlags() {
+    const config = languageConfig();
+    const payload = {word: [], sentence: []};
+    for (const type of ['word', 'sentence']) {
+      payload[type] = collection(type).filter(item => item.hard).map(item => item.id).sort((a, b) => a - b);
+    }
+    localStorage.setItem(hardFlagsKey(config), JSON.stringify(payload));
+  }
+
+  function cleanupLegacyDictionaryStorage(config) {
+    localStorage.removeItem(legacyWordsKey(config));
+    localStorage.removeItem(legacySentencesKey(config));
+    if (config.id === 'ja') localStorage.removeItem(LEGACY_STORAGE_KEY);
   }
 
   function normalizeCollection(items, type, config = languageConfig()) {
@@ -436,7 +471,6 @@
       }
       if (raw.article) entry.article = raw.article;
       if (raw.pos) entry.pos = raw.pos;
-      if (raw.hard) entry.hard = true;
       normalized.push(entry);
     }
 
@@ -472,23 +506,30 @@
 
   function saveCollections() {
     const config = languageConfig();
-    localStorage.setItem(wordsKey(config), JSON.stringify(state.collections.word));
-    localStorage.setItem(sentencesKey(config), JSON.stringify(state.collections.sentence));
+    saveHardFlags();
     japaneseDictionaryFormIndexPromise = null;
 
-    // When opened through the local Node app, browser edits are automatically
-    // mirrored into the repository's data/*.js files. On GitHub Pages there is
-    // intentionally no write endpoint, so the deployed copy remains read-only.
+    // Words and sentences are never stored in localStorage. Local editing is
+    // available only through the Node app, where each change is automatically
+    // written to the repository's data/*.js files.
     if (state.localServerAvailable) {
       queueDiskSync(config.id, state.collections);
     }
   }
 
+  function projectCollection(items) {
+    return items.map(item => {
+      const copy = {...item};
+      delete copy.hard;
+      return copy;
+    });
+  }
+
   function queueDiskSync(language, collections) {
     pendingDiskSync.set(language, {
       language,
-      words: clone(collections.word),
-      sentences: clone(collections.sentence),
+      words: projectCollection(collections.word),
+      sentences: projectCollection(collections.sentence),
     });
     state.diskSyncState = 'saving';
     updateDataPersistenceStatus();
@@ -515,7 +556,7 @@
     } catch (error) {
       console.warn('Could not auto-save project data files:', error);
       state.diskSyncState = 'error';
-      showToast('Saved in browser, but project files could not be updated. Is npm start still running?');
+      showToast('Project files could not be updated. This change is only in the current tab; do not reload until you retry or export it.');
     }
     updateDataPersistenceStatus();
   }
@@ -524,22 +565,22 @@
     if (!elements.dataPersistenceStatus) return;
 
     if (!state.localServerAvailable && state.diskSyncState === 'checking') {
-      elements.dataPersistenceStatus.innerHTML = '<strong>Checking project storage…</strong><span>Detecting whether the local Node app is available.</span>';
+      elements.dataPersistenceStatus.innerHTML = '<strong>Checking editing mode…</strong><span>Words and sentences are loaded directly from the project data files.</span>';
       return;
     }
     if (!state.localServerAvailable) {
-      elements.dataPersistenceStatus.innerHTML = '<strong>Published / browser mode</strong><span>Repository files are read-only here. Update locally, then commit and push.</span>';
+      elements.dataPersistenceStatus.innerHTML = '<strong>Published mode · project data</strong><span>Words and sentences come directly from data/*.js. Refresh after a deployment to load the newest files.</span>';
       return;
     }
     if (state.diskSyncState === 'saving') {
-      elements.dataPersistenceStatus.innerHTML = '<strong>Saving project files…</strong><span>Your change is being written to data/*.js automatically.</span>';
+      elements.dataPersistenceStatus.innerHTML = '<strong>Saving project files…</strong><span>Your dictionary change is being written directly to data/*.js.</span>';
       return;
     }
     if (state.diskSyncState === 'error') {
-      elements.dataPersistenceStatus.innerHTML = '<strong>Project auto-save failed</strong><span>The browser copy is safe, but data/*.js was not updated.</span>';
+      elements.dataPersistenceStatus.innerHTML = '<strong>Project auto-save failed</strong><span>The change is still open in this tab, but data/*.js was not updated.</span>';
       return;
     }
-    elements.dataPersistenceStatus.innerHTML = '<strong>Local project · auto-save on</strong><span>Changes are written to data/*.js automatically. Commit and push when ready to publish.</span>';
+    elements.dataPersistenceStatus.innerHTML = '<strong>Local project · auto-save on</strong><span>Dictionary edits write directly to data/*.js. Commit and push when ready to publish.</span>';
   }
 
   function bindEvents() {
@@ -609,7 +650,6 @@
     elements.exportWordsJsonButton.addEventListener('click', () => exportJson('word'));
     elements.exportSentencesJsonButton.addEventListener('click', () => exportJson('sentence'));
     elements.exportMdButton.addEventListener('click', exportMarkdown);
-    elements.reloadProjectDataButton.addEventListener('click', reloadProjectDataFiles);
 
     elements.dataMenuButton.addEventListener('click', event => {
       event.stopPropagation();
@@ -770,6 +810,7 @@
     elements.importTab.hidden = !config.supportsOcr || !state.ocrReady;
     elements.kanaTab.hidden = config.id !== 'ja';
     elements.addButton.hidden = !state.localServerAvailable;
+    elements.importButton.hidden = !state.localServerAvailable;
     elements.dictAttribution.innerHTML = config.id === 'de'
       ? `English glosses use the <a href="https://freedict.org/" target="_blank" rel="noopener">FreeDict deu-eng dictionary</a>, generated from the Ding dictionary (dict.tu-chemnitz.de), licensed GPLv3+/AGPLv3+.`
       : `English glosses use the <a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project" target="_blank" rel="noopener">JMdict/EDICT dictionary files</a>, property of the Electronic Dictionary Research and Development Group, used in conformance with the Group's licence.`;
@@ -788,7 +829,6 @@
       ensureGermanAdjectiveDictionary();
     }
     state.collections = loadCollections(languageConfig());
-    if (!state.localServerAvailable) reseedFromStaticData();
     if (id === 'ja') migrateJapaneseVerbForms();
     migratePartsOfSpeech();
     state.covered.clear();
@@ -800,7 +840,6 @@
     state.screen = 'list';
     renderStructuralElements();
     resetIdFilterToFullRange();
-    saveCollections();
     setCardCategory('word', true);
     render();
   }
@@ -1595,7 +1634,7 @@
   function toggleHardFlag(item) {
     item.hard = !item.hard;
     if (!item.hard) delete item.hard;
-    saveCollections();
+    saveHardFlags();
   }
 
   function clearAllHardFlags() {
@@ -1603,7 +1642,7 @@
     if (!hardItems.length) return;
     if (!confirm(`Clear the hard flag from ${hardItems.length} ${hardItems.length === 1 ? 'entry' : 'entries'}?`)) return;
     hardItems.forEach(item => delete item.hard);
-    saveCollections();
+    saveHardFlags();
     render();
     showToast('Cleared all hard flags');
   }
@@ -1629,6 +1668,11 @@
   }
 
   async function importDataFile(event) {
+    if (!state.localServerAvailable) {
+      showToast('Dictionary import is available only in local project mode.');
+      event.target.value = '';
+      return;
+    }
     const file = event.target.files?.[0];
     event.target.value = '';
     if (!file) return;
@@ -1747,12 +1791,6 @@
     });
     downloadFile(`${config.storagePrefix}-list.md`, sections.join('\n\n###\n\n'), 'text/markdown');
     showToast('Markdown exported');
-  }
-
-  function reloadProjectDataFiles() {
-    if (!confirm('Reload the app from the project data/*.js files? Any browser-only changes that were not written to disk will be discarded.')) return;
-    sessionStorage.setItem(RELOAD_PROJECT_DATA_KEY, '1');
-    window.location.reload();
   }
 
   function setCardCategory(type, resetRange) {
@@ -2724,12 +2762,9 @@
     };
   }
 
-  // One-time upgrade for verb entries saved to localStorage before this app
-  // started expanding Japanese verbs into a 4-form set. New installs get the
-  // expanded forms straight from the updated data/japanese-words.js seed
-  // file, while existing browser collections are upgraded in place. The data
-  // menu can now explicitly reload the project files when those were replaced
-  // outside the app. Mirrors
+  // Runtime compatibility upgrade for older project data created before this
+  // app expanded Japanese verbs into a 4-form set. Current project files are
+  // already migrated; this keeps older checked-out data usable. Mirrors
   // scripts/migrate-japanese-verb-forms.js exactly, including its 4 by-id
   // fixes for pre-existing data typos found while writing that script (see
   // that file's comments for what each one corrects).

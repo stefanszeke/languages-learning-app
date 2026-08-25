@@ -48,16 +48,26 @@ OCR is only a draft generator. Duolingo layouts, furigana, highlighted text, wor
 
 ## Data saving and publishing
 
-When the app is opened through `npm start`, dictionary changes are saved in two places automatically:
+The dictionary files are the single source of truth:
 
-- browser local storage, for immediate persistence
-- `data/*.js`, which is the repository copy that GitHub Pages publishes
+- `data/japanese-words.js`
+- `data/japanese-sentences.js`
+- `data/german-words.js`
+- `data/german-sentences.js`
 
-There is no separate **Sync to disk** step anymore. Add/edit/delete/import locally, then commit and push the changed `data/*.js` files when you want to publish them.
+The app no longer stores a second copy of words or sentences in browser local storage. Every page load reads the dictionary directly from those project files. Browser storage is used only for browser-specific study/settings data such as hard markers, selected language, and theme.
 
-If you replace `data/japanese-words.js`, `data/japanese-sentences.js`, or the German equivalents outside the app, choose **Reload app from project files** from the data menu. The page reloads and intentionally replaces the browser copy with the current project files.
+When the app is opened through `npm start`, add/edit/delete/import actions are available and every dictionary change is written automatically to the relevant `data/*.js` file. There is no **Sync to disk** and no **Reload app from project files** step.
 
-On GitHub Pages there is no Node server, so the repository files are read-only. The deployed app always uses the data included in the pushed repository.
+If you replace any `data/*.js` dictionary file outside the app, simply refresh the page. When you are ready to publish, commit and push the changed project files. GitHub Pages then serves those files directly; refresh the deployed page after the deployment completes to see the new entries.
+
+On GitHub Pages there is no Node server, so dictionary editing/import actions are hidden. Study-only state such as hard markers can still be stored in that browser without changing the published dictionary.
+
+### Normal workflows
+
+**Editing through the local app:** edit/import → automatic write to `data/*.js` → commit → push.
+
+**Replacing dictionary files directly:** replace `data/*.js` → refresh the local app if it is open → commit → push.
 
 ## Backup
 

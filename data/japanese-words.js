@@ -1649,7 +1649,7 @@ window.INITIAL_WORDS = [
     "romaji": "mainichi",
     "kanji": "毎日",
     "kana": "まいにち",
-    "pos": "noun"
+    "pos": "adverb"
   },
   {
     "id": 185,
@@ -1694,8 +1694,7 @@ window.INITIAL_WORDS = [
     "romaji": "ichiban ue",
     "kanji": "一番上",
     "kana": "いちばんうえ",
-    "pos": "noun",
-    "hard": true
+    "pos": "noun"
   },
   {
     "id": 190,
@@ -1704,8 +1703,7 @@ window.INITIAL_WORDS = [
     "romaji": "ichiban shita",
     "kanji": "一番下",
     "kana": "いちばんした",
-    "pos": "noun",
-    "hard": true
+    "pos": "noun"
   },
   {
     "id": 191,
@@ -1723,8 +1721,7 @@ window.INITIAL_WORDS = [
     "romaji": "nedan",
     "kanji": "値段",
     "kana": "ねだん",
-    "pos": "noun",
-    "hard": true
+    "pos": "noun"
   },
   {
     "id": 193,
@@ -1742,8 +1739,7 @@ window.INITIAL_WORDS = [
     "romaji": "kanarazu",
     "kanji": "必ず",
     "kana": "かならず",
-    "pos": "adverb",
-    "hard": true
+    "pos": "adverb"
   },
   {
     "id": 195,
@@ -1752,8 +1748,7 @@ window.INITIAL_WORDS = [
     "romaji": "nugu / nugimasu / nuida / nuganai",
     "kanji": "脱ぐ / 脱ぎます / 脱いだ / 脱がない",
     "kana": "ぬぐ / ぬぎます / ぬいだ / ぬがない",
-    "pos": "verb",
-    "hard": true
+    "pos": "verb"
   },
   {
     "id": 196,
@@ -1762,8 +1757,7 @@ window.INITIAL_WORDS = [
     "romaji": "rippa",
     "kanji": "立派",
     "kana": "りっぱ",
-    "pos": "noun",
-    "hard": true
+    "pos": "adjective"
   },
   {
     "id": 197,
@@ -1772,8 +1766,7 @@ window.INITIAL_WORDS = [
     "romaji": "kudamono",
     "kanji": "果物",
     "kana": "くだもの",
-    "pos": "noun",
-    "hard": true
+    "pos": "noun"
   },
   {
     "id": 198,
@@ -1782,8 +1775,7 @@ window.INITIAL_WORDS = [
     "romaji": "nigai",
     "kanji": "苦い",
     "kana": "にがい",
-    "pos": "adjective",
-    "hard": true
+    "pos": "adjective"
   },
   {
     "id": 199,
@@ -1792,8 +1784,7 @@ window.INITIAL_WORDS = [
     "romaji": "nuigurumi",
     "kanji": "ぬいぐるみ",
     "kana": "ぬいぐるみ",
-    "pos": "noun",
-    "hard": true
+    "pos": "noun"
   },
   {
     "id": 200,
@@ -1802,8 +1793,7 @@ window.INITIAL_WORDS = [
     "romaji": "netsu",
     "kanji": "熱",
     "kana": "ねつ",
-    "pos": "noun",
-    "hard": true
+    "pos": "noun"
   },
   {
     "id": 201,
@@ -1812,7 +1802,7 @@ window.INITIAL_WORDS = [
     "romaji": "betabeta",
     "kanji": "ベタベタ",
     "kana": "べたべた",
-    "pos": "adverb"
+    "pos": "adjective"
   },
   {
     "id": 202,
@@ -1821,8 +1811,7 @@ window.INITIAL_WORDS = [
     "romaji": "kariru / karimasu / karita / karinai",
     "kanji": "借りる / 借ります / 借りた / 借りない",
     "kana": "かりる / かります / かりた / かりない",
-    "pos": "verb",
-    "hard": true
+    "pos": "verb"
   },
   {
     "id": 203,
