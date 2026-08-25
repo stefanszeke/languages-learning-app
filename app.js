@@ -418,7 +418,7 @@
         entry[field.key] = String(raw[field.key] || '').trim();
       }
       if (raw.article) entry.article = raw.article;
-      if (raw.source) entry.source = raw.source;
+      if (raw.pos) entry.pos = raw.pos;
       if (raw.hard) entry.hard = true;
       normalized.push(entry);
     }
@@ -1569,7 +1569,7 @@
       }
 
       if (!entries.length) throw new Error('No valid entries were found.');
-      const summary = await mergeImportedEntries(entries, `file:${file.name}`);
+      const summary = await mergeImportedEntries(entries);
       saveCollections();
       syncIdFilterIfNotCustom();
       render();
@@ -1579,7 +1579,7 @@
     }
   }
 
-  async function mergeImportedEntries(entries, sourceLabel = '') {
+  async function mergeImportedEntries(entries) {
     const config = languageConfig();
     let added = 0;
     let duplicates = 0;
@@ -1592,8 +1592,6 @@
       for (const field of config.fields) {
         candidate[field.key] = String(raw[field.key] || '').trim();
       }
-      if (raw.source) candidate.source = raw.source;
-      else if (sourceLabel) candidate.source = {kind: sourceLabel, importedAt: new Date().toISOString()};
       if (raw.hard) candidate.hard = true;
       await applyDerivedFields(candidate);
 
@@ -1693,7 +1691,7 @@
   }
 
   function resetData() {
-    if (!confirm('Reset all edits and restore the original words and sentences?')) return;
+    if (!confirm('Discard changes made in the app and reload words/sentences from the data/*.js files on disk? Anything not yet synced will be lost.')) return;
     state.collections = seedCollections(languageConfig());
     state.shuffledIds = null;
     state.search = '';
@@ -4041,7 +4039,7 @@
     const entries = [];
     for (const result of state.screenshots.results) {
       if (result.sentence.selected) {
-        entries.push({...result.sentence, type: 'sentence', source: screenshotSource(result)});
+        entries.push({...result.sentence, type: 'sentence'});
       }
     }
 
@@ -4066,7 +4064,7 @@
     const entries = [];
     for (const result of state.screenshots.results) {
       for (const word of result.words) {
-        if (word.selected) entries.push({...word, type: 'word', source: screenshotSource(result)});
+        if (word.selected) entries.push({...word, type: 'word'});
       }
     }
 
@@ -4085,15 +4083,6 @@
       result.words.forEach(word => { word.selected = false; });
     }
     renderScanReviews();
-  }
-
-  function screenshotSource(result) {
-    return {
-      kind: 'duolingo-screenshot',
-      filename: result.fileName,
-      importedAt: new Date().toISOString(),
-      ocrConfidence: result.confidence,
-    };
   }
 
   function findDuplicate(candidate, excludeId = null) {

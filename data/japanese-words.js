@@ -1634,13 +1634,13 @@ window.INITIAL_WORDS = [
     "pos": "noun"
   },
   {
+    "id": 183,
     "type": "word",
     "english": "to write",
     "romaji": "kaku / kakimasu / kaita / kakanai",
     "kanji": "書く / 書きます / 書いた / 書かない",
     "kana": "かく / かきます / かいた / かかない",
-    "pos": "verb",
-    "id": 183
+    "pos": "verb"
   },
   {
     "id": 184,
