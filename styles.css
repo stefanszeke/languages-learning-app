@@ -244,6 +244,17 @@ button { color: inherit; }
 }
 .list-heading h2 { margin: 0; font-size: 1.03rem; }
 .list-heading p { margin: 0; color: var(--muted); font-size: 0.74rem; }
+
+.data-persistence-status {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.65rem 0.8rem;
+  max-width: 18rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+.data-persistence-status strong { font-size: 0.82rem; }
+.data-persistence-status span { opacity: 0.72; }
 .data-menu { position: relative; display: flex; }
 .data-menu-list {
   position: absolute;

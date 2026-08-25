@@ -5,6 +5,11 @@
   const THEME_KEY = 'japanese-study-theme';
   const LANGUAGE_KEY = 'study-language';
   const OCR_ASSET_ROOT = './vendor';
+  const RELOAD_PROJECT_DATA_KEY = 'lingo-reload-project-data-once';
+  const DISK_SYNC_DELAY_MS = 250;
+
+  let diskSyncTimer = null;
+  const pendingDiskSync = new Map();
 
   // Populated lazily by ensureGermanGenderDictionary(); declared up front
   // since init() below may call it before its definition further down runs.
@@ -98,7 +103,9 @@
     search: '',
     hardOnly: false,
     simpleView: true,
-    localServerAvailable: true,
+    localServerAvailable: false,
+    ocrReady: false,
+    diskSyncState: 'checking',
     sortDirection: 'desc',
     covered: new Set(),
     cellOverrides: new Set(),
@@ -160,8 +167,8 @@
     exportMdButton: document.querySelector('#exportMdButton'),
     exportWordsJsonButton: document.querySelector('#exportWordsJsonButton'),
     exportSentencesJsonButton: document.querySelector('#exportSentencesJsonButton'),
-    syncSeedDataButton: document.querySelector('#syncSeedDataButton'),
-    resetButton: document.querySelector('#resetButton'),
+    dataPersistenceStatus: document.querySelector('#dataPersistenceStatus'),
+    reloadProjectDataButton: document.querySelector('#reloadProjectDataButton'),
     fileInput: document.querySelector('#fileInput'),
     dataMenuButton: document.querySelector('#dataMenuButton'),
     dataMenuList: document.querySelector('#dataMenuList'),
@@ -275,18 +282,22 @@
   resetIdFilterToFullRange();
   elements.serverNotice.hidden = true;
   render();
+  updateDataPersistenceStatus();
   checkOcrAvailability();
 
   async function checkOcrAvailability() {
     const status = await getLocalOcrStatus();
-    state.localServerAvailable = status.ready;
+    state.localServerAvailable = status.serverAvailable;
+    state.ocrReady = status.ready;
+    state.diskSyncState = status.serverAvailable ? 'saved' : 'static';
     elements.serverNotice.hidden = status.ready;
     elements.importTab.hidden = !languageConfig().supportsOcr || !status.ready;
-    elements.addButton.hidden = !status.ready;
-    if (!status.ready) {
+    elements.addButton.hidden = !status.serverAvailable;
+    if (!status.serverAvailable) {
       reseedFromStaticData();
-      render();
     }
+    updateDataPersistenceStatus();
+    render();
   }
 
   // On static hosting (GitHub Pages, no local server) there's no way to sync
@@ -362,6 +373,12 @@
   }
 
   function loadCollections(config) {
+    const reloadProjectData = sessionStorage.getItem(RELOAD_PROJECT_DATA_KEY) === '1';
+    if (reloadProjectData) {
+      sessionStorage.removeItem(RELOAD_PROJECT_DATA_KEY);
+      return seedCollections(config);
+    }
+
     const wordsSaved = readJsonStorage(wordsKey(config));
     const sentencesSaved = readJsonStorage(sentencesKey(config));
 
@@ -458,6 +475,71 @@
     localStorage.setItem(wordsKey(config), JSON.stringify(state.collections.word));
     localStorage.setItem(sentencesKey(config), JSON.stringify(state.collections.sentence));
     japaneseDictionaryFormIndexPromise = null;
+
+    // When opened through the local Node app, browser edits are automatically
+    // mirrored into the repository's data/*.js files. On GitHub Pages there is
+    // intentionally no write endpoint, so the deployed copy remains read-only.
+    if (state.localServerAvailable) {
+      queueDiskSync(config.id, state.collections);
+    }
+  }
+
+  function queueDiskSync(language, collections) {
+    pendingDiskSync.set(language, {
+      language,
+      words: clone(collections.word),
+      sentences: clone(collections.sentence),
+    });
+    state.diskSyncState = 'saving';
+    updateDataPersistenceStatus();
+    clearTimeout(diskSyncTimer);
+    diskSyncTimer = setTimeout(flushDiskSync, DISK_SYNC_DELAY_MS);
+  }
+
+  async function flushDiskSync() {
+    const payloads = [...pendingDiskSync.values()];
+    pendingDiskSync.clear();
+    diskSyncTimer = null;
+    if (!payloads.length || !state.localServerAvailable) return;
+
+    try {
+      for (const payload of payloads) {
+        const response = await fetch('/api/sync-seed-data', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) throw new Error(`status ${response.status}`);
+      }
+      state.diskSyncState = 'saved';
+    } catch (error) {
+      console.warn('Could not auto-save project data files:', error);
+      state.diskSyncState = 'error';
+      showToast('Saved in browser, but project files could not be updated. Is npm start still running?');
+    }
+    updateDataPersistenceStatus();
+  }
+
+  function updateDataPersistenceStatus() {
+    if (!elements.dataPersistenceStatus) return;
+
+    if (!state.localServerAvailable && state.diskSyncState === 'checking') {
+      elements.dataPersistenceStatus.innerHTML = '<strong>Checking project storage…</strong><span>Detecting whether the local Node app is available.</span>';
+      return;
+    }
+    if (!state.localServerAvailable) {
+      elements.dataPersistenceStatus.innerHTML = '<strong>Published / browser mode</strong><span>Repository files are read-only here. Update locally, then commit and push.</span>';
+      return;
+    }
+    if (state.diskSyncState === 'saving') {
+      elements.dataPersistenceStatus.innerHTML = '<strong>Saving project files…</strong><span>Your change is being written to data/*.js automatically.</span>';
+      return;
+    }
+    if (state.diskSyncState === 'error') {
+      elements.dataPersistenceStatus.innerHTML = '<strong>Project auto-save failed</strong><span>The browser copy is safe, but data/*.js was not updated.</span>';
+      return;
+    }
+    elements.dataPersistenceStatus.innerHTML = '<strong>Local project · auto-save on</strong><span>Changes are written to data/*.js automatically. Commit and push when ready to publish.</span>';
   }
 
   function bindEvents() {
@@ -527,8 +609,7 @@
     elements.exportWordsJsonButton.addEventListener('click', () => exportJson('word'));
     elements.exportSentencesJsonButton.addEventListener('click', () => exportJson('sentence'));
     elements.exportMdButton.addEventListener('click', exportMarkdown);
-    elements.syncSeedDataButton.addEventListener('click', syncSeedDataToDisk);
-    elements.resetButton.addEventListener('click', resetData);
+    elements.reloadProjectDataButton.addEventListener('click', reloadProjectDataFiles);
 
     elements.dataMenuButton.addEventListener('click', event => {
       event.stopPropagation();
@@ -629,8 +710,8 @@
       showToast(`Screenshot import isn't available for ${languageConfig().label} yet`);
       return;
     }
-    if (view === 'import' && !state.localServerAvailable) {
-      showToast('Screenshot import needs the local Node server (run npm start).');
+    if (view === 'import' && !state.ocrReady) {
+      showToast('Screenshot import needs the local OCR server (run npm start and make sure OCR dependencies are installed).');
       return;
     }
     if (view === 'kana' && languageConfig().id !== 'ja') {
@@ -686,7 +767,7 @@
       <label class="choice-card"><input type="radio" name="cardDirection" value="en-native"><span>English → ${escapeHtml(config.label)}</span></label>
     `;
 
-    elements.importTab.hidden = !config.supportsOcr || !state.localServerAvailable;
+    elements.importTab.hidden = !config.supportsOcr || !state.ocrReady;
     elements.kanaTab.hidden = config.id !== 'ja';
     elements.addButton.hidden = !state.localServerAvailable;
     elements.dictAttribution.innerHTML = config.id === 'de'
@@ -1655,28 +1736,6 @@
     showToast(`${items.length} ${label} exported${filtered ? ' (filtered)' : ''}`);
   }
 
-  async function syncSeedDataToDisk() {
-    const results = [];
-    for (const id of Object.keys(LANGUAGES)) {
-      const config = LANGUAGES[id];
-      const collections = id === state.language ? state.collections : loadCollections(config);
-      try {
-        const response = await fetch('/api/sync-seed-data', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({language: id, words: collections.word, sentences: collections.sentence}),
-        });
-        if (!response.ok) throw new Error(`status ${response.status}`);
-        const {written} = await response.json();
-        results.push(`${config.label}: ${written.words} words, ${written.sentences} sentences`);
-      } catch (error) {
-        showToast('Sync to disk only works locally via npm start (no server found).');
-        return;
-      }
-    }
-    showToast(`Synced to data/*.js — ${results.join(' · ')}. Commit & push to publish.`);
-  }
-
   function exportMarkdown() {
     const config = languageConfig();
     const sections = [
@@ -1690,21 +1749,10 @@
     showToast('Markdown exported');
   }
 
-  function resetData() {
-    if (!confirm('Discard changes made in the app and reload words/sentences from the data/*.js files on disk? Anything not yet synced will be lost.')) return;
-    state.collections = seedCollections(languageConfig());
-    state.shuffledIds = null;
-    state.search = '';
-    elements.searchInput.value = '';
-    state.hardOnly = false;
-    elements.hardOnlyCheckbox.checked = false;
-    elements.hardOnlyCheckbox.closest('.hard-filter-toggle')?.classList.remove('is-active');
-    state.view = 'word';
-    resetIdFilterToFullRange();
-    saveCollections();
-    setCardCategory('word', true);
-    render();
-    showToast('Original data restored');
+  function reloadProjectDataFiles() {
+    if (!confirm('Reload the app from the project data/*.js files? Any browser-only changes that were not written to disk will be discarded.')) return;
+    sessionStorage.setItem(RELOAD_PROJECT_DATA_KEY, '1');
+    window.location.reload();
   }
 
   function setCardCategory(type, resetRange) {
@@ -2285,13 +2333,15 @@
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) {
         return {
+          serverAvailable: true,
           ready: false,
           message: payload.message || `OCR server check failed with HTTP ${response.status}.`,
         };
       }
-      return payload;
+      return {...payload, serverAvailable: true, ready: payload.ready !== false};
     } catch (error) {
       return {
+        serverAvailable: false,
         ready: false,
         message: 'The local Node server is not providing the OCR packages. Run npm start from the app folder.',
       };
@@ -2677,10 +2727,9 @@
   // One-time upgrade for verb entries saved to localStorage before this app
   // started expanding Japanese verbs into a 4-form set. New installs get the
   // expanded forms straight from the updated data/japanese-words.js seed
-  // file, but a browser that already seeded its collection from an older
-  // copy keeps whatever it saved -- there's no "pull latest seed data" path,
-  // only the one-way "sync to disk" export -- so this runs the same
-  // expansion against whatever's actually in state.collections. Mirrors
+  // file, while existing browser collections are upgraded in place. The data
+  // menu can now explicitly reload the project files when those were replaced
+  // outside the app. Mirrors
   // scripts/migrate-japanese-verb-forms.js exactly, including its 4 by-id
   // fixes for pre-existing data typos found while writing that script (see
   // that file's comments for what each one corrects).

@@ -78,9 +78,12 @@
               <button class="menu-item" id="exportWordsJsonButton" type="button">Words JSON</button>
               <button class="menu-item" id="exportSentencesJsonButton" type="button">Sentences JSON</button>
               <hr class="menu-divider">
-              <button class="menu-item" id="syncSeedDataButton" type="button">Sync to disk (local only)</button>
+              <div class="data-persistence-status" id="dataPersistenceStatus" role="status">
+                <strong>Checking project storage…</strong>
+                <span>Local changes are kept safely in the browser while the app checks how it was opened.</span>
+              </div>
               <hr class="menu-divider">
-              <button class="menu-item danger-text" id="resetButton" type="button" title="Discard any changes made in the app and reload words/sentences from the data/*.js files on disk">Reload from data files</button>
+              <button class="menu-item" id="reloadProjectDataButton" type="button" title="Discard the browser copy and reload the latest words/sentences from data/*.js">Reload app from project files</button>
             </div>
             <input id="fileInput" type="file" accept=".md,.txt,.json,text/plain,application/json" hidden>
           </div>

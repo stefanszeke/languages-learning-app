@@ -46,13 +46,22 @@ The local Express server exposes the complete installed core directory and uses 
 
 OCR is only a draft generator. Duolingo layouts, furigana, highlighted text, word banks, and inferred kanji can still require manual corrections.
 
-## Existing browser data
+## Data saving and publishing
 
-Data is saved in browser local storage for `http://127.0.0.1:8000`. If moving from a version opened directly as a file, export its Words JSON and Sentences JSON first, then import those files here.
+When the app is opened through `npm start`, dictionary changes are saved in two places automatically:
+
+- browser local storage, for immediate persistence
+- `data/*.js`, which is the repository copy that GitHub Pages publishes
+
+There is no separate **Sync to disk** step anymore. Add/edit/delete/import locally, then commit and push the changed `data/*.js` files when you want to publish them.
+
+If you replace `data/japanese-words.js`, `data/japanese-sentences.js`, or the German equivalents outside the app, choose **Reload app from project files** from the data menu. The page reloads and intentionally replaces the browser copy with the current project files.
+
+On GitHub Pages there is no Node server, so the repository files are read-only. The deployed app always uses the data included in the pushed repository.
 
 ## Backup
 
-Use the export buttons regularly. Browser storage is convenient but should not be the only copy of your study list.
+The project files are the publishable source of truth. JSON/Markdown export is still useful as an extra backup or for moving data between copies of the app.
 
 background-image: url("https://wallpapercat.com/w/full/1/a/1/34391-1920x1200-desktop-hd-germany-wallpaper.jpg");
 background-size: cover;
