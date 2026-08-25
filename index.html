@@ -12,7 +12,13 @@
     <div class="brand">
       <div class="brand-mark" id="brandMark" aria-hidden="true">日</div>
       <div>
-        <h1>Lingo Study List</h1>
+        <h1>
+          Lingo Study List
+          <span class="status-badges" id="statusBadges" role="status">
+            <span class="status-badge" id="serverStatusBadge">Server</span>
+            <span class="status-badge" id="ocrStatusBadge">OCR</span>
+          </span>
+        </h1>
         <p>Words, sentences, cards, and local screenshot import</p>
       </div>
     </div>
@@ -20,10 +26,6 @@
       <div class="language-picker">
         <span class="language-flag" id="languageFlag" aria-hidden="true"></span>
         <select class="language-select" id="languageSelect" aria-label="Study language"></select>
-      </div>
-      <div class="status-badges" id="statusBadges" role="status">
-        <span class="status-badge" id="serverStatusBadge">Server</span>
-        <span class="status-badge" id="ocrStatusBadge">OCR</span>
       </div>
       <button class="icon-button" id="themeButton" type="button" title="Toggle dark mode" aria-label="Toggle dark mode">◐</button>
     </div>

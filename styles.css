@@ -83,26 +83,26 @@ button { color: inherit; }
 .brand h1 { margin: 0; font-size: clamp(1.08rem, 2vw, 1.35rem); letter-spacing: -0.03em; }
 .brand p { margin: 0; color: var(--muted); font-size: 0.78rem; }
 .header-actions { display: flex; align-items: center; gap: 8px; }
-.status-badges { display: flex; align-items: center; gap: 6px; }
+.status-badges { display: inline-flex; align-items: center; gap: 4px; margin-left: 6px; vertical-align: middle; }
 .status-badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
+  gap: 4px;
+  padding: 2px 7px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: var(--panel);
   color: var(--muted);
-  font-size: .66rem;
+  font-size: .56rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: .05em;
+  letter-spacing: .04em;
   cursor: default;
 }
 .status-badge::before {
   content: '';
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: currentColor;
   opacity: .55;
