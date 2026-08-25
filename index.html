@@ -54,6 +54,7 @@
           <input id="hardOnlyCheckbox" type="checkbox">
           <span>★ Hard only</span>
         </label>
+        <button class="text-button" id="hardClearAllButton" type="button">Clear all hard</button>
         <label class="hard-filter-toggle is-active" id="simpleViewToggle">
           <input id="simpleViewCheckbox" type="checkbox" checked>
           <span>Simple view</span>
@@ -238,6 +239,15 @@
             <div class="choice-grid two-choice">
               <label class="choice-card"><input type="radio" name="kanaMode" value="once" checked><span>Go through once</span></label>
               <label class="choice-card"><input type="radio" name="kanaMode" value="endless"><span>Endless</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="setup-group">
+            <legend>Dakuten &amp; handakuten (゛゜)</legend>
+            <div class="choice-grid three-choice">
+              <label class="choice-card"><input type="radio" name="kanaDakuten" value="off" checked><span>Off</span></label>
+              <label class="choice-card"><input type="radio" name="kanaDakuten" value="on"><span>On</span></label>
+              <label class="choice-card"><input type="radio" name="kanaDakuten" value="only"><span>Only</span></label>
             </div>
           </fieldset>
 

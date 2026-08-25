@@ -152,6 +152,7 @@
     idFilterTo: document.querySelector('#idFilterTo'),
     idFilterResetButton: document.querySelector('#idFilterResetButton'),
     hardOnlyCheckbox: document.querySelector('#hardOnlyCheckbox'),
+    hardClearAllButton: document.querySelector('#hardClearAllButton'),
     simpleViewCheckbox: document.querySelector('#simpleViewCheckbox'),
     revealButton: document.querySelector('#revealButton'),
     shuffleButton: document.querySelector('#shuffleButton'),
@@ -504,6 +505,8 @@
       elements.hardOnlyCheckbox.closest('.hard-filter-toggle')?.classList.toggle('is-active', state.hardOnly);
       renderTable();
     });
+
+    elements.hardClearAllButton.addEventListener('click', clearAllHardFlags);
 
     elements.simpleViewCheckbox.addEventListener('change', () => {
       state.simpleView = elements.simpleViewCheckbox.checked;
@@ -1514,6 +1517,16 @@
     saveCollections();
   }
 
+  function clearAllHardFlags() {
+    const hardItems = ['word', 'sentence'].flatMap(type => collection(type).filter(item => item.hard));
+    if (!hardItems.length) return;
+    if (!confirm(`Clear the hard flag from ${hardItems.length} ${hardItems.length === 1 ? 'entry' : 'entries'}?`)) return;
+    hardItems.forEach(item => delete item.hard);
+    saveCollections();
+    render();
+    showToast('Cleared all hard flags');
+  }
+
   function toggleHardCurrentCard() {
     const item = currentCard();
     if (!item) return;
@@ -1948,8 +1961,11 @@
     if (state.card.revealed && event.key === '2') recordCardAnswer(true);
   }
 
-  function kanaPool(script) {
-    return script === 'katakana' ? window.KATAKANA_CHART : window.HIRAGANA_CHART;
+  function kanaPool(script, dakuten) {
+    const chart = script === 'katakana' ? window.KATAKANA_CHART : window.HIRAGANA_CHART;
+    if (dakuten === 'only') return chart.filter(item => item.type === 'dakuten');
+    if (dakuten === 'on') return chart;
+    return chart.filter(item => item.type === 'base');
   }
 
   function kanaPromptValue(item, direction) {
@@ -1966,12 +1982,13 @@
       script: form.elements.kanaScript.value === 'katakana' ? 'katakana' : 'hiragana',
       direction: form.elements.kanaDirection.value === 'romaji-kana' ? 'romaji-kana' : 'kana-romaji',
       mode: form.elements.kanaMode.value === 'endless' ? 'endless' : 'once',
+      dakuten: ['on', 'only'].includes(form.elements.kanaDakuten.value) ? form.elements.kanaDakuten.value : 'off',
     };
   }
 
   function updateKanaSetupDetails() {
-    const script = elements.kanaSetupForm.elements.kanaScript.value === 'katakana' ? 'katakana' : 'hiragana';
-    elements.kanaMatchCount.textContent = `${kanaPool(script).length} characters`;
+    const setup = readKanaSetup();
+    elements.kanaMatchCount.textContent = `${kanaPool(setup.script, setup.dakuten).length} characters`;
   }
 
   function startKanaSessionFromForm(event) {
@@ -1982,7 +1999,7 @@
   function startKanaSession(setup) {
     state.kana = {
       settings: setup,
-      queue: setup.mode === 'once' ? shuffle([...kanaPool(setup.script)]) : [],
+      queue: setup.mode === 'once' ? shuffle([...kanaPool(setup.script, setup.dakuten)]) : [],
       current: null,
       correctValue: null,
       options: [],
@@ -2020,14 +2037,14 @@
       }
       item = state.kana.queue.shift();
     } else {
-      const pool = kanaPool(settings.script);
+      const pool = kanaPool(settings.script, settings.dakuten);
       const previous = state.kana.current;
       do {
         item = pool[Math.floor(Math.random() * pool.length)];
       } while (pool.length > 1 && previous && item.romaji === previous.romaji);
     }
 
-    const pool = kanaPool(settings.script);
+    const pool = kanaPool(settings.script, settings.dakuten);
     const correctValue = kanaAnswerValue(item, settings.direction);
     const distractors = shuffle(pool.filter(candidate => candidate.romaji !== item.romaji))
       .slice(0, 3)

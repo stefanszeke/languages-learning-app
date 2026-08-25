@@ -398,6 +398,7 @@ td[data-script="native"] { font-size: .96rem; }
 .setup-group legend { padding: 0 5px; font-size: .78rem; font-weight: 800; }
 .choice-grid { display: grid; gap: 8px; }
 .two-choice { grid-template-columns: 1fr 1fr; }
+.three-choice { grid-template-columns: repeat(3, 1fr); }
 .choice-card { position: relative; display: block; cursor: pointer; }
 .choice-card input { position: absolute; opacity: 0; pointer-events: none; }
 .choice-card span {
