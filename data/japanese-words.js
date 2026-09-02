@@ -1920,5 +1920,355 @@ window.INITIAL_WORDS = [
     "kana": "ま",
     "pos": "noun",
     "id": 214
+  },
+  {
+    "type": "word",
+    "english": "acting",
+    "romaji": "engi",
+    "kanji": "演技",
+    "kana": "えんぎ",
+    "pos": "noun",
+    "id": 215
+  },
+  {
+    "type": "word",
+    "english": "tough; hard",
+    "romaji": "katai",
+    "kanji": "硬い",
+    "kana": "かたい",
+    "pos": "adjective",
+    "id": 216
+  },
+  {
+    "type": "word",
+    "english": "main",
+    "romaji": "mein",
+    "kanji": "メイン",
+    "kana": "メイン",
+    "pos": "noun",
+    "id": 217
+  },
+  {
+    "type": "word",
+    "english": "only; just",
+    "romaji": "dake",
+    "kanji": "だけ",
+    "kana": "だけ",
+    "id": 218
+  },
+  {
+    "type": "word",
+    "english": "break up (with someone)",
+    "romaji": "wakareru / wakaremasu / wakareta / wakarenai",
+    "kanji": "別れる / 別れます / 別れた / 別れない",
+    "kana": "わかれる / わかれます / わかれた / わかれない",
+    "pos": "verb",
+    "id": 219
+  },
+  {
+    "type": "word",
+    "english": "problem",
+    "romaji": "mondai",
+    "kanji": "問題",
+    "kana": "もんだい",
+    "pos": "noun",
+    "id": 220
+  },
+  {
+    "type": "word",
+    "english": "bad-tasting; unpleasant",
+    "romaji": "mazui",
+    "kanji": "まずい",
+    "kana": "まずい",
+    "pos": "adjective",
+    "id": 221
+  },
+  {
+    "type": "word",
+    "english": "worst",
+    "romaji": "saiaku",
+    "kanji": "最悪",
+    "kana": "さいあく",
+    "pos": "noun",
+    "id": 222
+  },
+  {
+    "type": "word",
+    "english": "snacks; sweets",
+    "romaji": "okashi",
+    "kanji": "お菓子",
+    "kana": "おかし",
+    "pos": "noun",
+    "id": 223
+  },
+  {
+    "type": "word",
+    "english": "ticket",
+    "romaji": "chiketto",
+    "kanji": "チケット",
+    "kana": "チケット",
+    "pos": "noun",
+    "id": 224
+  },
+  {
+    "type": "word",
+    "english": "cheap",
+    "romaji": "yasui",
+    "kanji": "安い",
+    "kana": "やすい",
+    "pos": "adjective",
+    "id": 225
+  },
+  {
+    "type": "word",
+    "english": "she; girlfriend",
+    "romaji": "kanojo",
+    "kanji": "彼女",
+    "kana": "かのじょ",
+    "pos": "noun",
+    "id": 226
+  },
+  {
+    "type": "word",
+    "english": "noisy",
+    "romaji": "urusai",
+    "kanji": "うるさい",
+    "kana": "うるさい",
+    "pos": "adjective",
+    "id": 227
+  },
+  {
+    "type": "word",
+    "english": "movie",
+    "romaji": "eiga",
+    "kanji": "映画",
+    "kana": "えいが",
+    "pos": "noun",
+    "id": 228
+  },
+  {
+    "type": "word",
+    "english": "not at all (with negative)",
+    "romaji": "zenzen",
+    "kanji": "ぜんぜん",
+    "kana": "ぜんぜん",
+    "pos": "adverb",
+    "id": 229
+  },
+  {
+    "type": "word",
+    "english": "interesting",
+    "romaji": "omoshiroi",
+    "kanji": "おもしろい",
+    "kana": "おもしろい",
+    "pos": "adjective",
+    "id": 230
+  },
+  {
+    "type": "word",
+    "english": "customer; guest",
+    "romaji": "okyaku",
+    "kanji": "お客",
+    "kana": "おきゃく",
+    "pos": "noun",
+    "id": 231
+  },
+  {
+    "type": "word",
+    "english": "chicken (food)",
+    "romaji": "chikin",
+    "kanji": "チキン",
+    "kana": "チキン",
+    "pos": "noun",
+    "id": 232
+  },
+  {
+    "type": "word",
+    "english": "fish",
+    "romaji": "sakana",
+    "kanji": "魚",
+    "kana": "さかな",
+    "pos": "noun",
+    "id": 233
+  },
+  {
+    "type": "word",
+    "english": "steak",
+    "romaji": "suteeki",
+    "kanji": "ステーキ",
+    "kana": "ステーキ",
+    "pos": "noun",
+    "id": 234
+  },
+  {
+    "type": "word",
+    "english": "cake",
+    "romaji": "keeki",
+    "kanji": "ケーキ",
+    "kana": "ケーキ",
+    "pos": "noun",
+    "id": 235
+  },
+  {
+    "type": "word",
+    "english": "tasty; delicious",
+    "romaji": "oishii",
+    "kanji": "おいしい",
+    "kana": "おいしい",
+    "pos": "adjective",
+    "id": 236
+  },
+  {
+    "type": "word",
+    "english": "very",
+    "romaji": "totemo",
+    "kanji": "とても",
+    "kana": "とても",
+    "pos": "adverb",
+    "id": 237
+  },
+  {
+    "type": "word",
+    "english": "dinner",
+    "romaji": "bangohan",
+    "kanji": "晩ご飯",
+    "kana": "ばんごはん",
+    "pos": "noun",
+    "id": 238
+  },
+  {
+    "type": "word",
+    "english": "pasta",
+    "romaji": "pasuta",
+    "kanji": "パスタ",
+    "kana": "パスタ",
+    "pos": "noun",
+    "id": 239
+  },
+  {
+    "type": "word",
+    "english": "cockroach",
+    "romaji": "gokiburi",
+    "kanji": "ゴキブリ",
+    "kana": "ゴキブリ",
+    "pos": "noun",
+    "id": 240
+  },
+  {
+    "type": "word",
+    "english": "restaurant",
+    "romaji": "resutoran",
+    "kanji": "レストラン",
+    "kana": "レストラン",
+    "pos": "noun",
+    "id": 241
+  },
+  {
+    "type": "word",
+    "english": "to eat",
+    "romaji": "taberu / tabemasu / tabeta / tabenai",
+    "kanji": "食べる / 食べます / 食べた / 食べない",
+    "kana": "たべる / たべます / たべた / たべない",
+    "pos": "verb",
+    "id": 242
+  },
+  {
+    "type": "word",
+    "english": "disappointing; regrettable",
+    "romaji": "zannen",
+    "kanji": "残念",
+    "kana": "ざんねん",
+    "pos": "noun",
+    "id": 243
+  },
+  {
+    "type": "word",
+    "english": "date",
+    "romaji": "deeto",
+    "kanji": "デート",
+    "kana": "デート",
+    "pos": "noun",
+    "id": 244
+  },
+  {
+    "type": "word",
+    "english": "app",
+    "romaji": "apuri",
+    "kanji": "アプリ",
+    "kana": "アプリ",
+    "pos": "noun",
+    "id": 245
+  },
+  {
+    "type": "word",
+    "english": "to meet",
+    "romaji": "au / aimasu / atta / awanai",
+    "kanji": "会う / 会います / 会った / 会わない",
+    "kana": "あう / あいます / あった / あわない",
+    "pos": "verb",
+    "id": 246
+  },
+  {
+    "type": "word",
+    "english": "boyfriend",
+    "romaji": "kareshi",
+    "kanji": "彼氏",
+    "kana": "かれし",
+    "pos": "noun",
+    "id": 247
+  },
+  {
+    "type": "word",
+    "english": "cold (illness)",
+    "romaji": "kaze",
+    "kanji": "風邪",
+    "kana": "かぜ",
+    "pos": "noun",
+    "id": 248
+  },
+  {
+    "type": "word",
+    "english": "to catch (a cold)",
+    "romaji": "hiku / hikimasu / hiita / hikanai",
+    "kanji": "ひく / ひきます / ひいた / ひかない",
+    "kana": "ひく / ひきます / ひいた / ひかない",
+    "pos": "verb",
+    "id": 249
+  },
+  {
+    "type": "word",
+    "english": "house; home",
+    "romaji": "ie",
+    "kanji": "家",
+    "kana": "いえ",
+    "pos": "noun",
+    "id": 250
+  },
+  {
+    "type": "word",
+    "english": "to rest",
+    "romaji": "yasumu / yasumimasu / yasunda / yasumanai",
+    "kanji": "休む / 休みます / 休んだ / 休まない",
+    "kana": "やすむ / やすみます / やすんだ / やすまない",
+    "pos": "verb",
+    "id": 251
+  },
+  {
+    "type": "word",
+    "english": "new",
+    "romaji": "atarashii",
+    "kanji": "あたらしい",
+    "kana": "あたらしい",
+    "pos": "adjective",
+    "id": 252
+  },
+  {
+    "type": "word",
+    "english": "fight; quarrel",
+    "romaji": "kenka",
+    "kanji": "けんか",
+    "kana": "けんか",
+    "pos": "noun",
+    "id": 253
   }
 ];

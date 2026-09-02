@@ -1862,5 +1862,197 @@ window.INITIAL_SENTENCES = [
     "romaji": "kutsushita wa ano tana no hidari desu",
     "kanji": "靴下はあの棚の左です。",
     "kana": "くつしたはあのたなのひだりです。"
+  },
+  {
+    "id": 234,
+    "type": "sentence",
+    "english": "the worst acting",
+    "romaji": "saiaku na engi",
+    "kanji": "最悪な演技",
+    "kana": "さいあくなえんぎ"
+  },
+  {
+    "id": 235,
+    "type": "sentence",
+    "english": "The snacks were bad.",
+    "romaji": "okashi wa mazukatta desu",
+    "kanji": "お菓子はまずかったです。",
+    "kana": "おかしはまずかったです。"
+  },
+  {
+    "id": 236,
+    "type": "sentence",
+    "english": "The tickets weren't cheap.",
+    "romaji": "chiketto wa yasukunakatta desu",
+    "kanji": "チケットは安くなかったです。",
+    "kana": "チケットはやすくなかったです。"
+  },
+  {
+    "id": 237,
+    "type": "sentence",
+    "english": "She was noisy.",
+    "romaji": "kanojo wa urusakatta desu",
+    "kanji": "彼女はうるさかったです。",
+    "kana": "かのじょはうるさかったです。"
+  },
+  {
+    "id": 238,
+    "type": "sentence",
+    "english": "The movie wasn't interesting at all.",
+    "romaji": "eiga wa zenzen omoshirokunakatta desu",
+    "kanji": "映画はぜんぜんおもしろくなかったです。",
+    "kana": "えいがはぜんぜんおもしろくなかったです。"
+  },
+  {
+    "id": 239,
+    "type": "sentence",
+    "english": "The other customers were noisy.",
+    "romaji": "hoka no okyakusan wa urusakatta desu",
+    "kanji": "他のお客さんはうるさかったです。",
+    "kana": "ほかのおきゃくさんはうるさかったです。"
+  },
+  {
+    "id": 240,
+    "type": "sentence",
+    "english": "It was tough meat.",
+    "romaji": "katai niku deshita",
+    "kanji": "硬い肉でした。",
+    "kana": "かたいにくでした。"
+  },
+  {
+    "id": 241,
+    "type": "sentence",
+    "english": "The chicken was tough.",
+    "romaji": "chikin wa katakatta desu",
+    "kanji": "チキンはかたかったです。",
+    "kana": "チキンはかたかったです。"
+  },
+  {
+    "id": 242,
+    "type": "sentence",
+    "english": "The main dish was fish.",
+    "romaji": "mein wa sakana deshita",
+    "kanji": "メインは魚でした。",
+    "kana": "メインはさかなでした。"
+  },
+  {
+    "id": 243,
+    "type": "sentence",
+    "english": "The main course steak tasted bad.",
+    "romaji": "mein no suteeki wa mazukatta desu",
+    "kanji": "メインのステーキはまずかったです。",
+    "kana": "メインのステーキはまずかったです。"
+  },
+  {
+    "id": 244,
+    "type": "sentence",
+    "english": "Only the cake was tasty.",
+    "romaji": "keeki dake oishikatta desu",
+    "kanji": "ケーキだけおいしかったです。",
+    "kana": "ケーキだけおいしかったです。"
+  },
+  {
+    "id": 245,
+    "type": "sentence",
+    "english": "Only the water was really good!",
+    "romaji": "mizu dake totemo oishikatta desu!",
+    "kanji": "水だけとてもおいしかったです！",
+    "kana": "みずだけとてもおいしかったです！"
+  },
+  {
+    "id": 246,
+    "type": "sentence",
+    "english": "The dinner wasn't tasty.",
+    "romaji": "bangohan wa oishikunakatta desu",
+    "kanji": "晩ご飯はおいしくなかったです。",
+    "kana": "ばんごはんはおいしくなかったです。"
+  },
+  {
+    "id": 247,
+    "type": "sentence",
+    "english": "There was a cockroach in the pasta for dinner.",
+    "romaji": "bangohan no pasuta no naka ni gokiburi ga imashita",
+    "kanji": "晩ご飯のパスタの中にゴキブリがいました。",
+    "kana": "ばんごはんのパスタのなかにゴキブリがいました。"
+  },
+  {
+    "id": 248,
+    "type": "sentence",
+    "english": "We ate dinner at a bad restaurant.",
+    "romaji": "bangohan wo mazui resutoran de tabemashita",
+    "kanji": "晩ご飯をまずいレストランで食べました。",
+    "kana": "ばんごはんをまずいレストランでたべました。"
+  },
+  {
+    "id": 249,
+    "type": "sentence",
+    "english": "a disappointing date",
+    "romaji": "zannen na deeto",
+    "kanji": "残念なデート",
+    "kana": "ざんねんなデート"
+  },
+  {
+    "id": 250,
+    "type": "sentence",
+    "english": "I met a nice person on this app last week.",
+    "romaji": "senshuu kono apuri de ii hito ni aimashita",
+    "kanji": "先週このアプリでいい人に会いました。",
+    "kana": "せんしゅうこのアプリでいいひとにあいました。"
+  },
+  {
+    "id": 251,
+    "type": "sentence",
+    "english": "When are you going to break up with your boyfriend?",
+    "romaji": "itsu kareshi to wakaremasu ka?",
+    "kanji": "いつ彼氏と別れますか。",
+    "kana": "いつかれしとわかれますか。"
+  },
+  {
+    "id": 252,
+    "type": "sentence",
+    "english": "There were two problems.",
+    "romaji": "mondai ga futatsu arimashita",
+    "kanji": "問題が二つありました。",
+    "kana": "もんだいがふたつありました。"
+  },
+  {
+    "id": 253,
+    "type": "sentence",
+    "english": "But I still don't want to break up!",
+    "romaji": "demo, mada wakaretakunai desu!",
+    "kanji": "でも、まだ別れたくないです！",
+    "kana": "でも、まだわかれたくないです！"
+  },
+  {
+    "id": 254,
+    "type": "sentence",
+    "english": "I caught a cold. I will rest at home.",
+    "romaji": "kaze wo hikimashita. ie de yasumimasu.",
+    "kanji": "風邪をひきました。家で休みます。",
+    "kana": "かぜをひきました。いえでやすみます。"
+  },
+  {
+    "id": 255,
+    "type": "sentence",
+    "english": "Hana's house was new.",
+    "romaji": "hana san no ie wa atarashikatta desu",
+    "kanji": "ハナさんの家はあたらしかったです。",
+    "kana": "はなさんのいえはあたらしかったです。"
+  },
+  {
+    "id": 256,
+    "type": "sentence",
+    "english": "Last week I did nothing. Next week I will not clean.",
+    "romaji": "senshuu nani mo shimasendeshita. raishuu souji wo shimasen.",
+    "kanji": "先週何もしませんでした。来週掃除をしません。",
+    "kana": "せんしゅうなにもしませんでした。らいしゅうそうじをしません。"
+  },
+  {
+    "id": 257,
+    "type": "sentence",
+    "english": "Did you fight with your girlfriend?",
+    "romaji": "kanojo to kenka shimashita ka?",
+    "kanji": "彼女とけんかしましたか。",
+    "kana": "かのじょとけんかしましたか。"
   }
 ];
