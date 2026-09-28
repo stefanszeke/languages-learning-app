@@ -156,6 +156,7 @@
     wordCount: document.querySelector('#wordCount'),
     sentenceCount: document.querySelector('#sentenceCount'),
     brandMark: document.querySelector('#brandMark'),
+    faviconLink: document.querySelector('#faviconLink'),
     tabs: [...document.querySelectorAll('.tab')],
     importTab: document.querySelector('[data-view="import"]'),
     kanaTab: document.querySelector('[data-view="kana"]'),
@@ -814,11 +815,18 @@
     render();
   }
 
+  function updateFavicon(config) {
+    if (!elements.faviconLink) return;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text x="32" y="48" font-size="48" text-anchor="middle">${config.flag}</text></svg>`;
+    elements.faviconLink.href = `data:image/svg+xml,${encodeURIComponent(svg)}`;
+  }
+
   function renderStructuralElements() {
     const config = languageConfig();
 
     elements.brandMark.textContent = config.shortLabel;
     elements.languageFlag.textContent = config.flag;
+    updateFavicon(config);
 
     elements.languageSelect.innerHTML = Object.values(LANGUAGES)
       .map(lang => `<option value="${lang.id}"${lang.id === state.language ? ' selected' : ''}>${escapeHtml(lang.label)}</option>`)
