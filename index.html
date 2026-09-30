@@ -57,7 +57,7 @@
             <span class="id-filter-input-group">
               <input id="idFilterFrom" type="number" min="1" step="1" inputmode="numeric">
               <button class="slider-toggle" id="idFilterFromSliderToggle" type="button" aria-label="Drag to set From">
-                <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="8" r="2.6" fill="currentColor"/></svg>
+                <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="8" r="2.6" fill="currentColor"/></svg>
               </button>
             </span>
             <div class="id-slider-popover" id="idFilterFromPopover" hidden>
@@ -70,7 +70,7 @@
             <span class="id-filter-input-group">
               <input id="idFilterTo" type="number" min="1" step="1" inputmode="numeric">
               <button class="slider-toggle" id="idFilterToSliderToggle" type="button" aria-label="Drag to set To">
-                <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="6" cy="8" r="2.6" fill="currentColor"/></svg>
+                <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="6" cy="8" r="2.6" fill="currentColor"/></svg>
               </button>
             </span>
             <div class="id-slider-popover" id="idFilterToPopover" hidden>
@@ -160,9 +160,31 @@
           <fieldset class="setup-group">
             <legend>ID range</legend>
             <div class="range-row">
-              <label>From ID<input id="cardFromId" type="number" min="1" step="1" required></label>
+              <label class="id-filter-field">
+                From ID
+                <span class="id-filter-input-group">
+                  <input id="cardFromId" type="number" min="1" step="1" required>
+                  <button class="slider-toggle" id="cardFromIdSliderToggle" type="button" aria-label="Drag to set From ID">
+                    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="8" r="2.6" fill="currentColor"/></svg>
+                  </button>
+                </span>
+                <div class="id-slider-popover" id="cardFromIdPopover" hidden>
+                  <input type="range" id="cardFromIdRange" min="1" max="1" step="1">
+                </div>
+              </label>
               <span class="range-separator">–</span>
-              <label>To ID<input id="cardToId" type="number" min="1" step="1" required></label>
+              <label class="id-filter-field">
+                To ID
+                <span class="id-filter-input-group">
+                  <input id="cardToId" type="number" min="1" step="1" required>
+                  <button class="slider-toggle" id="cardToIdSliderToggle" type="button" aria-label="Drag to set To ID">
+                    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="6" cy="8" r="2.6" fill="currentColor"/></svg>
+                  </button>
+                </span>
+                <div class="id-slider-popover" id="cardToIdPopover" hidden>
+                  <input type="range" id="cardToIdRange" min="1" max="1" step="1">
+                </div>
+              </label>
             </div>
             <p class="range-hint" id="cardRangeHint">Available IDs: —</p>
           </fieldset>

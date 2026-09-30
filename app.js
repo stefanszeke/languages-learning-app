@@ -206,6 +206,12 @@
     cardDirectionChoices: document.querySelector('#cardDirectionChoices'),
     cardFromId: document.querySelector('#cardFromId'),
     cardToId: document.querySelector('#cardToId'),
+    cardFromIdSliderToggle: document.querySelector('#cardFromIdSliderToggle'),
+    cardToIdSliderToggle: document.querySelector('#cardToIdSliderToggle'),
+    cardFromIdPopover: document.querySelector('#cardFromIdPopover'),
+    cardToIdPopover: document.querySelector('#cardToIdPopover'),
+    cardFromIdRange: document.querySelector('#cardFromIdRange'),
+    cardToIdRange: document.querySelector('#cardToIdRange'),
     cardRangeHint: document.querySelector('#cardRangeHint'),
     cardMatchCount: document.querySelector('#cardMatchCount'),
     startCardsButton: document.querySelector('#startCardsButton'),
@@ -670,8 +676,15 @@
       renderTable();
     });
 
-    wireIdFilterSlider(elements.idFilterFromSliderToggle, elements.idFilterFromPopover, elements.idFilterFromRange, elements.idFilterFrom);
-    wireIdFilterSlider(elements.idFilterToSliderToggle, elements.idFilterToPopover, elements.idFilterToRange, elements.idFilterTo);
+    wireRangeSlider(elements.idFilterFromSliderToggle, elements.idFilterFromPopover, elements.idFilterFromRange, elements.idFilterFrom,
+      idFilterBounds, () => { state.idFilterCustom = true; renderTable(); });
+    wireRangeSlider(elements.idFilterToSliderToggle, elements.idFilterToPopover, elements.idFilterToRange, elements.idFilterTo,
+      idFilterBounds, () => { state.idFilterCustom = true; renderTable(); });
+
+    wireRangeSlider(elements.cardFromIdSliderToggle, elements.cardFromIdPopover, elements.cardFromIdRange, elements.cardFromId,
+      cardSetupBounds, updateCardSetupDetails);
+    wireRangeSlider(elements.cardToIdSliderToggle, elements.cardToIdPopover, elements.cardToIdRange, elements.cardToId,
+      cardSetupBounds, updateCardSetupDetails);
 
     elements.hardOnlyCheckbox.addEventListener('change', () => {
       state.hardOnly = elements.hardOnlyCheckbox.checked;
@@ -915,18 +928,13 @@
     elements.idFilterTo.value = Math.min(...ids);
   }
 
-  // Press-and-hold the slider-toggle button next to a From/To input to reveal
+  // Press-and-hold the slider-toggle button next to a number input to reveal
   // a drag slider: holding drags the value live, releasing sets it.
-  function wireIdFilterSlider(toggle, popover, range, numberInput) {
+  function wireRangeSlider(toggle, popover, range, numberInput, getBounds, onCommit) {
     let drag = null;
 
-    function idBounds() {
-      const ids = collection(state.view).map(item => item.id);
-      return ids.length ? { lo: Math.min(...ids), hi: Math.max(...ids) } : { lo: 1, hi: 1 };
-    }
-
     function openPopover() {
-      const { lo, hi } = idBounds();
+      const { lo, hi } = getBounds();
       range.min = lo;
       range.max = hi;
       const current = Number(numberInput.value);
@@ -960,14 +968,14 @@
       const next = Math.min(hi, Math.max(lo, Math.round(drag.startValue + deltaValue)));
       if (Number(range.value) !== next) {
         range.value = next;
-        range.dispatchEvent(new Event('input', { bubbles: true }));
+        range.dispatchEvent(new Event('input'));
       }
     });
 
     function endDrag(event) {
       if (!drag || event.pointerId !== drag.pointerId) return;
       drag = null;
-      range.dispatchEvent(new Event('change', { bubbles: true }));
+      range.dispatchEvent(new Event('change'));
     }
     toggle.addEventListener('pointerup', endDrag);
     toggle.addEventListener('pointercancel', endDrag);
@@ -977,10 +985,20 @@
     });
     range.addEventListener('change', () => {
       numberInput.value = range.value;
-      state.idFilterCustom = true;
-      renderTable();
+      onCommit();
       closePopover();
     });
+  }
+
+  function idFilterBounds() {
+    const ids = collection(state.view).map(item => item.id);
+    return ids.length ? { lo: Math.min(...ids), hi: Math.max(...ids) } : { lo: 1, hi: 1 };
+  }
+
+  function cardSetupBounds() {
+    const type = elements.cardSetupForm.elements.cardType.value === 'sentence' ? 'sentence' : 'word';
+    const ids = categoryItems(type).map(item => item.id);
+    return ids.length ? { lo: Math.min(...ids), hi: Math.max(...ids) } : { lo: 1, hi: 1 };
   }
 
   // Keeps an untouched (non-custom) ID filter tracking the full range as
