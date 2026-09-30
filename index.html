@@ -52,9 +52,31 @@
           <input id="searchInput" type="search" placeholder="Search ID, English, romaji, kanji, or kana…" autocomplete="off">
         </label>
         <div class="id-filter" id="idFilter">
-          <label>From<input id="idFilterFrom" type="number" min="1" step="1" inputmode="numeric"></label>
+          <label class="id-filter-field">
+            From
+            <span class="id-filter-input-group">
+              <input id="idFilterFrom" type="number" min="1" step="1" inputmode="numeric">
+              <button class="slider-toggle" id="idFilterFromSliderToggle" type="button" aria-label="Drag to set From">
+                <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="8" r="2.6" fill="currentColor"/></svg>
+              </button>
+            </span>
+            <div class="id-slider-popover" id="idFilterFromPopover" hidden>
+              <input type="range" id="idFilterFromRange" min="1" max="1" step="1">
+            </div>
+          </label>
           <span class="range-separator">–</span>
-          <label>To<input id="idFilterTo" type="number" min="1" step="1" inputmode="numeric"></label>
+          <label class="id-filter-field">
+            To
+            <span class="id-filter-input-group">
+              <input id="idFilterTo" type="number" min="1" step="1" inputmode="numeric">
+              <button class="slider-toggle" id="idFilterToSliderToggle" type="button" aria-label="Drag to set To">
+                <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true"><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="6" cy="8" r="2.6" fill="currentColor"/></svg>
+              </button>
+            </span>
+            <div class="id-slider-popover" id="idFilterToPopover" hidden>
+              <input type="range" id="idFilterToRange" min="1" max="1" step="1">
+            </div>
+          </label>
           <button class="text-button" id="idFilterResetButton" type="button">Reset</button>
         </div>
         <label class="hard-filter-toggle" id="hardFilterToggle">

@@ -168,6 +168,12 @@
     idFilterFrom: document.querySelector('#idFilterFrom'),
     idFilterTo: document.querySelector('#idFilterTo'),
     idFilterResetButton: document.querySelector('#idFilterResetButton'),
+    idFilterFromSliderToggle: document.querySelector('#idFilterFromSliderToggle'),
+    idFilterToSliderToggle: document.querySelector('#idFilterToSliderToggle'),
+    idFilterFromPopover: document.querySelector('#idFilterFromPopover'),
+    idFilterToPopover: document.querySelector('#idFilterToPopover'),
+    idFilterFromRange: document.querySelector('#idFilterFromRange'),
+    idFilterToRange: document.querySelector('#idFilterToRange'),
     hardOnlyCheckbox: document.querySelector('#hardOnlyCheckbox'),
     hardClearAllButton: document.querySelector('#hardClearAllButton'),
     simpleViewCheckbox: document.querySelector('#simpleViewCheckbox'),
@@ -664,6 +670,9 @@
       renderTable();
     });
 
+    wireIdFilterSlider(elements.idFilterFromSliderToggle, elements.idFilterFromPopover, elements.idFilterFromRange, elements.idFilterFrom);
+    wireIdFilterSlider(elements.idFilterToSliderToggle, elements.idFilterToPopover, elements.idFilterToRange, elements.idFilterTo);
+
     elements.hardOnlyCheckbox.addEventListener('change', () => {
       state.hardOnly = elements.hardOnlyCheckbox.checked;
       elements.hardOnlyCheckbox.closest('.hard-filter-toggle')?.classList.toggle('is-active', state.hardOnly);
@@ -904,6 +913,74 @@
     // Prefilled highest-to-lowest to match the default descending sort.
     elements.idFilterFrom.value = Math.max(...ids);
     elements.idFilterTo.value = Math.min(...ids);
+  }
+
+  // Press-and-hold the slider-toggle button next to a From/To input to reveal
+  // a drag slider: holding drags the value live, releasing sets it.
+  function wireIdFilterSlider(toggle, popover, range, numberInput) {
+    let drag = null;
+
+    function idBounds() {
+      const ids = collection(state.view).map(item => item.id);
+      return ids.length ? { lo: Math.min(...ids), hi: Math.max(...ids) } : { lo: 1, hi: 1 };
+    }
+
+    function openPopover() {
+      const { lo, hi } = idBounds();
+      range.min = lo;
+      range.max = hi;
+      const current = Number(numberInput.value);
+      range.value = Number.isFinite(current) ? Math.min(Math.max(current, lo), hi) : hi;
+      popover.hidden = false;
+      toggle.classList.add('is-active');
+    }
+
+    function closePopover() {
+      popover.hidden = true;
+      toggle.classList.remove('is-active');
+    }
+
+    toggle.addEventListener('pointerdown', (event) => {
+      event.preventDefault();
+      openPopover();
+      drag = {
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startValue: Number(range.value),
+        trackWidth: range.getBoundingClientRect().width || 140,
+      };
+      try { toggle.setPointerCapture(event.pointerId); } catch { /* pointer capture unsupported */ }
+    });
+
+    toggle.addEventListener('pointermove', (event) => {
+      if (!drag || event.pointerId !== drag.pointerId) return;
+      const lo = Number(range.min);
+      const hi = Number(range.max);
+      const deltaValue = ((event.clientX - drag.startX) / drag.trackWidth) * (hi - lo);
+      const next = Math.min(hi, Math.max(lo, Math.round(drag.startValue + deltaValue)));
+      if (Number(range.value) !== next) {
+        range.value = next;
+        range.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    });
+
+    function endDrag(event) {
+      if (!drag || event.pointerId !== drag.pointerId) return;
+      drag = null;
+      range.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    toggle.addEventListener('pointerup', endDrag);
+    toggle.addEventListener('pointercancel', endDrag);
+
+    range.addEventListener('input', () => {
+      numberInput.value = range.value;
+    });
+    range.addEventListener('change', () => {
+      numberInput.value = range.value;
+      state.idFilterCustom = true;
+      renderTable();
+      closePopover();
+    });
   }
 
   // Keeps an untouched (non-custom) ID filter tracking the full range as
