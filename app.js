@@ -951,11 +951,18 @@
     toggle.addEventListener('pointerdown', (event) => {
       event.preventDefault();
       openPopover();
+      // Scale drag sensitivity to whichever side of the press point has less
+      // room, so reaching either end of the range never needs a finger
+      // position past the edge of the screen.
+      const edgeMargin = 16;
+      const spaceLeft = event.clientX - edgeMargin;
+      const spaceRight = (window.innerWidth - edgeMargin) - event.clientX;
+      const trackWidth = Math.max(80, 2 * Math.min(spaceLeft, spaceRight));
       drag = {
         pointerId: event.pointerId,
         startX: event.clientX,
         startValue: Number(range.value),
-        trackWidth: range.getBoundingClientRect().width || 140,
+        trackWidth,
       };
       try { toggle.setPointerCapture(event.pointerId); } catch { /* pointer capture unsupported */ }
     });

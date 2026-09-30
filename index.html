@@ -66,18 +66,23 @@
           </label>
           <span class="range-separator">–</span>
           <label class="id-filter-field">
-            To
             <span class="id-filter-input-group">
-              <input id="idFilterTo" type="number" min="1" step="1" inputmode="numeric">
               <button class="slider-toggle" id="idFilterToSliderToggle" type="button" aria-label="Drag to set To">
                 <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="6" cy="8" r="2.6" fill="currentColor"/></svg>
               </button>
+              <input id="idFilterTo" type="number" min="1" step="1" inputmode="numeric">
             </span>
+            To
             <div class="id-slider-popover" id="idFilterToPopover" hidden>
               <input type="range" id="idFilterToRange" min="1" max="1" step="1">
             </div>
           </label>
-          <button class="text-button" id="idFilterResetButton" type="button">Reset</button>
+          <button class="icon-button" id="idFilterResetButton" type="button" aria-label="Reset ID range" title="Reset ID range">
+            <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.89"/>
+              <path d="M13.5 2.5v3.2h-3.2"/>
+            </svg>
+          </button>
         </div>
         <label class="hard-filter-toggle" id="hardFilterToggle">
           <input id="hardOnlyCheckbox" type="checkbox">
@@ -176,10 +181,10 @@
               <label class="id-filter-field">
                 To ID
                 <span class="id-filter-input-group">
-                  <input id="cardToId" type="number" min="1" step="1" required>
                   <button class="slider-toggle" id="cardToIdSliderToggle" type="button" aria-label="Drag to set To ID">
                     <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><line x1="1.5" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="6" cy="8" r="2.6" fill="currentColor"/></svg>
                   </button>
+                  <input id="cardToId" type="number" min="1" step="1" required>
                 </span>
                 <div class="id-slider-popover" id="cardToIdPopover" hidden>
                   <input type="range" id="cardToIdRange" min="1" max="1" step="1">
