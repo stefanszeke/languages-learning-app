@@ -2054,5 +2054,165 @@ window.INITIAL_SENTENCES = [
     "romaji": "kanojo to kenka shimashita ka?",
     "kanji": "彼女とけんかしましたか。",
     "kana": "かのじょとけんかしましたか。"
+  },
+  {
+    "type": "sentence",
+    "english": "It was crowded all day.",
+    "romaji": "ichinichijuu konde imashita",
+    "kanji": "一日中混んでいました。",
+    "kana": "いちにちじゅうこんでいました。",
+    "id": 258
+  },
+  {
+    "type": "sentence",
+    "english": "I know a good app.",
+    "romaji": "ii apuri wo shitteimasu",
+    "kanji": "いいアプリを知っています。",
+    "kana": "いいアプリをしっています。",
+    "id": 259
+  },
+  {
+    "type": "sentence",
+    "english": "curtain color",
+    "romaji": "kaaten no iro",
+    "kanji": "カーテンの色",
+    "kana": "カーテンのいろ",
+    "id": 260
+  },
+  {
+    "type": "sentence",
+    "english": "The carpet was hideous too!",
+    "romaji": "kaapetto mo dasakatta desu!",
+    "kanji": "カーペットもダサかったです！",
+    "kana": "カーペットもダサかったです！",
+    "id": 261
+  },
+  {
+    "type": "sentence",
+    "english": "The venue was colorful, wasn't it?",
+    "romaji": "kaijou wa karafuru deshita ne!",
+    "kanji": "会場はカラフルでしたね！",
+    "kana": "かいじょうはカラフルでしたね！",
+    "id": 262
+  },
+  {
+    "type": "sentence",
+    "english": "beautiful dress",
+    "romaji": "utsukushii doresu",
+    "kanji": "美しいドレス",
+    "kana": "うつくしいドレス",
+    "id": 263
+  },
+  {
+    "type": "sentence",
+    "english": "bride's necklace",
+    "romaji": "shinpu no nekkuresu",
+    "kanji": "新婦のネックレス",
+    "kana": "しんぷのネックレス",
+    "id": 264
+  },
+  {
+    "type": "sentence",
+    "english": "Kai's relatives",
+    "romaji": "kai-san no shinseki",
+    "kanji": "カイさんの親戚",
+    "kana": "カイさんのしんせき",
+    "id": 265
+  },
+  {
+    "type": "sentence",
+    "english": "The guests weren't kind.",
+    "romaji": "gesuto wa shinsetsu janakatta desu",
+    "kanji": "ゲストは親切じゃなかったです。",
+    "kana": "ゲストはしんせつじゃなかったです。",
+    "id": 266
+  },
+  {
+    "type": "sentence",
+    "english": "The venue's staff was not kind.",
+    "romaji": "kaijou no sutaffu wa yasashikunakatta desu",
+    "kanji": "会場のスタッフは優しくなかったです。",
+    "kana": "かいじょうのスタッフはやさしくなかったです。",
+    "id": 267
+  },
+  {
+    "type": "sentence",
+    "english": "I greeted Ken's father.",
+    "romaji": "ken-san no otousan ni aisatsu shimashita",
+    "kanji": "ケンさんのお父さんに挨拶しました。",
+    "kana": "ケンさんのおとうさんにあいさつしました。",
+    "id": 268
+  },
+  {
+    "type": "sentence",
+    "english": "weird soup",
+    "romaji": "hen na suupu",
+    "kanji": "変なスープ",
+    "kana": "へんなスープ",
+    "id": 269
+  },
+  {
+    "type": "sentence",
+    "english": "low table",
+    "romaji": "hikui teeburu",
+    "kanji": "低いテーブル",
+    "kana": "ひくいテーブル",
+    "id": 270
+  },
+  {
+    "type": "sentence",
+    "english": "The alcohol did not taste good. I did not drink much.",
+    "romaji": "osake wa oishikunakatta desu. amari nomimasendeshita.",
+    "kanji": "お酒はおいしくなかったです。あまり飲みませんでした。",
+    "kana": "おさけはおいしくなかったです。あまりのみませんでした。",
+    "id": 271
+  },
+  {
+    "type": "sentence",
+    "english": "How was the food?",
+    "romaji": "tabemono wa dou deshita ka?",
+    "kanji": "食べ物はどうでしたか。",
+    "kana": "たべものはどうでしたか。",
+    "id": 272
+  },
+  {
+    "type": "sentence",
+    "english": "It was not fresh. The color of the fish was strange!",
+    "romaji": "shinsen janakatta desu. sakana no iro wa hen deshita!",
+    "kanji": "新鮮じゃなかったです。魚の色は変でした！",
+    "kana": "しんせんじゃなかったです。さかなのいろはへんでした！",
+    "id": 273
+  },
+  {
+    "type": "sentence",
+    "english": "I was moved.",
+    "romaji": "kandou shimashita",
+    "kanji": "感動しました。",
+    "kana": "かんどうしました。",
+    "id": 274
+  },
+  {
+    "type": "sentence",
+    "english": "terrible performance",
+    "romaji": "hidoi pafoomansu",
+    "kanji": "ひどいパフォーマンス",
+    "kana": "ひどいパフォーマンス",
+    "id": 275
+  },
+  {
+    "type": "sentence",
+    "english": "I took a video.",
+    "romaji": "douga wo torimashita",
+    "kanji": "動画を撮りました。",
+    "kana": "どうがをとりました。",
+    "id": 276
+  },
+  {
+    "type": "sentence",
+    "english": "boring wedding",
+    "romaji": "tsumaranai kekkonshiki",
+    "kanji": "つまらない結婚式",
+    "kana": "つまらないけっこんしき",
+    "id": 277
   }
 ];

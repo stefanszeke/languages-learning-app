@@ -2270,5 +2270,302 @@ window.INITIAL_WORDS = [
     "kana": "けんか",
     "pos": "noun",
     "id": 253
+  },
+  {
+    "type": "word",
+    "english": "all day; throughout the day",
+    "romaji": "ichinichijuu",
+    "kanji": "一日中",
+    "kana": "いちにちじゅう",
+    "pos": "adverb",
+    "id": 254
+  },
+  {
+    "type": "word",
+    "english": "to be crowded",
+    "romaji": "komu / komimasu / konda / komanai",
+    "kanji": "混む / 混みます / 混んだ / 混まない",
+    "kana": "こむ / こみます / こんだ / こまない",
+    "pos": "verb",
+    "id": 255
+  },
+  {
+    "type": "word",
+    "english": "to know",
+    "romaji": "shiru / shirimasu / shitta / shiranai",
+    "kanji": "知る / 知ります / 知った / 知らない",
+    "kana": "しる / しります / しった / しらない",
+    "pos": "verb",
+    "id": 256
+  },
+  {
+    "type": "word",
+    "english": "color",
+    "romaji": "iro",
+    "kanji": "色",
+    "kana": "いろ",
+    "pos": "noun",
+    "id": 257
+  },
+  {
+    "type": "word",
+    "english": "carpet",
+    "romaji": "kaapetto",
+    "kanji": "カーペット",
+    "kana": "カーペット",
+    "pos": "noun",
+    "id": 258
+  },
+  {
+    "type": "word",
+    "english": "colorful",
+    "romaji": "karafuru",
+    "kanji": "カラフル",
+    "kana": "カラフル",
+    "pos": "adjective",
+    "id": 259
+  },
+  {
+    "type": "word",
+    "english": "venue",
+    "romaji": "kaijou",
+    "kanji": "会場",
+    "kana": "かいじょう",
+    "pos": "noun",
+    "id": 260
+  },
+  {
+    "type": "word",
+    "english": "beautiful",
+    "romaji": "utsukushii",
+    "kanji": "美しい",
+    "kana": "うつくしい",
+    "pos": "adjective",
+    "id": 261
+  },
+  {
+    "type": "word",
+    "english": "dress",
+    "romaji": "doresu",
+    "kanji": "ドレス",
+    "kana": "ドレス",
+    "pos": "noun",
+    "id": 262
+  },
+  {
+    "type": "word",
+    "english": "bride",
+    "romaji": "shinpu",
+    "kanji": "新婦",
+    "kana": "しんぷ",
+    "pos": "noun",
+    "id": 263
+  },
+  {
+    "type": "word",
+    "english": "necklace",
+    "romaji": "nekkuresu",
+    "kanji": "ネックレス",
+    "kana": "ネックレス",
+    "pos": "noun",
+    "id": 264
+  },
+  {
+    "type": "word",
+    "english": "relative; relatives",
+    "romaji": "shinseki",
+    "kanji": "親戚",
+    "kana": "しんせき",
+    "pos": "noun",
+    "id": 265
+  },
+  {
+    "type": "word",
+    "english": "guest",
+    "romaji": "gesuto",
+    "kanji": "ゲスト",
+    "kana": "ゲスト",
+    "pos": "noun",
+    "id": 266
+  },
+  {
+    "type": "word",
+    "english": "kind; helpful",
+    "romaji": "shinsetsu",
+    "kanji": "親切",
+    "kana": "しんせつ",
+    "pos": "adjective",
+    "id": 267
+  },
+  {
+    "type": "word",
+    "english": "kind; gentle",
+    "romaji": "yasashii",
+    "kanji": "優しい",
+    "kana": "やさしい",
+    "pos": "adjective",
+    "id": 268
+  },
+  {
+    "type": "word",
+    "english": "to greet; greeting",
+    "romaji": "aisatsu suru / aisatsu shimasu / aisatsu shita / aisatsu shinai",
+    "kanji": "挨拶する / 挨拶します / 挨拶した / 挨拶しない",
+    "kana": "あいさつする / あいさつします / あいさつした / あいさつしない",
+    "pos": "verb",
+    "id": 269
+  },
+  {
+    "type": "word",
+    "english": "father; dad",
+    "romaji": "otousan",
+    "kanji": "お父さん",
+    "kana": "おとうさん",
+    "pos": "noun",
+    "id": 270
+  },
+  {
+    "type": "word",
+    "english": "strange; weird",
+    "romaji": "hen",
+    "kanji": "変",
+    "kana": "へん",
+    "pos": "adjective",
+    "id": 271
+  },
+  {
+    "type": "word",
+    "english": "soup",
+    "romaji": "suupu",
+    "kanji": "スープ",
+    "kana": "スープ",
+    "pos": "noun",
+    "id": 272
+  },
+  {
+    "type": "word",
+    "english": "low; short (height)",
+    "romaji": "hikui",
+    "kanji": "低い",
+    "kana": "ひくい",
+    "pos": "adjective",
+    "id": 273
+  },
+  {
+    "type": "word",
+    "english": "table",
+    "romaji": "teeburu",
+    "kanji": "テーブル",
+    "kana": "テーブル",
+    "pos": "noun",
+    "id": 274
+  },
+  {
+    "type": "word",
+    "english": "alcohol; sake",
+    "romaji": "osake",
+    "kanji": "お酒",
+    "kana": "おさけ",
+    "pos": "noun",
+    "id": 275
+  },
+  {
+    "type": "word",
+    "english": "to drink",
+    "romaji": "nomu / nomimasu / nonda / nomanai",
+    "kanji": "飲む / 飲みます / 飲んだ / 飲まない",
+    "kana": "のむ / のみます / のんだ / のまない",
+    "pos": "verb",
+    "id": 276
+  },
+  {
+    "type": "word",
+    "english": "food",
+    "romaji": "tabemono",
+    "kanji": "食べ物",
+    "kana": "たべもの",
+    "pos": "noun",
+    "id": 277
+  },
+  {
+    "type": "word",
+    "english": "fresh",
+    "romaji": "shinsen",
+    "kanji": "新鮮",
+    "kana": "しんせん",
+    "pos": "adjective",
+    "id": 278
+  },
+  {
+    "type": "word",
+    "english": "singer",
+    "romaji": "kashu",
+    "kanji": "歌手",
+    "kana": "かしゅ",
+    "pos": "noun",
+    "id": 279
+  },
+  {
+    "type": "word",
+    "english": "to be moved; to be impressed",
+    "romaji": "kandou suru / kandou shimasu / kandou shita / kandou shinai",
+    "kanji": "感動する / 感動します / 感動した / 感動しない",
+    "kana": "かんどうする / かんどうします / かんどうした / かんどうしない",
+    "pos": "verb",
+    "id": 280
+  },
+  {
+    "type": "word",
+    "english": "terrible; awful",
+    "romaji": "hidoi",
+    "kanji": "ひどい",
+    "kana": "ひどい",
+    "pos": "adjective",
+    "id": 281
+  },
+  {
+    "type": "word",
+    "english": "performance",
+    "romaji": "pafoomansu",
+    "kanji": "パフォーマンス",
+    "kana": "パフォーマンス",
+    "pos": "noun",
+    "id": 282
+  },
+  {
+    "type": "word",
+    "english": "video",
+    "romaji": "douga",
+    "kanji": "動画",
+    "kana": "どうが",
+    "pos": "noun",
+    "id": 283
+  },
+  {
+    "type": "word",
+    "english": "to take (a photo/video)",
+    "romaji": "toru / torimasu / totta / toranai",
+    "kanji": "撮る / 撮ります / 撮った / 撮らない",
+    "kana": "とる / とります / とった / とらない",
+    "pos": "verb",
+    "id": 284
+  },
+  {
+    "type": "word",
+    "english": "boring; dull",
+    "romaji": "tsumaranai",
+    "kanji": "つまらない",
+    "kana": "つまらない",
+    "pos": "adjective",
+    "id": 285
+  },
+  {
+    "type": "word",
+    "english": "wedding ceremony",
+    "romaji": "kekkonshiki",
+    "kanji": "結婚式",
+    "kana": "けっこんしき",
+    "pos": "noun",
+    "id": 286
   }
 ];

@@ -1510,5 +1510,119 @@ window.INITIAL_SENTENCES_DE = [
     "type": "sentence",
     "english": "Is the map affordable?",
     "german": "Ist die Karte günstig?"
+  },
+  {
+    "type": "sentence",
+    "english": "Look, we have flowers in the garden.",
+    "german": "Guck mal, wir haben Blumen im Garten.",
+    "id": 253
+  },
+  {
+    "type": "sentence",
+    "english": "Your sister collects photos, right?",
+    "german": "Deine Schwester sammelt Fotos, richtig?",
+    "id": 254
+  },
+  {
+    "type": "sentence",
+    "english": "Mr. Müller explains the task to the child.",
+    "german": "Herr Müller erklärt dem Kind die Aufgabe.",
+    "id": 255
+  },
+  {
+    "type": "sentence",
+    "english": "What's missing?",
+    "german": "Was fehlt?",
+    "id": 256
+  },
+  {
+    "type": "sentence",
+    "english": "many stories",
+    "german": "viele Geschichten",
+    "id": 257
+  },
+  {
+    "type": "sentence",
+    "english": "Did you lose something?",
+    "german": "Hast du etwas verloren?",
+    "id": 258
+  },
+  {
+    "type": "sentence",
+    "english": "Grandma is certainly making pizza.",
+    "german": "Oma macht bestimmt Pizza.",
+    "id": 259
+  },
+  {
+    "type": "sentence",
+    "english": "The park is famous, right?",
+    "german": "Der Park ist berühmt, oder?",
+    "id": 260
+  },
+  {
+    "type": "sentence",
+    "english": "Is that on sale?",
+    "german": "Ist das im Angebot?",
+    "id": 261
+  },
+  {
+    "type": "sentence",
+    "english": "What did you watch?",
+    "german": "Was habt ihr geschaut?",
+    "id": 262
+  },
+  {
+    "type": "sentence",
+    "english": "My ice cream doesn't smell good.",
+    "german": "Mein Eis riecht nicht gut.",
+    "id": 263
+  },
+  {
+    "type": "sentence",
+    "english": "Excuse me, the fruit smells funny.",
+    "german": "Entschuldigung, das Obst riecht komisch.",
+    "id": 264
+  },
+  {
+    "type": "sentence",
+    "english": "We are discussing the colors.",
+    "german": "Wir besprechen die Farben.",
+    "id": 265
+  },
+  {
+    "type": "sentence",
+    "english": "Mom is fixing the radio right now.",
+    "german": "Mama repariert gerade das Radio.",
+    "id": 266
+  },
+  {
+    "type": "sentence",
+    "english": "We couldn't watch the movie.",
+    "german": "Wir konnten den Film nicht schauen.",
+    "id": 267
+  },
+  {
+    "type": "sentence",
+    "english": "She has lost her keys.",
+    "german": "Sie hat ihre Schlüssel verloren.",
+    "id": 268
+  },
+  {
+    "type": "sentence",
+    "english": "Look, the backpack is on sale!",
+    "german": "Guck mal, der Rucksack ist im Angebot!",
+    "id": 269
+  },
+  {
+    "type": "sentence",
+    "english": "Oh, that sounds really annoying, Max.",
+    "german": "Oje, das klingt echt nervig, Max.",
+    "id": 270
+  },
+  {
+    "type": "sentence",
+    "english": "Dad is fixing the oven and then we are leaving.",
+    "german": "Papa repariert den Ofen und dann fahren wir.",
+    "id": 271
   }
 ];
