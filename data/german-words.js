@@ -1522,200 +1522,200 @@ window.INITIAL_WORDS_DE = [
     "pos": "noun"
   },
   {
+    "id": 207,
     "type": "word",
     "english": "garden/gardens",
     "german": "der Garten / die Gärten",
     "article": "der",
-    "pos": "noun",
-    "id": 207
+    "pos": "noun"
   },
   {
+    "id": 208,
     "type": "word",
     "english": "sister/sisters",
     "german": "die Schwester / die Schwestern",
     "article": "die",
-    "pos": "noun",
-    "id": 208
+    "pos": "noun"
   },
   {
+    "id": 209,
     "type": "word",
     "english": "photo/photos",
     "german": "das Foto / die Fotos",
     "article": "das",
-    "pos": "noun",
-    "id": 209
+    "pos": "noun"
   },
   {
+    "id": 210,
     "type": "word",
     "english": "collect / I collect / he collects / you collect / we collect",
     "german": "sammeln / ich sammle / er sammelt / du sammelst / wir sammeln",
-    "pos": "verb",
-    "id": 210
+    "pos": "verb"
   },
   {
+    "id": 211,
     "type": "word",
     "english": "child/children",
     "german": "das Kind / die Kinder",
     "article": "das",
-    "pos": "noun",
-    "id": 211
+    "pos": "noun"
   },
   {
+    "id": 212,
     "type": "word",
     "english": "task/tasks",
     "german": "die Aufgabe / die Aufgaben",
     "article": "die",
-    "pos": "noun",
-    "id": 212
+    "pos": "noun"
   },
   {
+    "id": 213,
     "type": "word",
     "english": "be missing / I am missing / it is missing / you are missing / we are missing",
     "german": "fehlen / ich fehle / es fehlt / du fehlst / wir fehlen",
-    "pos": "verb",
-    "id": 213
+    "pos": "verb"
   },
   {
+    "id": 214,
     "type": "word",
     "english": "story/stories",
     "german": "die Geschichte / die Geschichten",
     "article": "die",
-    "pos": "noun",
-    "id": 214
+    "pos": "noun"
   },
   {
+    "id": 215,
     "type": "word",
     "english": "lose / I lose / he loses / you lose / we lose",
     "german": "verlieren / ich verliere / er verliert / du verlierst / wir verlieren",
-    "pos": "verb",
-    "id": 215
+    "pos": "verb"
   },
   {
+    "id": 216,
     "type": "word",
     "english": "grandma/grandmas",
     "german": "die Oma / die Omas",
     "article": "die",
-    "pos": "noun",
-    "id": 216
+    "pos": "noun"
   },
   {
+    "id": 217,
     "type": "word",
     "english": "certainly; probably",
     "german": "bestimmt",
-    "pos": "adverb",
-    "id": 217
+    "pos": "adverb"
   },
   {
+    "id": 218,
     "type": "word",
     "english": "pizza/pizzas",
     "german": "die Pizza / die Pizzen",
     "article": "die",
-    "pos": "noun",
-    "id": 218
+    "pos": "noun"
   },
   {
+    "id": 219,
     "type": "word",
     "english": "famous",
     "german": "berühmt",
-    "pos": "adjective",
-    "id": 219
+    "pos": "adjective"
   },
   {
+    "id": 220,
     "type": "word",
     "english": "offer; sale/offers",
     "german": "das Angebot / die Angebote",
     "article": "das",
-    "pos": "noun",
-    "id": 220
+    "pos": "noun"
   },
   {
+    "id": 221,
     "type": "word",
     "english": "watch / I watch / he watches / you watch / we watch",
     "german": "schauen / ich schaue / er schaut / du schaust / wir schauen",
-    "pos": "verb",
-    "id": 221
+    "pos": "verb"
   },
   {
+    "id": 222,
     "type": "word",
     "english": "ice cream",
     "german": "das Eis",
     "article": "das",
-    "pos": "noun",
-    "id": 222
+    "pos": "noun"
   },
   {
+    "id": 223,
     "type": "word",
     "english": "fruit",
     "german": "das Obst",
     "article": "das",
-    "pos": "noun",
-    "id": 223
+    "pos": "noun"
   },
   {
+    "id": 224,
     "type": "word",
     "english": "strange; funny",
     "german": "komisch",
-    "pos": "adjective",
-    "id": 224
+    "pos": "adjective"
   },
   {
+    "id": 225,
     "type": "word",
     "english": "discuss / I discuss / he discusses / you discuss / we discuss",
     "german": "besprechen / ich bespreche / er bespricht / du besprichst / wir besprechen",
-    "pos": "verb",
-    "id": 225
+    "pos": "verb"
   },
   {
+    "id": 226,
     "type": "word",
     "english": "color/colors",
     "german": "die Farbe / die Farben",
     "article": "die",
-    "pos": "noun",
-    "id": 226
+    "pos": "noun"
   },
   {
+    "id": 227,
     "type": "word",
     "english": "repair / I repair / he repairs / you repair / we repair",
     "german": "reparieren / ich repariere / er repariert / du reparierst / wir reparieren",
-    "pos": "verb",
-    "id": 227
+    "pos": "verb"
   },
   {
+    "id": 228,
     "type": "word",
     "english": "radio/radios",
     "german": "das Radio / die Radios",
     "article": "das",
-    "pos": "noun",
-    "id": 228
+    "pos": "noun"
   },
   {
+    "id": 229,
     "type": "word",
     "english": "backpack/backpacks",
     "german": "der Rucksack / die Rucksäcke",
     "article": "der",
-    "pos": "noun",
-    "id": 229
+    "pos": "noun"
   },
   {
+    "id": 230,
     "type": "word",
     "english": "annoying",
     "german": "nervig",
-    "pos": "adjective",
-    "id": 230
+    "pos": "adjective"
   },
   {
+    "id": 231,
     "type": "word",
     "english": "oven/ovens",
     "german": "der Ofen / die Öfen",
     "article": "der",
-    "pos": "noun",
-    "id": 231
+    "pos": "noun"
   },
   {
+    "id": 232,
     "type": "word",
     "english": "drive; go by vehicle / I drive / he drives / you drive / we drive",
     "german": "fahren / ich fahre / er fährt / du fährst / wir fahren",
-    "pos": "verb",
-    "id": 232
+    "pos": "verb"
   }
 ];

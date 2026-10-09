@@ -108,6 +108,7 @@
             <button class="icon-button" id="dataMenuButton" type="button" aria-haspopup="true" aria-expanded="false" title="More options" aria-label="More options">⋮</button>
             <div class="data-menu-list" id="dataMenuList" hidden>
               <button class="menu-item" id="importButton" type="button">Import .md / JSON</button>
+              <button class="menu-item" id="pasteJsonButton" type="button">Paste JSON</button>
               <button class="menu-item" id="exportMdButton" type="button">Export .md</button>
               <button class="menu-item" id="exportWordsJsonButton" type="button">Words JSON</button>
               <button class="menu-item" id="exportSentencesJsonButton" type="button">Sentences JSON</button>
@@ -455,6 +456,50 @@
       <div class="dialog-actions">
         <button class="secondary-button" id="cancelDialogButton" type="button">Cancel</button>
         <button class="primary-button" type="submit">Save entry</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="pasteJsonDialog" class="entry-dialog paste-json-dialog">
+    <form id="pasteJsonForm" method="dialog">
+      <div class="dialog-header">
+        <div>
+          <span class="eyebrow">Paste JSON</span>
+          <h2>Import pasted JSON</h2>
+        </div>
+        <button class="icon-button" id="closePasteJsonButton" type="button" aria-label="Close">×</button>
+      </div>
+
+      <div id="pasteJsonInputStep">
+        <p class="paste-json-hint">Paste an array of word/sentence objects (auto-filled from your clipboard when possible). Review the list on the next step before anything is added.</p>
+        <textarea id="pasteJsonTextarea" rows="12" spellcheck="false" placeholder='[ { "type": "sentence", "english": "...", "german": "..." } ]'></textarea>
+        <div class="dialog-actions">
+          <button class="secondary-button" id="cancelPasteJsonButton" type="button">Cancel</button>
+          <button class="primary-button" id="previewPasteJsonButton" type="button">Preview</button>
+        </div>
+      </div>
+
+      <div id="pasteJsonPreviewStep" hidden>
+        <div class="paste-json-filter-row" id="pasteJsonFilterRow">
+          <button type="button" class="paste-json-filter-chip is-active" data-filter="all">All</button>
+          <button type="button" class="paste-json-filter-chip" data-filter="complete">Complete</button>
+          <button type="button" class="paste-json-filter-chip" data-filter="needs-enrichment">Needs enrichment</button>
+          <button type="button" class="paste-json-filter-chip" data-filter="duplicate">Duplicate</button>
+          <button type="button" class="paste-json-filter-chip" data-filter="invalid">Invalid</button>
+        </div>
+        <p class="paste-json-hint" id="pasteJsonPreviewSummary"></p>
+        <div class="paste-json-preview-list" id="pasteJsonPreviewList"></div>
+        <div class="paste-json-preview-toolbar">
+          <button type="button" class="paste-json-link-button" id="selectAllCompleteButton">Select all complete</button>
+          <button type="button" class="paste-json-link-button" id="copyIncompleteButton">Copy incomplete JSON</button>
+          <button type="button" class="paste-json-link-button" id="downloadIncompleteButton">Download incomplete JSON</button>
+          <button type="button" class="paste-json-link-button" id="copyAllReviewedButton">Copy all reviewed JSON</button>
+          <button type="button" class="paste-json-link-button" id="downloadAllReviewedButton">Download all reviewed JSON</button>
+        </div>
+        <div class="dialog-actions">
+          <button class="secondary-button" id="backPasteJsonButton" type="button">← Back</button>
+          <button class="primary-button" id="confirmPasteJsonButton" type="submit">Import selected</button>
+        </div>
       </div>
     </form>
   </dialog>

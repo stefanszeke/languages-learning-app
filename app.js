@@ -11,6 +11,12 @@
   let diskSyncTimer = null;
   const pendingDiskSync = new Map();
 
+  // Rows currently shown in the Paste JSON preview step -- {candidate, status,
+  // duplicateId} entries built by prepareImportCandidates(). Deleting a row
+  // in the preview just splices it out of this array before it's committed.
+  let pasteJsonPreviewRows = [];
+  let pasteJsonPreviewFilter = 'all';
+
   // Populated lazily by ensureGermanGenderDictionary(); declared up front
   // since init() below may call it before its definition further down runs.
   let germanGenderDictionaryPromise = null;
@@ -180,6 +186,25 @@
     revealButton: document.querySelector('#revealButton'),
     shuffleButton: document.querySelector('#shuffleButton'),
     importButton: document.querySelector('#importButton'),
+    pasteJsonButton: document.querySelector('#pasteJsonButton'),
+    pasteJsonDialog: document.querySelector('#pasteJsonDialog'),
+    pasteJsonForm: document.querySelector('#pasteJsonForm'),
+    pasteJsonTextarea: document.querySelector('#pasteJsonTextarea'),
+    closePasteJsonButton: document.querySelector('#closePasteJsonButton'),
+    cancelPasteJsonButton: document.querySelector('#cancelPasteJsonButton'),
+    pasteJsonInputStep: document.querySelector('#pasteJsonInputStep'),
+    pasteJsonPreviewStep: document.querySelector('#pasteJsonPreviewStep'),
+    previewPasteJsonButton: document.querySelector('#previewPasteJsonButton'),
+    backPasteJsonButton: document.querySelector('#backPasteJsonButton'),
+    confirmPasteJsonButton: document.querySelector('#confirmPasteJsonButton'),
+    pasteJsonPreviewSummary: document.querySelector('#pasteJsonPreviewSummary'),
+    pasteJsonPreviewList: document.querySelector('#pasteJsonPreviewList'),
+    pasteJsonFilterRow: document.querySelector('#pasteJsonFilterRow'),
+    selectAllCompleteButton: document.querySelector('#selectAllCompleteButton'),
+    copyIncompleteButton: document.querySelector('#copyIncompleteButton'),
+    downloadIncompleteButton: document.querySelector('#downloadIncompleteButton'),
+    copyAllReviewedButton: document.querySelector('#copyAllReviewedButton'),
+    downloadAllReviewedButton: document.querySelector('#downloadAllReviewedButton'),
     exportMdButton: document.querySelector('#exportMdButton'),
     exportWordsJsonButton: document.querySelector('#exportWordsJsonButton'),
     exportSentencesJsonButton: document.querySelector('#exportSentencesJsonButton'),
@@ -316,6 +341,7 @@
     elements.importTab.hidden = !languageConfig().supportsOcr || !status.ready;
     elements.addButton.hidden = !status.serverAvailable;
     elements.importButton.hidden = !status.serverAvailable;
+    elements.pasteJsonButton.hidden = !status.serverAvailable;
     updateDataPersistenceStatus();
     render();
   }
@@ -710,6 +736,46 @@
 
     elements.importButton.addEventListener('click', () => elements.fileInput.click());
     elements.fileInput.addEventListener('change', importDataFile);
+    elements.pasteJsonButton.addEventListener('click', openPasteJsonDialog);
+    elements.closePasteJsonButton.addEventListener('click', closePasteJsonDialog);
+    elements.cancelPasteJsonButton.addEventListener('click', closePasteJsonDialog);
+    elements.previewPasteJsonButton.addEventListener('click', previewPastedJson);
+    elements.backPasteJsonButton.addEventListener('click', showPasteJsonInputStep);
+    elements.pasteJsonPreviewList.addEventListener('click', event => {
+      const button = event.target.closest('[data-remove-row]');
+      if (!button) return;
+      pasteJsonPreviewRows.splice(Number(button.dataset.removeRow), 1);
+      renderPasteJsonPreview();
+    });
+    elements.pasteJsonPreviewList.addEventListener('change', event => {
+      const selectCheckbox = event.target.closest('[data-select-row]');
+      if (selectCheckbox) {
+        const item = pasteJsonPreviewRows[Number(selectCheckbox.dataset.selectRow)];
+        if (item) item.selected = selectCheckbox.checked;
+        updatePasteJsonSummary();
+        return;
+      }
+      const updateCheckbox = event.target.closest('[data-apply-update]');
+      if (!updateCheckbox) return;
+      const item = pasteJsonPreviewRows[Number(updateCheckbox.dataset.applyUpdate)];
+      if (item) item.applyUpdate = updateCheckbox.checked;
+      updatePasteJsonSummary();
+    });
+    elements.pasteJsonFilterRow.addEventListener('click', event => {
+      const chip = event.target.closest('[data-filter]');
+      if (!chip) return;
+      pasteJsonPreviewFilter = chip.dataset.filter;
+      renderPasteJsonPreview();
+    });
+    elements.selectAllCompleteButton.addEventListener('click', () => {
+      pasteJsonPreviewRows.forEach(item => { if (item.reviewStatus === 'complete') item.selected = true; });
+      renderPasteJsonPreview();
+    });
+    elements.copyIncompleteButton.addEventListener('click', () => copyPasteJsonRows('needs-enrichment'));
+    elements.downloadIncompleteButton.addEventListener('click', () => downloadPasteJsonRows('needs-enrichment'));
+    elements.copyAllReviewedButton.addEventListener('click', () => copyPasteJsonRows('all'));
+    elements.downloadAllReviewedButton.addEventListener('click', () => downloadPasteJsonRows('all'));
+    elements.pasteJsonForm.addEventListener('submit', confirmPastedJsonImport);
     elements.exportWordsJsonButton.addEventListener('click', () => exportJson('word'));
     elements.exportSentencesJsonButton.addEventListener('click', () => exportJson('sentence'));
     elements.exportMdButton.addEventListener('click', exportMarkdown);
@@ -881,6 +947,7 @@
     elements.kanaTab.hidden = config.id !== 'ja';
     elements.addButton.hidden = !state.localServerAvailable;
     elements.importButton.hidden = !state.localServerAvailable;
+    elements.pasteJsonButton.hidden = !state.localServerAvailable;
     elements.dictAttribution.innerHTML = config.id === 'de'
       ? `English glosses use the <a href="https://freedict.org/" target="_blank" rel="noopener">FreeDict deu-eng dictionary</a>, generated from the Ding dictionary (dict.tu-chemnitz.de), licensed GPLv3+/AGPLv3+.`
       : `English glosses use the <a href="https://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project" target="_blank" rel="noopener">JMdict/EDICT dictionary files</a>, property of the Electronic Dictionary Research and Development Group, used in conformance with the Group's licence.`;
@@ -1251,7 +1318,8 @@
   // (re-run after each blur autofill below).
   function updateDialogPosPreview(data) {
     if (!elements.dialogPosPreview) return;
-    elements.dialogPosPreview.innerHTML = entryBadges({type: 'word', article: data.article, pos: data.pos});
+    const type = elements.form.elements.entryType.value === 'sentence' ? 'sentence' : 'word';
+    elements.dialogPosPreview.innerHTML = entryBadges({type, article: data.article, pos: data.pos});
   }
 
   function renderDialogFieldGrid(values = {}) {
@@ -1535,10 +1603,31 @@
   // resolveJapaneseFields. This also fixes a latent race the article-only
   // version had: verb 5-form expansion used to happen only in the blur
   // handler, never guaranteed to have finished before a fast click on Save.
+  const VALID_POS_VALUES = ['noun', 'verb', 'adjective', 'adverb'];
+  const VALID_GERMAN_ARTICLES = ['der', 'die', 'das'];
+
+  // Shared by the import pipeline and the derivation functions below: an
+  // explicit pos/article the user (or an enrichment batch) already supplied
+  // is authoritative and must survive derivation untouched, per the import
+  // brief. Anything outside the known value set is treated as absent so
+  // derivation still fills it in rather than preserving garbage.
+  function isValidPos(pos) {
+    return VALID_POS_VALUES.includes(String(pos || '').trim().toLowerCase());
+  }
+
+  function isValidGermanArticle(article) {
+    return VALID_GERMAN_ARTICLES.includes(String(article || '').trim().toLowerCase());
+  }
+
   async function resolveGermanFields(data) {
     const rawWord = (data.german || '').trim();
+    const hasExplicitPos = isValidPos(data.pos);
+    const hasExplicitArticle = isValidGermanArticle(data.article);
+    if (hasExplicitPos) data.pos = String(data.pos).trim().toLowerCase();
+    if (hasExplicitArticle) data.article = String(data.article).trim().toLowerCase();
+
     if (!rawWord) {
-      data.article = '';
+      if (!hasExplicitArticle) data.article = '';
       return data;
     }
 
@@ -1551,29 +1640,29 @@
       const verbDictionary = await ensureGermanVerbDictionary();
       const infinitive = rawWord.split('/')[0].trim();
       if (verbDictionary && lookupGermanVerb(verbDictionary, infinitive)) {
-        data.article = '';
-        data.pos = 'verb';
+        if (!hasExplicitArticle) data.article = '';
+        if (!hasExplicitPos) data.pos = 'verb';
         return data;
       }
     }
 
     await ensureGermanGenderDictionary();
-    const article = deriveGermanArticle(rawWord);
-    data.article = article;
+    const article = hasExplicitArticle ? data.article : deriveGermanArticle(rawWord);
+    if (!hasExplicitArticle) data.article = article;
     if (article) {
-      data.pos = 'noun';
+      if (!hasExplicitPos) data.pos = 'noun';
     } else {
       const verbDictionary = await ensureGermanVerbDictionary();
       const verb = verbDictionary ? lookupGermanVerb(verbDictionary, rawWord) : null;
       if (verb) {
         data.german = verb.german;
         if (!(data.english || '').trim()) data.english = verb.english;
-        data.pos = 'verb';
+        if (!hasExplicitPos) data.pos = 'verb';
         return data;
       }
 
       const adjectiveDictionary = await ensureGermanAdjectiveDictionary();
-      if (adjectiveDictionary && lookupGermanAdjective(adjectiveDictionary, rawWord)) {
+      if (!hasExplicitPos && adjectiveDictionary && lookupGermanAdjective(adjectiveDictionary, rawWord)) {
         data.pos = 'adjective';
       }
     }
@@ -1591,6 +1680,14 @@
   }
 
   async function autoFillGermanDialogFields() {
+    // Article/gender derivation is a word-only concept (deriveGermanArticle
+    // matches a leading der/die/das, which plenty of German sentences also
+    // start with) -- skip it entirely for sentences rather than mislabel them.
+    const type = elements.form.elements.entryType.value === 'sentence' ? 'sentence' : 'word';
+    if (type !== 'word') {
+      updateDialogPosPreview({});
+      return;
+    }
     const grid = elements.dialogFieldGrid;
     const germanInput = grid.querySelector('[data-field="german"]');
     const englishInput = grid.querySelector('[data-field="english"]');
@@ -1620,6 +1717,8 @@
     const rawKanji = (data.kanji || '').trim();
     const rawKana = (data.kana || '').trim();
     if (!rawKanji && !rawKana) return data;
+    const hasExplicitPos = isValidPos(data.pos);
+    if (hasExplicitPos) data.pos = String(data.pos).trim().toLowerCase();
     // A field already holding an expanded form-set (or any slash-joined
     // value) is left alone -- re-running dictionary-form reduction and
     // conjugation on "止まる / 止まります / ..." would parse it as one long
@@ -1627,7 +1726,7 @@
     // expandJapaneseVerbForms is the only thing that ever produces a
     // slash-joined kanji/kana, so seeing one already means "verb".
     if (rawKanji.includes('/') || rawKana.includes('/')) {
-      if (!data.pos) data.pos = 'verb';
+      if (!hasExplicitPos) data.pos = 'verb';
       return data;
     }
 
@@ -1654,7 +1753,7 @@
           const gloss = lookupEnglish(dictionary, kanji, kana);
           if (gloss) data.english = gloss;
         }
-        data.pos = 'verb';
+        if (!hasExplicitPos) data.pos = 'verb';
         return data;
       }
     }
@@ -1666,7 +1765,7 @@
       const gloss = lookupEnglish(dictionary, kanji, kana);
       if (gloss) data.english = gloss;
     }
-    if (analyzer && kanji) {
+    if (analyzer && kanji && !hasExplicitPos) {
       const pos = await japanesePartOfSpeech(analyzer, kanji);
       if (pos) data.pos = pos;
     }
@@ -1717,12 +1816,16 @@
     elements.dialogFieldGrid.querySelectorAll('[data-field]').forEach(input => {
       data[input.dataset.field] = input.value.trim();
     });
+    data.type = elements.form.elements.entryType.value === 'sentence' ? 'sentence' : 'word';
     await applyDerivedFields(data);
     return data;
   }
 
+  // German article/gender (and the pos it implies) only make sense for
+  // words -- deriveGermanArticle matches a leading der/die/das, which plenty
+  // of German sentences also start with, so sentences are excluded here.
   async function applyDerivedFields(data) {
-    if (state.language === 'de' && 'german' in data) {
+    if (state.language === 'de' && data.type === 'word' && 'german' in data) {
       await resolveGermanFields(data);
     }
     if (state.language === 'ja' && ('kanji' in data || 'kana' in data)) {
@@ -1856,12 +1959,256 @@
     }
   }
 
-  async function mergeImportedEntries(entries) {
+  function openPasteJsonDialog() {
+    if (!state.localServerAvailable) {
+      showToast('Dictionary import is available only in local project mode.');
+      return;
+    }
+    pasteJsonPreviewRows = [];
+    pasteJsonPreviewFilter = 'all';
+    elements.pasteJsonTextarea.value = '';
+    showPasteJsonInputStep();
+    elements.pasteJsonDialog.showModal();
+    prefillPasteJsonFromClipboard();
+  }
+
+  function closePasteJsonDialog() {
+    elements.pasteJsonDialog.close();
+  }
+
+  // Best-effort convenience: most pastes here are a fresh clipboard copy
+  // from the Duolingo exporter, so prefill it instead of making the user
+  // paste manually. Silently does nothing if the clipboard is empty, blocked
+  // by permissions, or the user already typed/pasted something themselves.
+  async function prefillPasteJsonFromClipboard() {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (!elements.pasteJsonDialog.open) return;
+      if (text && text.trim() && !elements.pasteJsonTextarea.value.trim()) {
+        elements.pasteJsonTextarea.value = text.trim();
+      }
+    } catch (error) {
+      // Clipboard permission denied or unavailable -- fall back to manual paste.
+    }
+    elements.pasteJsonTextarea.focus();
+  }
+
+  function showPasteJsonInputStep() {
+    elements.pasteJsonInputStep.hidden = false;
+    elements.pasteJsonPreviewStep.hidden = true;
+  }
+
+  async function previewPastedJson() {
+    const text = elements.pasteJsonTextarea.value.trim();
+    if (!text) {
+      alert('Paste some JSON first.');
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(text);
+      const array = Array.isArray(parsed) ? parsed : Array.isArray(parsed.items) ? parsed.items : null;
+      if (!array) throw new Error('JSON must contain an array of entries.');
+      const entries = array.map(item => ({...item, type: item.type === 'sentence' ? 'sentence' : item.type === 'word' ? 'word' : guessType(item.english || '')}));
+      if (!entries.length) throw new Error('No valid entries were found.');
+
+      pasteJsonPreviewRows = await prepareImportCandidates(entries);
+      elements.pasteJsonInputStep.hidden = true;
+      elements.pasteJsonPreviewStep.hidden = false;
+      renderPasteJsonPreview();
+    } catch (error) {
+      alert(`Could not parse the pasted JSON.\n\n${error.message}`);
+    }
+  }
+
+  const REVIEW_STATUS_LABELS = {
+    complete: 'Complete',
+    'needs-enrichment': 'Needs enrichment',
+    duplicate: 'Duplicate',
+    invalid: 'Invalid',
+  };
+
+  function pasteJsonRowLabel(item) {
     const config = languageConfig();
-    let added = 0;
-    let duplicates = 0;
-    let invalid = 0;
-    const counters = {word: nextId('word'), sentence: nextId('sentence')};
+    const identityKey = config.identityFields.find(key => item.candidate[key]) || config.identityFields[0];
+    const main = item.candidate[identityKey] || item.candidate.english || '(empty)';
+    const duplicateNote = item.duplicateSource === 'batch'
+      ? `Duplicate of row #${item.duplicateId} in this batch`
+      : item.duplicateSource === 'existing'
+        ? `Duplicate of existing #${item.duplicateId}`
+        : '';
+    const diffNote = item.canEnrichExisting
+      ? `New data for: ${item.duplicateDiff.map(d => d.key).join(', ')}`
+      : '';
+    const sub = [
+      item.candidate.english && identityKey !== 'english' ? item.candidate.english : '',
+      duplicateNote,
+      diffNote,
+      item.reviewStatus === 'needs-enrichment' ? `Missing: ${item.missingFields.join(', ')}` : '',
+      item.reviewStatus === 'invalid' ? 'Missing required identity field' : '',
+    ].filter(Boolean).join(' · ');
+    return {main, sub};
+  }
+
+  // Filtering and the status counts both read from the full
+  // pasteJsonPreviewRows array (never a filtered copy), so switching chips
+  // never loses rows and the counts always reflect the whole batch.
+  function renderPasteJsonPreview() {
+    const list = elements.pasteJsonPreviewList;
+    const visible = pasteJsonPreviewRows
+      .map((item, index) => ({item, index}))
+      .filter(({item}) => pasteJsonPreviewFilter === 'all' || item.reviewStatus === pasteJsonPreviewFilter);
+
+    if (!pasteJsonPreviewRows.length) {
+      list.innerHTML = '<p class="paste-json-preview-empty">No rows left. Go back to paste something else.</p>';
+    } else if (!visible.length) {
+      list.innerHTML = '<p class="paste-json-preview-empty">No rows match this filter.</p>';
+    } else {
+      list.innerHTML = visible.map(({item, index}) => {
+        const {main, sub} = pasteJsonRowLabel(item);
+        const statusLabel = REVIEW_STATUS_LABELS[item.reviewStatus];
+        const badge = item.candidate.type === 'word' ? entryBadges(item.candidate) : '';
+        const checkbox = item.reviewStatus === 'complete'
+          ? `<input type="checkbox" data-select-row="${index}" ${item.selected ? 'checked' : ''} aria-label="Import this row">`
+          : item.canEnrichExisting
+            ? `<label class="paste-json-update-toggle"><input type="checkbox" data-apply-update="${index}" ${item.applyUpdate ? 'checked' : ''}> Update</label>`
+            : '';
+        const enrichClass = item.canEnrichExisting ? ' can-enrich' : '';
+        return `
+          <div class="paste-json-preview-row is-${item.reviewStatus}${enrichClass}">
+            ${checkbox}
+            <span class="paste-json-preview-status">${statusLabel}</span>
+            <span class="paste-json-preview-text">${badge}<strong>${escapeHtml(main)}</strong>${sub ? `<span>${escapeHtml(sub)}</span>` : ''}</span>
+            <button class="paste-json-preview-remove" type="button" data-remove-row="${index}" aria-label="Remove row" title="Remove row">×</button>
+          </div>`;
+      }).join('');
+    }
+
+    elements.pasteJsonFilterRow.querySelectorAll('[data-filter]').forEach(chip => {
+      chip.classList.toggle('is-active', chip.dataset.filter === pasteJsonPreviewFilter);
+    });
+    updatePasteJsonSummary();
+  }
+
+  function updatePasteJsonSummary() {
+    const counts = {complete: 0, 'needs-enrichment': 0, duplicate: 0, invalid: 0};
+    pasteJsonPreviewRows.forEach(item => { counts[item.reviewStatus] += 1; });
+    const selected = pasteJsonPreviewRows.filter(item => item.reviewStatus === 'complete' && item.selected).length;
+    const updating = pasteJsonPreviewRows.filter(item => item.canEnrichExisting && item.applyUpdate).length;
+    elements.pasteJsonPreviewSummary.textContent =
+      `${pasteJsonPreviewRows.length} total · ${counts.complete} complete · ${counts['needs-enrichment']} need enrichment · `
+      + `${counts.duplicate} duplicates · ${counts.invalid} invalid · ${selected} selected to import`
+      + (updating ? ` · ${updating} updating existing` : '');
+    elements.confirmPasteJsonButton.disabled = selected === 0 && updating === 0;
+  }
+
+  // Strips internal bookkeeping (status/duplicateId/selected/...) down to the
+  // plain schema from duolingo-import-export.md / chatgpt-enrich.md, so
+  // copy/download output can be pasted straight into the enrichment chat or
+  // re-pasted back into this same dialog.
+  function exportablePasteJsonCandidate(item) {
+    const config = languageConfig();
+    const out = {type: item.candidate.type};
+    config.fields.forEach(field => {
+      if (item.candidate[field.key]) out[field.key] = item.candidate[field.key];
+    });
+    if (config.id === 'de' && item.candidate.article) out.article = item.candidate.article;
+    if (item.candidate.pos) out.pos = item.candidate.pos;
+    if (item.sourceId != null) out.id = item.sourceId;
+    return out;
+  }
+
+  function pasteJsonRowsFor(filter) {
+    const rows = filter === 'all' ? pasteJsonPreviewRows : pasteJsonPreviewRows.filter(item => item.reviewStatus === filter);
+    return rows.map(exportablePasteJsonCandidate);
+  }
+
+  async function copyPasteJsonRows(filter) {
+    const rows = pasteJsonRowsFor(filter);
+    if (!rows.length) {
+      showToast('Nothing to copy for this filter.');
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(rows, null, 2));
+      showToast(`${rows.length} rows copied`);
+    } catch (error) {
+      alert('Could not copy to the clipboard.');
+    }
+  }
+
+  function downloadPasteJsonRows(filter) {
+    const rows = pasteJsonRowsFor(filter);
+    if (!rows.length) {
+      showToast('Nothing to download for this filter.');
+      return;
+    }
+    downloadFile(`${filter === 'all' ? 'reviewed' : filter}.json`, JSON.stringify(rows, null, 2), 'application/json');
+  }
+
+  function confirmPastedJsonImport(event) {
+    event.preventDefault();
+    const added = commitImportCandidates(pasteJsonPreviewRows, item => item.reviewStatus === 'complete' && item.selected);
+    const updated = applyEnrichmentUpdates(pasteJsonPreviewRows);
+    if (!added && !updated) {
+      closePasteJsonDialog();
+      return;
+    }
+    saveCollections();
+    syncIdFilterIfNotCustom();
+    closePasteJsonDialog();
+    render();
+    const parts = [];
+    if (added) parts.push(`${added} imported`);
+    if (updated) parts.push(`${updated} updated`);
+    showToast(parts.join(', '));
+  }
+
+  // Stricter per-category required fields for the reviewed Paste JSON
+  // workflow only (reviewStatus 'complete' vs 'needs-enrichment') -- the
+  // plain file importer keeps its original, more lenient identity-field-only
+  // check (legacy `status`) so existing file-import behavior never changes.
+  function missingRequiredFields(candidate) {
+    const languageId = languageConfig().id;
+    if (candidate.type === 'sentence') {
+      const required = languageId === 'ja' ? ['english', 'romaji', 'kanji', 'kana'] : ['english', 'german'];
+      return required.filter(key => !candidate[key]);
+    }
+    if (languageId === 'ja') {
+      return ['english', 'romaji', 'kanji', 'kana', 'pos'].filter(key => !candidate[key]);
+    }
+    const missing = ['english', 'german', 'pos'].filter(key => !candidate[key]);
+    if (candidate.pos === 'noun' && !candidate.article) missing.push('article');
+    return missing;
+  }
+
+  // Fields worth diffing between an incoming duplicate and the existing
+  // stored entry it matched, so an enriched re-import (e.g. a word sent
+  // back through the enrichment chat) can be recognized as carrying new
+  // information instead of just being silently skipped.
+  function diffFieldsFor(type, config) {
+    const keys = config.fields.map(field => field.key);
+    if (type === 'word') {
+      keys.push('pos');
+      if (config.id === 'de') keys.push('article');
+    }
+    return keys;
+  }
+
+  // Builds the candidate entries an import would produce, without writing
+  // anything -- shared by the plain file import (which commits everything
+  // immediately) and the paste-JSON preview (which lets the user drop rows
+  // before anything is committed). Also flags duplicates against other rows
+  // in the same batch, not just the saved collection -- a Duolingo export or
+  // enrichment batch can repeat an entry within itself.
+  async function prepareImportCandidates(entries) {
+    const config = languageConfig();
+    const prepared = [];
+    const batchPool = {word: [], sentence: []};
+
+    entries.forEach((raw, index) => {
+      raw.__rowNumber = index + 1;
+    });
 
     for (const raw of entries) {
       const type = raw.type === 'sentence' ? 'sentence' : 'word';
@@ -1870,6 +2217,15 @@
         candidate[field.key] = String(raw[field.key] || '').trim();
       }
       if (raw.hard) candidate.hard = true;
+      // Words only: an explicit, valid pos/article in the incoming JSON (e.g.
+      // from an enrichment-chat batch) is authoritative and must survive
+      // applyDerivedFields untouched -- sentences never carry pos/article.
+      if (type === 'word') {
+        if (isValidPos(raw.pos)) candidate.pos = String(raw.pos).trim().toLowerCase();
+        if (state.language === 'de' && isValidGermanArticle(raw.article)) {
+          candidate.article = String(raw.article).trim().toLowerCase();
+        }
+      }
       await applyDerivedFields(candidate);
 
       // Sentences need an English translation to be useful as a flashcard prompt,
@@ -1879,21 +2235,100 @@
       const missingRequiredField = type === 'sentence'
         ? !candidate.english || !hasIdentity
         : !hasIdentity;
-      if (missingRequiredField) {
-        invalid += 1;
-        continue;
+
+      let duplicate = null;
+      let duplicateSource = null;
+      let duplicateRef = null;
+      let duplicateDiff = [];
+      if (!missingRequiredField) {
+        duplicate = findDuplicate(candidate);
+        if (duplicate) {
+          duplicateSource = 'existing';
+          duplicateRef = duplicate.id;
+          duplicateDiff = diffFieldsFor(type, config)
+            .filter(key => candidate[key] && normalizeDuplicateText(candidate[key]) !== normalizeDuplicateText(duplicate[key]))
+            .map(key => ({key, oldValue: duplicate[key] || '', newValue: candidate[key]}));
+        } else {
+          const batchMatch = batchPool[type].find(entry => isDuplicateMatch(candidate, entry.candidate));
+          if (batchMatch) {
+            duplicate = batchMatch.candidate;
+            duplicateSource = 'batch';
+            duplicateRef = batchMatch.rowNumber;
+          }
+        }
       }
-      if (findDuplicate(candidate)) {
-        duplicates += 1;
-        continue;
+
+      const status = missingRequiredField ? 'invalid' : duplicate ? 'duplicate' : 'new';
+      const missingFields = missingRequiredField || duplicate ? [] : missingRequiredFields(candidate);
+      const reviewStatus = missingRequiredField ? 'invalid' : duplicate ? 'duplicate' : missingFields.length ? 'needs-enrichment' : 'complete';
+      const canEnrichExisting = duplicateSource === 'existing' && duplicateDiff.length > 0;
+
+      if (status === 'new') {
+        batchPool[type].push({candidate, rowNumber: raw.__rowNumber});
       }
-      collection(type).push({...candidate, id: counters[type]});
+
+      prepared.push({
+        candidate,
+        status,
+        duplicateId: duplicateRef,
+        duplicateSource,
+        duplicateDiff,
+        canEnrichExisting,
+        applyUpdate: false,
+        reviewStatus,
+        missingFields,
+        sourceId: typeof raw.id === 'number' ? raw.id : null,
+        selected: reviewStatus === 'complete',
+      });
+    }
+    return prepared;
+  }
+
+  // Writes rows matching shouldCommit (default: legacy 'new' rows, used by
+  // the plain file importer). The Paste JSON preview passes a stricter
+  // predicate that also requires reviewStatus 'complete' and the row's
+  // checkbox to still be selected.
+  function commitImportCandidates(prepared, shouldCommit = item => item.status === 'new') {
+    const counters = {word: nextId('word'), sentence: nextId('sentence')};
+    let added = 0;
+    for (const item of prepared) {
+      if (!shouldCommit(item)) continue;
+      const type = item.candidate.type;
+      collection(type).push({...item.candidate, id: counters[type]});
       counters[type] += 1;
       added += 1;
     }
+    if (added) {
+      collection('word').sort((a, b) => a.id - b.id);
+      collection('sentence').sort((a, b) => a.id - b.id);
+    }
+    return added;
+  }
 
-    collection('word').sort((a, b) => a.id - b.id);
-    collection('sentence').sort((a, b) => a.id - b.id);
+  // Applies opt-in enrichment updates: rows the user explicitly flagged as
+  // "update existing" (a duplicate whose incoming data differs from what's
+  // stored) get their differing fields merged into the matched saved entry.
+  // Never adds or removes entries, and never clears a field the incoming
+  // row left blank -- it only fills in or upgrades values that are present.
+  function applyEnrichmentUpdates(prepared) {
+    let updated = 0;
+    for (const item of prepared) {
+      if (!item.canEnrichExisting || !item.applyUpdate) continue;
+      const target = collection(item.candidate.type).find(entry => entry.id === item.duplicateId);
+      if (!target) continue;
+      for (const {key, newValue} of item.duplicateDiff) {
+        target[key] = newValue;
+      }
+      updated += 1;
+    }
+    return updated;
+  }
+
+  async function mergeImportedEntries(entries) {
+    const prepared = await prepareImportCandidates(entries);
+    const added = commitImportCandidates(prepared);
+    const duplicates = prepared.filter(item => item.status === 'duplicate').length;
+    const invalid = prepared.filter(item => item.status === 'invalid').length;
     return {added, duplicates, invalid};
   }
 
@@ -4322,14 +4757,50 @@
   }
 
   function findDuplicate(candidate, excludeId = null) {
-    const config = languageConfig();
-    const english = normalizeDuplicateText(candidate.english);
     return collection(candidate.type).find(item => {
       if (excludeId != null && item.id === excludeId) return false;
-      if (identityFieldsMatch(candidate, item, config.identityFields)) return true;
-      if (!english || english !== normalizeDuplicateText(item.english)) return false;
-      return config.identityFields.every(key => normalizeDuplicateText(candidate[key]) === normalizeDuplicateText(item[key]));
+      return isDuplicateMatch(candidate, item);
     });
+  }
+
+  // Shared by findDuplicate (against the saved collection) and the Paste
+  // JSON preview's batch-internal check (against other rows in the same
+  // paste) -- same rules either way.
+  function isDuplicateMatch(candidate, item) {
+    const config = languageConfig();
+    if (identityFieldsMatch(candidate, item, config.identityFields)) return true;
+    if (config.id === 'de' && candidate.type === 'word' && item.type === 'word'
+        && germanWordVariantsOverlap(candidate.german, item.german)) {
+      return true;
+    }
+    const english = normalizeDuplicateText(candidate.english);
+    if (!english || english !== normalizeDuplicateText(item.english)) return false;
+    return config.identityFields.every(key => normalizeDuplicateText(candidate[key]) === normalizeDuplicateText(item[key]));
+  }
+
+  // German nouns and verbs are stored as slash-joined form sets ("der
+  // Schreibtisch / die Schreibtische", "fahren / ich fahre / er fährt / ...").
+  // A raw Duolingo export usually gives just one inflected form ("Schreibtische",
+  // "fährt"). Stripping a leading article/pronoun from each slash segment and
+  // comparing tokens catches these without real morphological analysis.
+  // Deliberately conservative (exact token match only): a miss just leaves the
+  // row as a normal new entry, which is harmless, while a false positive would
+  // only ever flag something as a possible duplicate for review, never delete
+  // it -- so erring toward matching here is the safer direction.
+  const GERMAN_LEADING_WORDS = /^(der|die|das|ich|du|er|sie|es|wir|ihr)\s+/i;
+
+  function germanWordVariants(text) {
+    return String(text || '')
+      .split('/')
+      .map(part => normalizeDuplicateText(part.replace(GERMAN_LEADING_WORDS, '')))
+      .filter(Boolean);
+  }
+
+  function germanWordVariantsOverlap(textA, textB) {
+    if (!textA || !textB) return false;
+    const variantsB = germanWordVariants(textB);
+    if (!variantsB.length) return false;
+    return germanWordVariants(textA).some(token => variantsB.includes(token));
   }
 
   // Checks identity fields in priority order (Japanese lists kanji before
