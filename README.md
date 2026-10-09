@@ -1,5 +1,8 @@
 # Lingo Study List — local Node edition
 
+JP: 1134 words
+DE: 1365 words
+
 A local multi-language (Japanese, German) study app with:
 
 - Words and sentences with stable numeric IDs

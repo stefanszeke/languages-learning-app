@@ -1647,11 +1647,19 @@
     }
 
     await ensureGermanGenderDictionary();
-    const article = hasExplicitArticle ? data.article : deriveGermanArticle(rawWord);
+    // An already-known non-noun pos (explicitly supplied, e.g. by an
+    // enriched import) rules out noun derivation entirely -- otherwise
+    // deriveGermanArticle's leading-der/die/das match or slash-joined
+    // plural-guess fallback can stamp a bogus article onto a verb,
+    // adjective, or adverb (seen on real imports: verbs with conjugation
+    // lists guessed as "plural", or an adjective/adverb whose text happens
+    // to start with der/die/das).
+    const knownNonNoun = hasExplicitPos && data.pos !== 'noun';
+    const article = hasExplicitArticle ? data.article : (knownNonNoun ? '' : deriveGermanArticle(rawWord));
     if (!hasExplicitArticle) data.article = article;
     if (article) {
       if (!hasExplicitPos) data.pos = 'noun';
-    } else {
+    } else if (!knownNonNoun) {
       const verbDictionary = await ensureGermanVerbDictionary();
       const verb = verbDictionary ? lookupGermanVerb(verbDictionary, rawWord) : null;
       if (verb) {

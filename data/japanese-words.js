@@ -1895,677 +1895,1163 @@ window.INITIAL_WORDS = [
     "pos": "noun"
   },
   {
+    "id": 212,
     "type": "word",
     "english": "shelf; trellis",
     "romaji": "tana",
     "kanji": "棚",
     "kana": "たな",
-    "pos": "noun",
-    "id": 212
+    "pos": "noun"
   },
   {
+    "id": 213,
     "type": "word",
     "english": "entrance",
     "romaji": "genkan",
     "kanji": "玄関",
     "kana": "げんかん",
-    "pos": "noun",
-    "id": 213
+    "pos": "noun"
   },
   {
+    "id": 214,
     "type": "word",
     "english": "space (between); period of time (during, while); between (two parties or things); among (a group); relations (between); midpoint",
     "romaji": "aida",
     "kanji": "間",
     "kana": "ま",
-    "pos": "noun",
-    "id": 214
+    "pos": "noun"
   },
   {
+    "id": 215,
     "type": "word",
     "english": "acting",
     "romaji": "engi",
     "kanji": "演技",
     "kana": "えんぎ",
-    "pos": "noun",
-    "id": 215
+    "pos": "noun"
   },
   {
+    "id": 216,
     "type": "word",
     "english": "tough; hard",
     "romaji": "katai",
     "kanji": "硬い",
     "kana": "かたい",
-    "pos": "adjective",
-    "id": 216
+    "pos": "adjective"
   },
   {
+    "id": 217,
     "type": "word",
     "english": "main",
     "romaji": "mein",
     "kanji": "メイン",
     "kana": "メイン",
-    "pos": "noun",
-    "id": 217
+    "pos": "noun"
   },
   {
+    "id": 218,
     "type": "word",
     "english": "only; just",
     "romaji": "dake",
     "kanji": "だけ",
-    "kana": "だけ",
-    "id": 218
+    "kana": "だけ"
   },
   {
+    "id": 219,
     "type": "word",
     "english": "break up (with someone)",
     "romaji": "wakareru / wakaremasu / wakareta / wakarenai",
     "kanji": "別れる / 別れます / 別れた / 別れない",
     "kana": "わかれる / わかれます / わかれた / わかれない",
-    "pos": "verb",
-    "id": 219
+    "pos": "verb"
   },
   {
+    "id": 220,
     "type": "word",
     "english": "problem",
     "romaji": "mondai",
     "kanji": "問題",
     "kana": "もんだい",
-    "pos": "noun",
-    "id": 220
+    "pos": "noun"
   },
   {
+    "id": 221,
     "type": "word",
     "english": "bad-tasting; unpleasant",
     "romaji": "mazui",
     "kanji": "まずい",
     "kana": "まずい",
-    "pos": "adjective",
-    "id": 221
+    "pos": "adjective"
   },
   {
+    "id": 222,
     "type": "word",
     "english": "worst",
     "romaji": "saiaku",
     "kanji": "最悪",
     "kana": "さいあく",
-    "pos": "noun",
-    "id": 222
+    "pos": "noun"
   },
   {
+    "id": 223,
     "type": "word",
     "english": "snacks; sweets",
     "romaji": "okashi",
     "kanji": "お菓子",
     "kana": "おかし",
-    "pos": "noun",
-    "id": 223
+    "pos": "noun"
   },
   {
+    "id": 224,
     "type": "word",
     "english": "ticket",
     "romaji": "chiketto",
     "kanji": "チケット",
     "kana": "チケット",
-    "pos": "noun",
-    "id": 224
+    "pos": "noun"
   },
   {
+    "id": 225,
     "type": "word",
     "english": "cheap",
     "romaji": "yasui",
     "kanji": "安い",
     "kana": "やすい",
-    "pos": "adjective",
-    "id": 225
+    "pos": "adjective"
   },
   {
+    "id": 226,
     "type": "word",
     "english": "she; girlfriend",
     "romaji": "kanojo",
     "kanji": "彼女",
     "kana": "かのじょ",
-    "pos": "noun",
-    "id": 226
+    "pos": "noun"
   },
   {
+    "id": 227,
     "type": "word",
     "english": "noisy",
     "romaji": "urusai",
     "kanji": "うるさい",
     "kana": "うるさい",
-    "pos": "adjective",
-    "id": 227
+    "pos": "adjective"
   },
   {
+    "id": 228,
     "type": "word",
     "english": "movie",
     "romaji": "eiga",
     "kanji": "映画",
     "kana": "えいが",
-    "pos": "noun",
-    "id": 228
+    "pos": "noun"
   },
   {
+    "id": 229,
     "type": "word",
     "english": "not at all (with negative)",
     "romaji": "zenzen",
     "kanji": "ぜんぜん",
     "kana": "ぜんぜん",
-    "pos": "adverb",
-    "id": 229
+    "pos": "adverb"
   },
   {
+    "id": 230,
     "type": "word",
     "english": "interesting",
     "romaji": "omoshiroi",
     "kanji": "おもしろい",
     "kana": "おもしろい",
-    "pos": "adjective",
-    "id": 230
+    "pos": "adjective"
   },
   {
+    "id": 231,
     "type": "word",
     "english": "customer; guest",
     "romaji": "okyaku",
     "kanji": "お客",
     "kana": "おきゃく",
-    "pos": "noun",
-    "id": 231
+    "pos": "noun"
   },
   {
+    "id": 232,
     "type": "word",
     "english": "chicken (food)",
     "romaji": "chikin",
     "kanji": "チキン",
     "kana": "チキン",
-    "pos": "noun",
-    "id": 232
+    "pos": "noun"
   },
   {
+    "id": 233,
     "type": "word",
     "english": "fish",
     "romaji": "sakana",
     "kanji": "魚",
     "kana": "さかな",
-    "pos": "noun",
-    "id": 233
+    "pos": "noun"
   },
   {
+    "id": 234,
     "type": "word",
     "english": "steak",
     "romaji": "suteeki",
     "kanji": "ステーキ",
     "kana": "ステーキ",
-    "pos": "noun",
-    "id": 234
+    "pos": "noun"
   },
   {
+    "id": 235,
     "type": "word",
     "english": "cake",
     "romaji": "keeki",
     "kanji": "ケーキ",
     "kana": "ケーキ",
-    "pos": "noun",
-    "id": 235
+    "pos": "noun"
   },
   {
+    "id": 236,
     "type": "word",
     "english": "tasty; delicious",
     "romaji": "oishii",
     "kanji": "おいしい",
     "kana": "おいしい",
-    "pos": "adjective",
-    "id": 236
+    "pos": "adjective"
   },
   {
+    "id": 237,
     "type": "word",
     "english": "very",
     "romaji": "totemo",
     "kanji": "とても",
     "kana": "とても",
-    "pos": "adverb",
-    "id": 237
+    "pos": "adverb"
   },
   {
+    "id": 238,
     "type": "word",
     "english": "dinner",
     "romaji": "bangohan",
     "kanji": "晩ご飯",
     "kana": "ばんごはん",
-    "pos": "noun",
-    "id": 238
+    "pos": "noun"
   },
   {
+    "id": 239,
     "type": "word",
     "english": "pasta",
     "romaji": "pasuta",
     "kanji": "パスタ",
     "kana": "パスタ",
-    "pos": "noun",
-    "id": 239
+    "pos": "noun"
   },
   {
+    "id": 240,
     "type": "word",
     "english": "cockroach",
     "romaji": "gokiburi",
     "kanji": "ゴキブリ",
     "kana": "ゴキブリ",
-    "pos": "noun",
-    "id": 240
+    "pos": "noun"
   },
   {
+    "id": 241,
     "type": "word",
     "english": "restaurant",
     "romaji": "resutoran",
     "kanji": "レストラン",
     "kana": "レストラン",
-    "pos": "noun",
-    "id": 241
+    "pos": "noun"
   },
   {
+    "id": 242,
     "type": "word",
     "english": "to eat",
     "romaji": "taberu / tabemasu / tabeta / tabenai",
     "kanji": "食べる / 食べます / 食べた / 食べない",
     "kana": "たべる / たべます / たべた / たべない",
-    "pos": "verb",
-    "id": 242
+    "pos": "verb"
   },
   {
+    "id": 243,
     "type": "word",
     "english": "disappointing; regrettable",
     "romaji": "zannen",
     "kanji": "残念",
     "kana": "ざんねん",
-    "pos": "noun",
-    "id": 243
+    "pos": "noun"
   },
   {
+    "id": 244,
     "type": "word",
     "english": "date",
     "romaji": "deeto",
     "kanji": "デート",
     "kana": "デート",
-    "pos": "noun",
-    "id": 244
+    "pos": "noun"
   },
   {
+    "id": 245,
     "type": "word",
     "english": "app",
     "romaji": "apuri",
     "kanji": "アプリ",
     "kana": "アプリ",
-    "pos": "noun",
-    "id": 245
+    "pos": "noun"
   },
   {
+    "id": 246,
     "type": "word",
     "english": "to meet",
     "romaji": "au / aimasu / atta / awanai",
     "kanji": "会う / 会います / 会った / 会わない",
     "kana": "あう / あいます / あった / あわない",
-    "pos": "verb",
-    "id": 246
+    "pos": "verb"
   },
   {
+    "id": 247,
     "type": "word",
     "english": "boyfriend",
     "romaji": "kareshi",
     "kanji": "彼氏",
     "kana": "かれし",
-    "pos": "noun",
-    "id": 247
+    "pos": "noun"
   },
   {
+    "id": 248,
     "type": "word",
     "english": "cold (illness)",
     "romaji": "kaze",
     "kanji": "風邪",
     "kana": "かぜ",
-    "pos": "noun",
-    "id": 248
+    "pos": "noun"
   },
   {
+    "id": 249,
     "type": "word",
     "english": "to catch (a cold)",
     "romaji": "hiku / hikimasu / hiita / hikanai",
     "kanji": "ひく / ひきます / ひいた / ひかない",
     "kana": "ひく / ひきます / ひいた / ひかない",
-    "pos": "verb",
-    "id": 249
+    "pos": "verb"
   },
   {
+    "id": 250,
     "type": "word",
     "english": "house; home",
     "romaji": "ie",
     "kanji": "家",
     "kana": "いえ",
-    "pos": "noun",
-    "id": 250
+    "pos": "noun"
   },
   {
+    "id": 251,
     "type": "word",
     "english": "to rest",
     "romaji": "yasumu / yasumimasu / yasunda / yasumanai",
     "kanji": "休む / 休みます / 休んだ / 休まない",
     "kana": "やすむ / やすみます / やすんだ / やすまない",
-    "pos": "verb",
-    "id": 251
+    "pos": "verb"
   },
   {
+    "id": 252,
     "type": "word",
     "english": "new",
     "romaji": "atarashii",
     "kanji": "あたらしい",
     "kana": "あたらしい",
-    "pos": "adjective",
-    "id": 252
+    "pos": "adjective"
   },
   {
+    "id": 253,
     "type": "word",
     "english": "fight; quarrel",
     "romaji": "kenka",
     "kanji": "けんか",
     "kana": "けんか",
-    "pos": "noun",
-    "id": 253
+    "pos": "noun"
   },
   {
+    "id": 254,
     "type": "word",
     "english": "all day; throughout the day",
     "romaji": "ichinichijuu",
     "kanji": "一日中",
     "kana": "いちにちじゅう",
-    "pos": "adverb",
-    "id": 254
+    "pos": "adverb"
   },
   {
+    "id": 255,
     "type": "word",
     "english": "to be crowded",
     "romaji": "komu / komimasu / konda / komanai",
     "kanji": "混む / 混みます / 混んだ / 混まない",
     "kana": "こむ / こみます / こんだ / こまない",
-    "pos": "verb",
-    "id": 255
+    "pos": "verb"
   },
   {
+    "id": 256,
     "type": "word",
     "english": "to know",
     "romaji": "shiru / shirimasu / shitta / shiranai",
     "kanji": "知る / 知ります / 知った / 知らない",
     "kana": "しる / しります / しった / しらない",
-    "pos": "verb",
-    "id": 256
+    "pos": "verb"
   },
   {
+    "id": 257,
     "type": "word",
     "english": "color",
     "romaji": "iro",
     "kanji": "色",
     "kana": "いろ",
-    "pos": "noun",
-    "id": 257
+    "pos": "noun"
   },
   {
+    "id": 258,
     "type": "word",
     "english": "carpet",
     "romaji": "kaapetto",
     "kanji": "カーペット",
     "kana": "カーペット",
-    "pos": "noun",
-    "id": 258
+    "pos": "noun"
   },
   {
+    "id": 259,
     "type": "word",
     "english": "colorful",
     "romaji": "karafuru",
     "kanji": "カラフル",
     "kana": "カラフル",
-    "pos": "adjective",
-    "id": 259
+    "pos": "adjective"
   },
   {
+    "id": 260,
     "type": "word",
     "english": "venue",
     "romaji": "kaijou",
     "kanji": "会場",
     "kana": "かいじょう",
-    "pos": "noun",
-    "id": 260
+    "pos": "noun"
   },
   {
+    "id": 261,
     "type": "word",
     "english": "beautiful",
     "romaji": "utsukushii",
     "kanji": "美しい",
     "kana": "うつくしい",
-    "pos": "adjective",
-    "id": 261
+    "pos": "adjective"
   },
   {
+    "id": 262,
     "type": "word",
     "english": "dress",
     "romaji": "doresu",
     "kanji": "ドレス",
     "kana": "ドレス",
-    "pos": "noun",
-    "id": 262
+    "pos": "noun"
   },
   {
+    "id": 263,
     "type": "word",
     "english": "bride",
     "romaji": "shinpu",
     "kanji": "新婦",
     "kana": "しんぷ",
-    "pos": "noun",
-    "id": 263
+    "pos": "noun"
   },
   {
+    "id": 264,
     "type": "word",
     "english": "necklace",
     "romaji": "nekkuresu",
     "kanji": "ネックレス",
     "kana": "ネックレス",
-    "pos": "noun",
-    "id": 264
+    "pos": "noun"
   },
   {
+    "id": 265,
     "type": "word",
     "english": "relative; relatives",
     "romaji": "shinseki",
     "kanji": "親戚",
     "kana": "しんせき",
-    "pos": "noun",
-    "id": 265
+    "pos": "noun"
   },
   {
+    "id": 266,
     "type": "word",
     "english": "guest",
     "romaji": "gesuto",
     "kanji": "ゲスト",
     "kana": "ゲスト",
-    "pos": "noun",
-    "id": 266
+    "pos": "noun"
   },
   {
+    "id": 267,
     "type": "word",
     "english": "kind; helpful",
     "romaji": "shinsetsu",
     "kanji": "親切",
     "kana": "しんせつ",
-    "pos": "adjective",
-    "id": 267
+    "pos": "adjective"
   },
   {
+    "id": 268,
     "type": "word",
     "english": "kind; gentle",
     "romaji": "yasashii",
     "kanji": "優しい",
     "kana": "やさしい",
-    "pos": "adjective",
-    "id": 268
+    "pos": "adjective"
   },
   {
+    "id": 269,
     "type": "word",
     "english": "to greet; greeting",
     "romaji": "aisatsu suru / aisatsu shimasu / aisatsu shita / aisatsu shinai",
     "kanji": "挨拶する / 挨拶します / 挨拶した / 挨拶しない",
     "kana": "あいさつする / あいさつします / あいさつした / あいさつしない",
-    "pos": "verb",
-    "id": 269
+    "pos": "verb"
   },
   {
+    "id": 270,
     "type": "word",
     "english": "father; dad",
     "romaji": "otousan",
     "kanji": "お父さん",
     "kana": "おとうさん",
-    "pos": "noun",
-    "id": 270
+    "pos": "noun"
   },
   {
+    "id": 271,
     "type": "word",
     "english": "strange; weird",
     "romaji": "hen",
     "kanji": "変",
     "kana": "へん",
-    "pos": "adjective",
-    "id": 271
+    "pos": "adjective"
   },
   {
+    "id": 272,
     "type": "word",
     "english": "soup",
     "romaji": "suupu",
     "kanji": "スープ",
     "kana": "スープ",
-    "pos": "noun",
-    "id": 272
+    "pos": "noun"
   },
   {
+    "id": 273,
     "type": "word",
     "english": "low; short (height)",
     "romaji": "hikui",
     "kanji": "低い",
     "kana": "ひくい",
-    "pos": "adjective",
-    "id": 273
+    "pos": "adjective"
   },
   {
+    "id": 274,
     "type": "word",
     "english": "table",
     "romaji": "teeburu",
     "kanji": "テーブル",
     "kana": "テーブル",
-    "pos": "noun",
-    "id": 274
+    "pos": "noun"
   },
   {
+    "id": 275,
     "type": "word",
     "english": "alcohol; sake",
     "romaji": "osake",
     "kanji": "お酒",
     "kana": "おさけ",
-    "pos": "noun",
-    "id": 275
+    "pos": "noun"
   },
   {
+    "id": 276,
     "type": "word",
     "english": "to drink",
     "romaji": "nomu / nomimasu / nonda / nomanai",
     "kanji": "飲む / 飲みます / 飲んだ / 飲まない",
     "kana": "のむ / のみます / のんだ / のまない",
-    "pos": "verb",
-    "id": 276
+    "pos": "verb"
   },
   {
+    "id": 277,
     "type": "word",
     "english": "food",
     "romaji": "tabemono",
     "kanji": "食べ物",
     "kana": "たべもの",
-    "pos": "noun",
-    "id": 277
+    "pos": "noun"
   },
   {
+    "id": 278,
     "type": "word",
     "english": "fresh",
     "romaji": "shinsen",
     "kanji": "新鮮",
     "kana": "しんせん",
-    "pos": "adjective",
-    "id": 278
+    "pos": "adjective"
   },
   {
+    "id": 279,
     "type": "word",
     "english": "singer",
     "romaji": "kashu",
     "kanji": "歌手",
     "kana": "かしゅ",
-    "pos": "noun",
-    "id": 279
+    "pos": "noun"
   },
   {
+    "id": 280,
     "type": "word",
     "english": "to be moved; to be impressed",
     "romaji": "kandou suru / kandou shimasu / kandou shita / kandou shinai",
     "kanji": "感動する / 感動します / 感動した / 感動しない",
     "kana": "かんどうする / かんどうします / かんどうした / かんどうしない",
-    "pos": "verb",
-    "id": 280
+    "pos": "verb"
   },
   {
+    "id": 281,
     "type": "word",
     "english": "terrible; awful",
     "romaji": "hidoi",
     "kanji": "ひどい",
     "kana": "ひどい",
-    "pos": "adjective",
-    "id": 281
+    "pos": "adjective"
   },
   {
+    "id": 282,
     "type": "word",
     "english": "performance",
     "romaji": "pafoomansu",
     "kanji": "パフォーマンス",
     "kana": "パフォーマンス",
-    "pos": "noun",
-    "id": 282
+    "pos": "noun"
   },
   {
+    "id": 283,
     "type": "word",
     "english": "video",
     "romaji": "douga",
     "kanji": "動画",
     "kana": "どうが",
-    "pos": "noun",
-    "id": 283
+    "pos": "noun"
   },
   {
+    "id": 284,
     "type": "word",
     "english": "to take (a photo/video)",
     "romaji": "toru / torimasu / totta / toranai",
     "kanji": "撮る / 撮ります / 撮った / 撮らない",
     "kana": "とる / とります / とった / とらない",
-    "pos": "verb",
-    "id": 284
+    "pos": "verb"
   },
   {
+    "id": 285,
     "type": "word",
     "english": "boring; dull",
     "romaji": "tsumaranai",
     "kanji": "つまらない",
     "kana": "つまらない",
-    "pos": "adjective",
-    "id": 285
+    "pos": "adjective"
   },
   {
+    "id": 286,
     "type": "word",
     "english": "wedding ceremony",
     "romaji": "kekkonshiki",
     "kanji": "結婚式",
     "kana": "けっこんしき",
+    "pos": "noun"
+  },
+  {
+    "type": "word",
+    "english": "speech",
+    "romaji": "supiichi",
+    "kanji": "スピーチ",
+    "kana": "スピーチ",
     "pos": "noun",
-    "id": 286
+    "id": 287
+  },
+  {
+    "type": "word",
+    "english": "flower",
+    "romaji": "hana",
+    "kanji": "花",
+    "kana": "はな",
+    "pos": "noun",
+    "id": 288
+  },
+  {
+    "type": "word",
+    "english": "the day before yesterday",
+    "romaji": "ototoi",
+    "kanji": "一昨日",
+    "kana": "おととい",
+    "pos": "adverb",
+    "id": 289
+  },
+  {
+    "type": "word",
+    "english": "sixth day of the month; six days",
+    "romaji": "muika",
+    "kanji": "六日",
+    "kana": "むいか",
+    "pos": "noun",
+    "id": 290
+  },
+  {
+    "type": "word",
+    "english": "groom",
+    "romaji": "shinrou",
+    "kanji": "新郎",
+    "kana": "しんろう",
+    "pos": "noun",
+    "id": 291
+  },
+  {
+    "type": "word",
+    "english": "surely; certainly",
+    "romaji": "kitto",
+    "kanji": "きっと",
+    "kana": "きっと",
+    "pos": "adverb",
+    "id": 292
+  },
+  {
+    "type": "word",
+    "english": "scene",
+    "romaji": "shiin",
+    "kanji": "シーン",
+    "kana": "シーン",
+    "pos": "noun",
+    "id": 293
+  },
+  {
+    "type": "word",
+    "english": "floor",
+    "romaji": "yuka",
+    "kanji": "床",
+    "kana": "ゆか",
+    "pos": "noun",
+    "id": 294
+  },
+  {
+    "type": "word",
+    "english": "line; queue",
+    "romaji": "retsu",
+    "kanji": "列",
+    "kana": "れつ",
+    "pos": "noun",
+    "id": 295
+  },
+  {
+    "type": "word",
+    "english": "haunted house",
+    "romaji": "obakeyashiki",
+    "kanji": "お化け屋敷",
+    "kana": "おばけやしき",
+    "pos": "noun",
+    "id": 296
+  },
+  {
+    "type": "word",
+    "english": "June",
+    "romaji": "rokugatsu",
+    "kanji": "六月",
+    "kana": "ろくがつ",
+    "pos": "noun",
+    "id": 297
+  },
+  {
+    "type": "word",
+    "english": "amusement park",
+    "romaji": "yuuenchi",
+    "kanji": "遊園地",
+    "kana": "ゆうえんち",
+    "pos": "noun",
+    "id": 298
+  },
+  {
+    "type": "word",
+    "english": "this time; on this occasion",
+    "romaji": "konkai",
+    "kanji": "今回",
+    "kana": "こんかい",
+    "pos": "noun",
+    "id": 299
+  },
+  {
+    "type": "word",
+    "english": "seventh day of the month; seven days",
+    "romaji": "nanoka",
+    "kanji": "七日",
+    "kana": "なのか",
+    "pos": "noun",
+    "id": 300
+  },
+  {
+    "type": "word",
+    "english": "quarrel; argue; fight",
+    "romaji": "kenka suru / kenka shimasu / kenka shita / kenka shinai",
+    "kanji": "喧嘩する / 喧嘩します / 喧嘩した / 喧嘩しない",
+    "kana": "けんかする / けんかします / けんかした / けんかしない",
+    "pos": "verb",
+    "id": 301
+  },
+  {
+    "type": "word",
+    "english": "other; another",
+    "romaji": "hoka no",
+    "kanji": "他の",
+    "kana": "ほかの",
+    "pos": "adjective",
+    "id": 302
+  },
+  {
+    "type": "word",
+    "english": "bad; poor",
+    "romaji": "warui",
+    "kanji": "悪い",
+    "kana": "わるい",
+    "pos": "adjective",
+    "id": 303
+  },
+  {
+    "type": "word",
+    "english": "cereal; breakfast cereal",
+    "romaji": "shiriaru",
+    "kanji": "シリアル",
+    "kana": "シリアル",
+    "pos": "noun",
+    "id": 304
+  },
+  {
+    "type": "word",
+    "english": "breakfast",
+    "romaji": "asagohan",
+    "kanji": "朝ご飯",
+    "kana": "あさごはん",
+    "pos": "noun",
+    "id": 305
+  },
+  {
+    "type": "word",
+    "english": "sticky; tacky",
+    "romaji": "betabeta",
+    "kanji": "べたべた",
+    "kana": "べたべた",
+    "pos": "adverb",
+    "id": 306
+  },
+  {
+    "type": "word",
+    "english": "shower",
+    "romaji": "shawaa",
+    "kanji": "シャワー",
+    "kana": "シャワー",
+    "pos": "noun",
+    "id": 307
+  },
+  {
+    "type": "word",
+    "english": "toilet; restroom",
+    "romaji": "toire",
+    "kanji": "トイレ",
+    "kana": "トイレ",
+    "pos": "noun",
+    "id": 308
+  },
+  {
+    "type": "word",
+    "english": "lukewarm",
+    "romaji": "nurui",
+    "kanji": "ぬるい",
+    "kana": "ぬるい",
+    "pos": "adjective",
+    "id": 309
+  },
+  {
+    "type": "word",
+    "english": "was not; were not (informal negative past)",
+    "romaji": "ja nakatta",
+    "kanji": "じゃなかった",
+    "kana": "じゃなかった",
+    "pos": "adjective",
+    "id": 310
+  },
+  {
+    "type": "word",
+    "english": "sixth floor",
+    "romaji": "rokkai",
+    "kanji": "六階",
+    "kana": "ろっかい",
+    "pos": "noun",
+    "id": 311
+  },
+  {
+    "type": "word",
+    "english": "thin; weak (flavor); light (color)",
+    "romaji": "usui",
+    "kanji": "薄い",
+    "kana": "うすい",
+    "pos": "adjective",
+    "id": 312
+  },
+  {
+    "type": "word",
+    "english": "four days (duration)",
+    "romaji": "yokkakan",
+    "kanji": "四日間",
+    "kana": "よっかかん",
+    "pos": "noun",
+    "id": 313
+  },
+  {
+    "type": "word",
+    "english": "shuttle bus",
+    "romaji": "shatoru basu",
+    "kanji": "シャトルバス",
+    "kana": "シャトルバス",
+    "pos": "noun",
+    "id": 314
+  },
+  {
+    "type": "word",
+    "english": "west",
+    "romaji": "nishi",
+    "kanji": "西",
+    "kana": "にし",
+    "pos": "noun",
+    "id": 315
+  },
+  {
+    "type": "word",
+    "english": "advertisement",
+    "romaji": "koukoku",
+    "kanji": "広告",
+    "kana": "こうこく",
+    "pos": "noun",
+    "id": 316
+  },
+  {
+    "type": "word",
+    "english": "garbage; trash",
+    "romaji": "gomi",
+    "kanji": "ゴミ",
+    "kana": "ゴミ",
+    "pos": "noun",
+    "id": 317
+  },
+  {
+    "type": "word",
+    "english": "dining area; dining room",
+    "romaji": "dainingu",
+    "kanji": "ダイニング",
+    "kana": "ダイニング",
+    "pos": "noun",
+    "id": 318
+  },
+  {
+    "type": "word",
+    "english": "vase",
+    "romaji": "kabin",
+    "kanji": "花瓶",
+    "kana": "かびん",
+    "pos": "noun",
+    "id": 319
+  },
+  {
+    "type": "word",
+    "english": "handmade",
+    "romaji": "tezukuri no",
+    "kanji": "手作りの",
+    "kana": "てづくりの",
+    "pos": "adjective",
+    "id": 320
+  },
+  {
+    "type": "word",
+    "english": "wash",
+    "romaji": "arau / araimasu / aratta / arawanai",
+    "kanji": "洗う / 洗います / 洗った / 洗わない",
+    "kana": "あらう / あらいます / あらった / あらわない",
+    "pos": "verb",
+    "id": 321
+  },
+  {
+    "type": "word",
+    "english": "furniture",
+    "romaji": "kagu",
+    "kanji": "家具",
+    "kana": "かぐ",
+    "pos": "noun",
+    "id": 322
+  },
+  {
+    "type": "word",
+    "english": "wall",
+    "romaji": "kabe",
+    "kanji": "壁",
+    "kana": "かべ",
+    "pos": "noun",
+    "id": 325
+  },
+  {
+    "type": "word",
+    "english": "slipper",
+    "romaji": "surippa",
+    "kanji": "スリッパ",
+    "kana": "スリッパ",
+    "pos": "noun",
+    "id": 326
+  },
+  {
+    "type": "word",
+    "english": "wife (someone else's; polite)",
+    "romaji": "okusan",
+    "kanji": "奥さん",
+    "kana": "おくさん",
+    "pos": "noun",
+    "id": 327
+  },
+  {
+    "type": "word",
+    "english": "wear; put on (shoes, trousers)",
+    "romaji": "haku / hakimasu / haita / hakanai",
+    "kanji": "履く / 履きます / 履いた / 履かない",
+    "kana": "はく / はきます / はいた / はかない",
+    "pos": "verb",
+    "id": 328
+  },
+  {
+    "type": "word",
+    "english": "east",
+    "romaji": "higashi",
+    "kanji": "東",
+    "kana": "ひがし",
+    "pos": "noun",
+    "id": 329
+  },
+  {
+    "type": "word",
+    "english": "whose",
+    "romaji": "dare no",
+    "kanji": "誰の",
+    "kana": "だれの",
+    "pos": "adjective",
+    "id": 330
+  },
+  {
+    "type": "word",
+    "english": "gate",
+    "romaji": "mon",
+    "kanji": "門",
+    "kana": "もん",
+    "pos": "noun",
+    "id": 331
+  },
+  {
+    "type": "word",
+    "english": "get better; recover",
+    "romaji": "genki ni naru / genki ni narimasu / genki ni natta / genki ni naranai",
+    "kanji": "元気になる / 元気になります / 元気になった / 元気にならない",
+    "kana": "げんきになる / げんきになります / げんきになった / げんきにならない",
+    "pos": "verb",
+    "id": 332
+  },
+  {
+    "type": "word",
+    "english": "tissue",
+    "romaji": "tisshu",
+    "kanji": "ティッシュ",
+    "kana": "ティッシュ",
+    "pos": "noun",
+    "id": 333
+  },
+  {
+    "type": "word",
+    "english": "vitamin",
+    "romaji": "bitamin",
+    "kanji": "ビタミン",
+    "kana": "ビタミン",
+    "pos": "noun",
+    "id": 334
+  },
+  {
+    "type": "word",
+    "english": "order; place an order",
+    "romaji": "chuumon suru / chuumon shimasu / chuumon shita / chuumon shinai",
+    "kanji": "注文する / 注文します / 注文した / 注文しない",
+    "kana": "ちゅうもんする / ちゅうもんします / ちゅうもんした / ちゅうもんしない",
+    "pos": "verb",
+    "id": 335
+  },
+  {
+    "type": "word",
+    "english": "not at all (with negatives); completely",
+    "romaji": "zenzen",
+    "kanji": "全然",
+    "kana": "ぜんぜん",
+    "pos": "adverb",
+    "id": 336
+  },
+  {
+    "type": "word",
+    "english": "mask; face mask",
+    "romaji": "masuku",
+    "kanji": "マスク",
+    "kana": "マスク",
+    "pos": "noun",
+    "id": 337
+  },
+  {
+    "type": "word",
+    "english": "open (something)",
+    "romaji": "akeru / akemasu / aketa / akenai",
+    "kanji": "開ける / 開けます / 開けた / 開けない",
+    "kana": "あける / あけます / あけた / あけない",
+    "pos": "verb",
+    "id": 338
+  },
+  {
+    "type": "word",
+    "english": "notebook",
+    "romaji": "nooto",
+    "kanji": "ノート",
+    "kana": "ノート",
+    "pos": "noun",
+    "id": 339
+  },
+  {
+    "type": "word",
+    "english": "email; send an email",
+    "romaji": "meeru suru / meeru shimasu / meeru shita / meeru shinai",
+    "kanji": "メールする / メールします / メールした / メールしない",
+    "kana": "メールする / メールします / メールした / メールしない",
+    "pos": "verb",
+    "id": 340
+  },
+  {
+    "type": "word",
+    "english": "call; make a phone call",
+    "romaji": "denwa suru / denwa shimasu / denwa shita / denwa shinai",
+    "kanji": "電話する / 電話します / 電話した / 電話しない",
+    "kana": "でんわする / でんわします / でんわした / でんわしない",
+    "pos": "verb",
+    "id": 341
+  },
+  {
+    "type": "word",
+    "english": "anything; nothing (with a negative predicate)",
+    "romaji": "nani mo",
+    "kanji": "何も",
+    "kana": "なにも",
+    "pos": "adverb",
+    "id": 342
   }
 ];
